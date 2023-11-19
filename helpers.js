@@ -1,10 +1,4 @@
-// You can add and export any helper functions you want here - if you aren't using any, then you can just leave this file as is
-// You can add and export any helper functions you want here - if you aren't using any, then you can just leave this file as is
 import {ObjectId} from 'mongodb';
-import validateDate from "validate-date";
-import moment from "moment";
-// ! this is straight copied from professors git hub
-
 
 let exportedMethods = {
   checkId(id, varName) {
@@ -26,8 +20,22 @@ let exportedMethods = {
     if (!isNaN(strVal))
       throw `Error: ${strVal} is not a valid value for ${varName} as it only contains digits`;
     return strVal;
-  }
+  },
 
+  checkInput(input, varName) {
+    if (!input) throw `Error: You must supply a ${varName}!`;
+    input = input.trim();
+  },
+
+  checkZip(zip){
+    if(!zip) throw ("Zip code is required");
+    if (zip.trim().length === 0) throw ("Zip code input can't be empty");
+    let regex = /^(?:\d{5})?$/;
+    if(!regex.test){
+        throw "Invalid input for zip code";
+    }
+    return zip;
+  }
 };
 
 export default exportedMethods;
