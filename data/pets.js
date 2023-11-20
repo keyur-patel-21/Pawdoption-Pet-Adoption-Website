@@ -16,7 +16,7 @@ export async function createPet(creatorId,
     const petCollection = await pets();
 
     name = helpers.checkString(name);
-    //age = helpers.checkInt(age);  
+    age = helpers.checkStringisNumber(age);
     gender = helpers.checkString(gender);  //implement as drop down menu
     breed = helpers.checkString(breed);  //implement as drop down menu
     description = helpers.checkString(description);
@@ -40,6 +40,7 @@ export async function createPet(creatorId,
         lastUpdated : new Date().toLocaleDateString(),
         comments : []
     };
+    newPet._id = newPet._id.toString();
 
     let insertInfo = await petCollection.insertOne(newPet);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
@@ -48,10 +49,28 @@ export async function createPet(creatorId,
     return newPet;
 };
 
-export async function getAll() {
+export async function getAllPets() {
     const petsCollection = await pets();
     let petList = await petsCollection.find({}).toArray();
     if (!petList) throw "Error: Could not get all pets";
 
     return petList;
+};
+
+export async function getPetById(id) {
+    id = helpers.checkId(id);
+    if (!id) throw "Error: id must be given";
+    const petsCollection = await pets();
+    const user = await petsCollection.findOne({ _id: id});
+    if (!user) throw "Erro: no pet with that id exist";
+    return user;
+};
+
+export async function getPetByCreator(id) {
+    id = helpers.checkId(id);
+    if (!id) throw "Error: id must be given";
+    const petsCollection = await pets();
+    const user = await petsCollection.findOne({ creatorId: id});
+    if (!user) throw "Erro: no pet with that id exist";
+    return user;
 };

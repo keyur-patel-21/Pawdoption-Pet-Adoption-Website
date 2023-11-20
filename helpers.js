@@ -35,7 +35,28 @@ let exportedMethods = {
         throw "Invalid input for zip code";
     }
     return zip;
-  }
+  },
+
+  checkStringisNumber(string) {
+    if (!string) throw ("Error: number is required");
+    if (string.trim().length === 0) throw ("Error: input can't be empty");
+    let regex = /^[0-9]*$/;
+    if(!regex.test){
+      throw "Invalid input";
+    }
+    return string;
+  },
+
+  checkEmail(email) {
+    email = email.trim();
+    //https://www.w3docs.com/snippets/javascript/how-to-validate-an-e-mail-using-javascript.html
+    email = email.trim();  
+    let regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    if (regex.test(String(email).toLowerCase()))
+        return email 
+    else 
+        throw "Error: invalid email";
+  },
 };
 
 export default exportedMethods;

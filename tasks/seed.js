@@ -17,8 +17,8 @@ try {
     console.log(e);
 }
 try {
-    const allUsers = await users.getAll();
-    console.log(allUsers);
+    const allUsers = await users.getAllUsers();
+    //console.log(allUsers);
 } catch (e) {
     console.log(e);
 }
@@ -41,8 +41,29 @@ try {
 }
 
 try {
-    const allPets = await pets.getAll();
+    const allPets = await pets.getAllPets();
     console.log(allPets);
+} catch (e){
+    console.log (e)
+}
+
+try {
+    const petPella = await pets.getPetById(pella._id);
+    console.log(petPella);
+} catch (e){
+    console.log (e)
+}
+
+try {
+    const fionaPet = await pets.getPetByCreator(fiona._id);
+    console.log(fionaPet);
+} catch (e){
+    console.log (e)
+}
+
+try {
+    const fionaPet = await users.getUserById(fiona._id);
+    console.log(fionaPet);
 } catch (e){
     console.log (e)
 }
