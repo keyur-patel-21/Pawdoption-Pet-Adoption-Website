@@ -95,47 +95,47 @@ export async function createComment(petId, userId, comment){
 };
 
 export async function updatePet(id,
-    name, 
-    age, 
-    gender, 
-    breed, 
-    description,
-    typeOfAnimal,
-    zip,
-    picture,
-    adoptionStatus) {   
-name = helpers.checkString(name, "pet name");
-age = helpers.checkStringisNumber(age);
-gender = helpers.checkString(gender, "gender"); 
-breed = helpers.checkString(breed, "breed"); 
-description = helpers.checkString(description, "description");
-typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal"); 
-zip = helpers.checkZip(zip);
-// TODO: picture file validation 
-adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
+        name, 
+        age, 
+        gender, 
+        breed, 
+        description,
+        typeOfAnimal,
+        zip,
+        picture,
+        adoptionStatus) {   
+    name = helpers.checkString(name, "pet name");
+    age = helpers.checkStringisNumber(age);
+    gender = helpers.checkString(gender, "gender"); 
+    breed = helpers.checkString(breed, "breed"); 
+    description = helpers.checkString(description, "description");
+    typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal"); 
+    zip = helpers.checkZip(zip);
+    // TODO: picture file validation 
+    adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
 
-const petsCollection = await pets();
+    const petsCollection = await pets();
 
-let setPet = {
-    name : name, 
-    age : age, 
-    gender : gender, 
-    breed : breed, 
-    description : description,
-    typeOfAnimal : typeOfAnimal,
-    zip : zip,
-    picture : picture,
-    adoptionStatus : adoptionStatus,
-    lastUpdated : new Date().toLocaleDateString()
-};
+    let setPet = {
+        name : name, 
+        age : age, 
+        gender : gender, 
+        breed : breed, 
+        description : description,
+        typeOfAnimal : typeOfAnimal,
+        zip : zip,
+        picture : picture,
+        adoptionStatus : adoptionStatus,
+        lastUpdated : new Date().toLocaleDateString()
+    };
 
-const updatedInfo = await petsCollection.updateOne(
-    {_id: id},
-    {$set: setPet});
+    const updatedInfo = await petsCollection.updateOne(
+        {_id: id},
+        {$set: setPet});
 
-if (!updatedInfo) {
-    throw 'Error: could not update pet successfully';
-}
+    if (!updatedInfo) {
+        throw 'Error: could not update pet successfully';
+    }
 
-return updatedInfo;
+    return updatedInfo;
 };
