@@ -78,6 +78,7 @@ export async function updateUser(id,
     return updatedInfo;
 };
 
+
 export async function addFavoritePet(petId, userId){
     petId = helpers.checkId(petId, "pet id");
     userId = helpers.checkId(userId, "user id");
