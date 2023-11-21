@@ -7,8 +7,8 @@ export async function createUser(firstName,
     emailAddress,
     password  ) {
 
-    firstName = helpers.checkString(firstName);
-    lastName = helpers.checkString(lastName);
+    firstName = helpers.checkString(firstName, "first name");
+    lastName = helpers.checkString(lastName, "last name");
     emailAddress = helpers.checkEmail(emailAddress);
     // TODO: hash password 
 
@@ -35,15 +35,63 @@ export async function createUser(firstName,
 export async function getAllUsers() {
     const usersCollection = await users();
     let userList = await usersCollection.find({}).toArray();
-    if (!userList) throw "Error: Could not get all pets";
+    if (!userList) throw "Error: Could not get all users";
+
     return userList;
 };
 
 export async function getUserById(id) {
-    id = helpers.checkId(id);
-    if (!id) throw "Error: id must be given";
+    id = helpers.checkId(id, "user id");
     const usersCollection = await users();
     const user = await usersCollection.findOne({ _id: id});
-    if (!user) throw "Erro: no user with that id exist";
+    if (!user) throw "Error: no user with that id exist";
+
     return user;
+};
+
+export async function updateUser(id,
+        firstName,
+        lastName,
+        emailAddress) {
+    id = helpers.checkId(id, "user id");
+    firstName = helpers.checkString(firstName, "first name");
+    lastName = helpers.checkString(lastName, "last name");
+    emailAddress = helpers.checkEmail(emailAddress);
+
+    const usersCollection = await users();   
+
+    let setUser = {
+        firstName : firstName,
+        lastName : lastName,
+        emailAddress : emailAddress,
+    };
+
+    const updatedInfo = await usersCollection.updateOne(
+        {_id: id},
+        {$set: setUser}
+    );
+
+    if (!updatedInfo) {
+        throw 'Error: could not update user successfully';
+    }
+
+    return updatedInfo;
+};
+
+export async function addFavoritePet(petId, userId){
+    petId = helpers.checkId(petId, "pet id");
+    userId = helpers.checkId(userId, "user id");
+
+    let newFavoritePet = {
+        _id: new ObjectId(),
+        petId: petId
+    };
+
+    newFavoritePet._id = newFavoritePet._id.toString();
+    const usersCollection = await users();   
+
+    const updatedInfo = await usersCollection.updateOne(
+        {_id: userId}, {$push: {favoritePets: newFavoritePet}});
+
+    return updatedInfo;
 };

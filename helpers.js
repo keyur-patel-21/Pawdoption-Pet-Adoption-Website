@@ -32,7 +32,7 @@ let exportedMethods = {
     if (zip.trim().length === 0) throw ("Zip code input can't be empty");
     let regex = /^(?:\d{5})?$/;
     if(!regex.test){
-        throw "Invalid input for zip code";
+        throw ("Invalid input for zip code");
     }
     return zip;
   },
@@ -42,20 +42,30 @@ let exportedMethods = {
     if (string.trim().length === 0) throw ("Error: input can't be empty");
     let regex = /^[0-9]*$/;
     if(!regex.test){
-      throw "Invalid input";
+      throw ("Invalid input");
     }
     return string;
   },
 
   checkEmail(email) {
+    if (!email) throw ("Error: must provide an email");
     email = email.trim();
     //https://www.w3docs.com/snippets/javascript/how-to-validate-an-e-mail-using-javascript.html
     email = email.trim();  
     let regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     if (regex.test(String(email).toLowerCase()))
-        return email 
+        return email;
     else 
-        throw "Error: invalid email";
+        throw ("Error: invalid email");
+  },
+
+  checkAdoptedStatus(adoptionStatus) {
+    if (!adoptionStatus) throw ("Error: must provide an adoption status");
+    adoptionStatus = adoptionStatus.trim().toLowerCase();
+    if ((adoptionStatus === "true") || (adoptionStatus === "false"))
+      return adoptionStatus; 
+    else 
+      throw ("Error: invalid adoption status");
   },
 };
 
