@@ -71,7 +71,7 @@ export async function getPetByCreator(id) {
     const pet = await petsCollection.findOne({ creatorId: id});
     if (!pet) throw "Error: no pet with that id exist";
 
-    return user;
+    return pet;
 };
 
 export async function createComment(petId, userId, comment){
@@ -91,7 +91,11 @@ export async function createComment(petId, userId, comment){
     const updatedInfo = await petsCollection.updateOne(
         {_id: petId}, {$push: {comments: newComment}});
 
-    return updatedInfo;
+    if (!updatedInfo) {
+        throw 'Error: could not create comment successfully';
+    }
+    
+    return {commentId: newComment._id};
 };
 
 export async function updatePet(id,
@@ -137,5 +141,22 @@ export async function updatePet(id,
         throw 'Error: could not update pet successfully';
     }
 
-    return updatedInfo;
+    return getPetById(id);
+};
+
+export async function removeComment(commentId) {
+    commentId = helpers.checkId(commentId, "comment id");
+    const petsCollection = await pets();
+
+    const deletionInfo = await petsCollection.findOneAndUpdate(
+        {"comments._id": commentId},
+        {$pull: {comments: {_id: commentId}}},
+        {returnDocument: "after"}
+    );
+
+    if (!deletionInfo) {
+        throw `Error: Could not delete comment with id of ${commentId}`;
+    }
+
+    return deletionInfo;      
 };

@@ -83,15 +83,45 @@ export async function addFavoritePet(petId, userId){
     userId = helpers.checkId(userId, "user id");
 
     let newFavoritePet = {
-        _id: new ObjectId(),
         petId: petId
     };
 
-    newFavoritePet._id = newFavoritePet._id.toString();
     const usersCollection = await users();   
 
     const updatedInfo = await usersCollection.updateOne(
         {_id: userId}, {$push: {favoritePets: newFavoritePet}});
 
-    return updatedInfo;
+    return {favoritePetId: petId, userId: userId};
+};
+
+export async function removeUser(userId) {
+    userId = helpers.checkId(userId, "user id");
+    const usersCollection = await users();   
+    const deletionInfo = await usersCollection.findOneAndDelete({
+        _id: userId
+    });
+    if (!deletionInfo) {
+        throw `Error: Could not delete user with id of ${userId}`;
+    }
+    let result = {userName: deletionInfo._id, deleted: true};
+    return result;
+};
+
+export async function removeFavoritePet(userId, petId) {
+    userId = helpers.checkId(userId, "user id");
+    petId = helpers.checkId(petId, "pet id");
+
+    const usersCollection = await users();   
+
+    const deletionInfo = await usersCollection.findOneAndUpdate(
+        {"_id": userId},
+        {$pull: {favoritePets: {petId: petId}}},
+        {returnDocument: "after"}
+    );
+
+    if (!deletionInfo) {
+        throw `Error: Could not delete favorite pet of ${petId}`;
+    }
+
+    return deletionInfo;      
 };
