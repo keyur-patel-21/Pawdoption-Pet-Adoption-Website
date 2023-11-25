@@ -1,0 +1,114 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Colors */
+    --main-color: #15b946;
+    --dark-text-color: #040705;
+    --white-text-color: #ffffff;
+    --dark-backround-color: #0a4d1e;
+    --light-background-color: #42ae63;
+}
+
+/* Registration header style */
+.registration-header {
+    padding-top: 1rem;
+    padding-left: 4.5rem;
+}
+
+.nav-logo img {
+    height: 64px;
+    border-radius: 5px;
+}
+
+/* Sign up & Sign in Page */
+.signin {
+    padding: 2rem 0;
+}
+
+.card-layout {
+    margin: 0 auto;
+    width: 430px;
+    padding: 2rem 3rem;
+    border-radius: 10px;
+    font-weight: bold;
+    color: var(--dark-text-color);
+    box-shadow: 0 10px 15px 0 rgba(10,77,30,1);
+}
+
+.signin-container h1 {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.signin-container .signin-msg {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--main-color);
+}
+
+.signin-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.signin-input input {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border-radius: 5px;
+    padding: 0.8rem 0.6rem;
+    border: 1.5px solid var(--dark-text-color);
+}
+
+.signin-input input:focus {
+    outline: none;
+    border: 1.5px solid var(--main-color);
+}
+
+.new-user a {
+    color: var(--main-color);
+    text-decoration: none;
+}
+
+.signin-submit {
+    text-align: center;
+}
+
+.btn-signin {
+    width: 50%;
+    height: 3rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 2rem;
+    cursor: pointer;
+    border: none;
+    color: var(--dark-text-color);
+    background-color: var(--main-color);
+}
+
+.btn-signin {
+    margin-top: 1.5rem;
+}
+
+.btn-signin:hover, .btn-signin:focus{
+    color: var(--white-text-color);
+    background-color: var(--dark-backround-color);
+}
+
+.new-user {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+/* General styling */
+.error {
+    color: #ff0000;
+}
+
+.error-border {
+    border: 1.5px solid #ff0000 !important;
+}
