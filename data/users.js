@@ -1,6 +1,7 @@
 import {users} from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
 import helpers from '../helpers.js';
+import bcrypt from 'bcryptjs';
 
 export async function createUser(firstName,
     lastName,
@@ -10,7 +11,8 @@ export async function createUser(firstName,
     firstName = helpers.checkString(firstName, "first name");
     lastName = helpers.checkString(lastName, "last name");
     emailAddress = helpers.checkEmail(emailAddress);
-    // TODO: hash password 
+
+    var salt = bcrypt.genSaltSync(10);
 
     const userCollection = await users();
 
@@ -19,7 +21,7 @@ export async function createUser(firstName,
         firstName : firstName,
         lastName : lastName,
         emailAddress : emailAddress,
-        hashedPassword : password,
+        hashedPassword : bcrypt.hashSync(password, salt),
         favoritePets : []
     };
 
