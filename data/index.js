@@ -1,5 +1,5 @@
-import usersDataFunctions from './users.js';
-import petsDataFunctions from './pets.js';
+import userDataFunctions from './users.js';
+import petDataFunctions from './pets.js';
 
-export const usersData = usersDataFunctions;
-export const petsData = petsDataFunctions;
+export const userData = userDataFunctions;
+export const petData = petDataFunctions;
