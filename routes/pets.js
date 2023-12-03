@@ -11,7 +11,7 @@ router
   .get(async (req, res) => {
     try {
       const petList = await petData.getAllPets();
-      res.render("pets/pets", {pets: petList});
+      res.render("pets/pets", { pets: petList });
     } catch (error) {
       console.log(error);
       res.status(400).render("pets/pets", { error: error.message });
@@ -28,14 +28,31 @@ router
     // Change here for validating input params
     try {
       console.log(req.body);
-      newPetData.nameInput = helpers.checkString(newPetData.nameInput, "pet name");
+      newPetData.nameInput = helpers.checkString(
+        newPetData.nameInput,
+        "pet name"
+      );
       newPetData.ageInput = helpers.checkStringisNumber(newPetData.ageInput);
-      newPetData.genderInput = helpers.checkString(newPetData.genderInput, "gender");
-      newPetData.breedInput = helpers.checkString(newPetData.breedInput, "breed");
-      newPetData.descriptionInput = helpers.checkString(newPetData.descriptionInput, "description");
-      newPetData.typeInput = helpers.checkString(newPetData.typeInput, "typeOfAnimal");
+      newPetData.genderInput = helpers.checkString(
+        newPetData.genderInput,
+        "gender"
+      );
+      newPetData.breedInput = helpers.checkString(
+        newPetData.breedInput,
+        "breed"
+      );
+      newPetData.descriptionInput = helpers.checkString(
+        newPetData.descriptionInput,
+        "description"
+      );
+      newPetData.typeInput = helpers.checkString(
+        newPetData.typeInput,
+        "typeOfAnimal"
+      );
       newPetData.zipInput = helpers.checkZip(newPetData.zipInput);
-      newPetData.adoptionStatusInput = helpers.checkAdoptedStatus(newPetData.adoptionStatusInput);
+      newPetData.adoptionStatusInput = helpers.checkAdoptedStatus(
+        newPetData.adoptionStatusInput
+      );
     } catch (error) {
       console.log(error);
       return res.status(400).json({ error: error.message });
@@ -53,7 +70,6 @@ router
         zipInput,
         adoptionStatusInput,
       } = newPetData;
-      console.log(adoptionStatusInput)
       const newPet = await petData.createPet(
         "temp ID",
         nameInput,
@@ -64,7 +80,7 @@ router
         typeInput,
         zipInput,
         "temp_pic.png",
-        adoptionStatusInput,
+        adoptionStatusInput
       );
       res.redirect("/pets");
     } catch (error) {
@@ -74,34 +90,31 @@ router
   });
 
 // route to open form for creating new pet
-router
-  .route("/new")
-  .get(async (req, res) => {
-    try {
-      res.render("pets/form");
-    } catch (error) {
-      console.log(error);
-      res.status(400).render("pets/form", { error: error.message });
-    }
-  })
+router.route("/new").get(async (req, res) => {
+  try {
+    res.render("pets/form");
+  } catch (error) {
+    console.log(error);
+    res.status(400).render("pets/form", { error: error.message });
+  }
+});
 
 // routes to get pet by id, delete pet by id and update pet by id
 router
   .route("/:petId")
   .get(async (req, res) => {
     //code here for GET
-
     //here we are validating petString
-    // try {
-    //   req.params.petId = checkId(req.params.eventId, "Id URL Param");
-    // } catch (error) {
-    //    console.log(error);
-    //   return res.status(400).json({ error: e });
-    // }
+    try {
+      req.params.petId = helpers.checkId(req.params.petId, "Id URL Param");
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ error: error.message });
+    }
     //try getting the event by ID
     try {
-      const pet = await petData.get(req.params.petId);
-      res.json(pet);
+      const pet = await petData.getPetById(req.params.petId);
+      res.render("pets/pet", { pet });
     } catch (error) {
       console.log(error);
       res.status(404).json({ error: e });
