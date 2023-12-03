@@ -1,11 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <h1>this is all pets</h1>  
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>this is all pets</h1>
+    {{#if pets}}
+      <ol>
+        {{#each pets}}
+          <li>
+            <p>{{name}}</p>
+          </li>
+        {{/each}}
+      </ol>
+      {{!-- <a href="/" class="search-again">Search for Another Character</a> --}}
+    {{else}}
+      <p class="not-found">We're sorry, but no results were found for
+        {{!-- {{searchCharacterByName}}.</p> --}}
+      {{!-- <a href="/" class="search-again">Search for Another Character</a> --}}
+    {{/if}}
+  </body>
 </html>
