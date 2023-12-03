@@ -27,7 +27,6 @@ router
     }
     // Change here for validating input params
     try {
-      console.log(req.body);
       newPetData.nameInput = helpers.checkString(
         newPetData.nameInput,
         "pet name"
