@@ -11,7 +11,7 @@ router
   .get(async (req, res) => {
     try {
       const petList = await petData.getAllPets();
-      res.json(petList);
+      res.render("pets/pets");
     } catch (e) {
       res.status(500).json({ error: e });
     }
