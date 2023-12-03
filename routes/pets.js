@@ -11,9 +11,10 @@ router
   .get(async (req, res) => {
     try {
       const petList = await petData.getAllPets();
-      res.render("pets/pets");
-    } catch (e) {
-      res.status(500).json({ error: e });
+      res.render("pets/pets", {pets: petList});
+    } catch (error) {
+      console.log(error);
+      res.status(400).render("pets/pets", { error: error.message });
     }
   })
   .post(async (req, res) => {
@@ -25,156 +26,64 @@ router
         .json({ error: "There are no fields in the request body" });
     }
     // Change here for validating input params
-    // try {
-    //   if (
-    //     !neweventData.eventName ||
-    //     typeof neweventData.eventName !== "string" ||
-    //     neweventData.eventName.trim().length < 5
-    //   ) {
-    //     throw "Invalid or missing eventName";
-    //   }
-    //   neweventData.eventName = neweventData.eventName.trim();
-
-    //   if (
-    //     !neweventData.eventDescription ||
-    //     typeof neweventData.eventDescription !== "string" ||
-    //     neweventData.eventDescription.trim().length < 25
-    //   ) {
-    //     throw "Invalid or missing eventDescription";
-    //   }
-    //   neweventData.eventDescription = neweventData.eventDescription.trim();
-
-    //   if (
-    //     !neweventData.contactEmail ||
-    //     typeof neweventData.contactEmail !== "string" ||
-    //     !isValidEmail(neweventData.contactEmail.trim())
-    //   ) {
-    //     throw "Invalid or missing contactEmail";
-    //   }
-    //   neweventData.contactEmail = neweventData.contactEmail.trim();
-
-    //   if (
-    //     !neweventData.eventDate ||
-    //     typeof neweventData.eventDate !== "string" ||
-    //     !isValidDate(neweventData.eventDate)
-    //   ) {
-    //     throw "Invalid or missing eventDate";
-    //   }
-    //   neweventData.eventDate = neweventData.eventDate.trim();
-
-    //   const eventDate = new Date(neweventData.eventDate);
-
-    //   if (eventDate <= new Date()) {
-    //     throw "Event date must be in the future";
-    //   }
-
-    //   if (
-    //     !neweventData.startTime ||
-    //     typeof neweventData.startTime !== "string" ||
-    //     !isValidTime(neweventData.startTime)
-    //   ) {
-    //     throw "Invalid or missing startTime";
-    //   }
-    //   neweventData.startTime = neweventData.startTime.trim();
-
-    //   if (
-    //     !neweventData.endTime ||
-    //     typeof neweventData.endTime !== "string" ||
-    //     !isValidTime(neweventData.endTime)
-    //   ) {
-    //     throw "Invalid or missing endTime";
-    //   }
-    //   neweventData.endTime = neweventData.endTime.trim();
-
-    //   const startTime = new Date(`2000-01-01 ${neweventData.startTime}`);
-    //   const endTime = new Date(`2000-01-01 ${neweventData.endTime}`);
-
-    //   if (startTime >= endTime) {
-    //     throw "Start time must be earlier than end time";
-    //   }
-
-    //   if (endTime - startTime < 30 * 60 * 1000) {
-    //     throw "End time should be at least 30 minutes later than start time";
-    //   }
-
-    //   if (typeof neweventData.publicEvent !== "boolean") {
-    //     throw "Invalid or missing publicEvent";
-    //   }
-
-    //   if (
-    //     neweventData.maxCapacity === undefined ||
-    //     typeof neweventData.maxCapacity !== "number" ||
-    //     neweventData.maxCapacity <= 0
-    //   ) {
-    //     throw "Invalid or missing maxCapacity";
-    //   }
-
-    //   if (
-    //     neweventData.priceOfAdmission === undefined ||
-    //     typeof neweventData.priceOfAdmission !== "number" ||
-    //     parseFloat(neweventData.priceOfAdmission) < 0
-    //   ) {
-    //     throw "Invalid or missing priceOfAdmission";
-    //   }
-
-    //   neweventData.maxCapacity = parseInt(neweventData.maxCapacity);
-
-    //   if (typeof neweventData.eventLocation !== "object") {
-    //     throw "Invalid eventLocation";
-    //   }
-
-    //   if (
-    //     typeof neweventData.eventLocation.streetAddress !== "string" ||
-    //     neweventData.eventLocation.streetAddress.trim().length < 3 ||
-    //     typeof neweventData.eventLocation.city !== "string" ||
-    //     neweventData.eventLocation.city.trim().length < 3 ||
-    //     typeof neweventData.eventLocation.state !== "string" ||
-    //     !isValidState(neweventData.eventLocation.state) ||
-    //     typeof neweventData.eventLocation.zip !== "string" ||
-    //     !isValidZip(neweventData.eventLocation.zip)
-    //   ) {
-    //     throw "Invalid eventLocation properties";
-    //   }
-    //   neweventData.eventLocation.streetAddress =
-    //     neweventData.eventLocation.streetAddress.trim();
-    //   neweventData.eventLocation.city = neweventData.eventLocation.city.trim();
-    //   neweventData.eventLocation.state =
-    //     neweventData.eventLocation.state.trim();
-    // } catch (e) {
-    //   return res.status(400).json({ error: e });
-    // }
+    try {
+      console.log(req.body);
+      newPetData.nameInput = helpers.checkString(newPetData.nameInput, "pet name");
+      newPetData.ageInput = helpers.checkStringisNumber(newPetData.ageInput);
+      newPetData.genderInput = helpers.checkString(newPetData.genderInput, "gender");
+      newPetData.breedInput = helpers.checkString(newPetData.breedInput, "breed");
+      newPetData.descriptionInput = helpers.checkString(newPetData.descriptionInput, "description");
+      newPetData.typeInput = helpers.checkString(newPetData.typeInput, "typeOfAnimal");
+      newPetData.zipInput = helpers.checkZip(newPetData.zipInput);
+      newPetData.adoptionStatusInput = helpers.checkAdoptedStatus(newPetData.adoptionStatusInput);
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ error: error.message });
+    }
 
     // here we are creating new pet
     try {
       const {
-        creatorId,
-        name,
-        age,
-        gender,
-        breed,
-        description,
-        typeOfAnimal,
-        zip,
-        picture,
-        adoptionStatus,
+        nameInput,
+        ageInput,
+        genderInput,
+        breedInput,
+        descriptionInput,
+        typeInput,
+        zipInput,
+        adoptionStatusInput,
       } = newPetData;
-      const newPet = await petData.create(
-        creatorId,
-        name,
-        age,
-        gender,
-        breed,
-        description,
-        typeOfAnimal,
-        zip,
-        picture,
-        adoptionStatus
+      console.log(adoptionStatusInput)
+      const newPet = await petData.createPet(
+        "temp ID",
+        nameInput,
+        ageInput,
+        genderInput,
+        breedInput,
+        descriptionInput,
+        typeInput,
+        zipInput,
+        "temp_pic.png",
+        adoptionStatusInput,
       );
-      res.json(newPet);
-    } catch (e) {
-      res.status(500).json({ error: e });
+      res.redirect("/pets");
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: error.message });
     }
   });
+
+// route to open form for creating new pet
+router
+  .route("/new")
+  .get(async (req, res) => {
+    try {
+      res.render("pets/form");
+    } catch (error) {
+      console.log(error);
+      res.status(400).render("pets/form", { error: error.message });
+    }
+  })
 
 // routes to get pet by id, delete pet by id and update pet by id
 router
@@ -185,14 +94,16 @@ router
     //here we are validating petString
     // try {
     //   req.params.petId = checkId(req.params.eventId, "Id URL Param");
-    // } catch (e) {
+    // } catch (error) {
+    //    console.log(error);
     //   return res.status(400).json({ error: e });
     // }
     //try getting the event by ID
     try {
       const pet = await petData.get(req.params.petId);
       res.json(pet);
-    } catch (e) {
+    } catch (error) {
+      console.log(error);
       res.status(404).json({ error: e });
     }
   })
@@ -202,14 +113,16 @@ router
     // here we are validating petId
     // try {
     //   req.params.eventId = checkId(req.params.eventId, "Id URL Param");
-    // } catch (e) {
+    // } catch (error) {
+    //    console.log(error);
     //   return res.status(400).json({ error: e });
     // }
     //try to delete Event
     try {
       let deletedPet = await petData.remove(req.params.petId);
       res.json(deletedPet);
-    } catch (e) {
+    } catch (error) {
+      console.log(error);
       res.status(404).json({ error: e });
     }
   })
@@ -342,7 +255,8 @@ router
     //   updatedeventData.eventLocation.city = updatedeventData.eventLocation.city.trim();
     //   updatedeventData.eventLocation.state =
     //   updatedeventData.eventLocation.state.trim();
-    // } catch (e) {
+    // } catch (error) {
+    //    console.log(error);
     //   return res.status(400).json({ error: e.message });
     // }
 
@@ -352,7 +266,8 @@ router
         updatedpetData
       );
       res.json(updatedPet);
-    } catch (e) {
+    } catch (error) {
+      console.log(error);
       res.status(404).json({ error: e.message });
     }
   });
