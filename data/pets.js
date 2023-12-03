@@ -1,151 +1,159 @@
-import {pets} from '../config/mongoCollections.js';
-import {ObjectId} from 'mongodb';
-import helpers from '../helpers.js';
+import { pets } from "../config/mongoCollections.js";
+import { ObjectId } from "mongodb";
+import helpers from "../helpers.js";
 
-export async function createPet(creatorId, 
-        name, 
-        age, 
-        gender, 
-        breed, 
-        description,
-        typeOfAnimal,
-        zip,
-        picture,
-        adoptionStatus) {
+const exportedMethods = {
+  async createPet(
+    creatorId,
+    name,
+    age,
+    gender,
+    breed,
+    description,
+    typeOfAnimal,
+    zip,
+    picture,
+    adoptionStatus
+  ) {
     name = helpers.checkString(name, "pet name");
     age = helpers.checkStringisNumber(age);
-    gender = helpers.checkString(gender, "gender");  //implement as drop down menu
-    breed = helpers.checkString(breed, "breed");  //implement as drop down menu
+    gender = helpers.checkString(gender, "gender"); //implement as drop down menu
+    breed = helpers.checkString(breed, "breed"); //implement as drop down menu
     description = helpers.checkString(description, "description");
-    typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal");  //implement as drop down menu
+    typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal"); //implement as drop down menu
     zip = helpers.checkZip(zip);
-    // TODO: picture file validation 
+    // TODO: picture file validation
     adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
 
     const petCollection = await pets();
 
     let newPet = {
-        _id : new ObjectId(),
-        creatorId : creatorId,
-        name : name, 
-        age : age, 
-        gender : gender, 
-        breed : breed, 
-        description : description,
-        typeOfAnimal : typeOfAnimal,
-        zip : zip,
-        picture : picture,
-        adoptionStatus : adoptionStatus,
-        lastUpdated : new Date().toLocaleDateString(),
-        comments : []
+      _id: new ObjectId(),
+      creatorId: creatorId,
+      name: name,
+      age: age,
+      gender: gender,
+      breed: breed,
+      description: description,
+      typeOfAnimal: typeOfAnimal,
+      zip: zip,
+      picture: picture,
+      adoptionStatus: adoptionStatus,
+      lastUpdated: new Date().toLocaleDateString(),
+      comments: [],
     };
     newPet._id = newPet._id.toString();
 
     let insertInfo = await petCollection.insertOne(newPet);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
-    throw "Error: could not add pet to database";
-        
-    return newPet;
-};
+      throw "Error: could not add pet to database";
 
-export async function getAllPets() {
+    return newPet;
+  },
+
+  async getAllPets() {
     const petsCollection = await pets();
     let petList = await petsCollection.find({}).toArray();
     if (!petList) throw "Error: Could not get all pets";
 
     return petList;
-};
+  },
 
-export async function getPetById(id) {
+  async getPetById(id) {
     id = helpers.checkId(id, "pet id");
     const petsCollection = await pets();
-    const user = await petsCollection.findOne({ _id: id});
+    const user = await petsCollection.findOne({ _id: id });
     if (!user) throw "Error: no pet with that id exist";
 
     return user;
-};
+  },
 
-export async function getPetByCreator(id) {
+  async getPetByCreator(id) {
     id = helpers.checkId(id, "creator id");
     const petsCollection = await pets();
-    const pet = await petsCollection.findOne({ creatorId: id});
+    const pet = await petsCollection.findOne({ creatorId: id });
     if (!pet) throw "Error: no pet with that id exist";
 
     return pet;
-};
+  },
 
-export async function createComment(petId, userId, comment){
+  async createComment(petId, userId, comment) {
     petId = helpers.checkId(petId, "pet id");
     userId = helpers.checkId(userId, "user id");
     comment = helpers.checkString(comment, "comment");
 
     let newComment = {
-        _id: new ObjectId(),
-        userId: userId,
-        commentContent: comment
+      _id: new ObjectId(),
+      userId: userId,
+      commentContent: comment,
     };
 
     newComment._id = newComment._id.toString();
     const petsCollection = await pets();
 
     const updatedInfo = await petsCollection.updateOne(
-        {_id: petId}, {$push: {comments: newComment}});
+      { _id: petId },
+      { $push: { comments: newComment } }
+    );
 
     if (!updatedInfo) {
-        throw 'Error: could not create comment successfully';
+      throw "Error: could not create comment successfully";
     }
-    
-    return {commentId: newComment._id};
-};
 
-export async function updatePet(id,
-        name, 
-        age, 
-        gender, 
-        breed, 
-        description,
-        typeOfAnimal,
-        zip,
-        picture,
-        adoptionStatus) {   
+    return { commentId: newComment._id };
+  },
+
+  async updatePet(
+    id,
+    name,
+    age,
+    gender,
+    breed,
+    description,
+    typeOfAnimal,
+    zip,
+    picture,
+    adoptionStatus
+  ) {
     name = helpers.checkString(name, "pet name");
     age = helpers.checkStringisNumber(age);
-    gender = helpers.checkString(gender, "gender"); 
-    breed = helpers.checkString(breed, "breed"); 
+    gender = helpers.checkString(gender, "gender");
+    breed = helpers.checkString(breed, "breed");
     description = helpers.checkString(description, "description");
-    typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal"); 
+    typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal");
     zip = helpers.checkZip(zip);
-    // TODO: picture file validation 
+    // TODO: picture file validation
     adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
 
     const petsCollection = await pets();
 
     let setPet = {
-        name : name, 
-        age : age, 
-        gender : gender, 
-        breed : breed, 
-        description : description,
-        typeOfAnimal : typeOfAnimal,
-        zip : zip,
-        picture : picture,
-        adoptionStatus : adoptionStatus,
-        lastUpdated : new Date().toLocaleDateString()
+      name: name,
+      age: age,
+      gender: gender,
+      breed: breed,
+      description: description,
+      typeOfAnimal: typeOfAnimal,
+      zip: zip,
+      picture: picture,
+      adoptionStatus: adoptionStatus,
+      lastUpdated: new Date().toLocaleDateString(),
     };
 
     const updatedInfo = await petsCollection.updateOne(
-        {_id: id},
-        {$set: setPet});
+      { _id: id },
+      { $set: setPet }
+    );
 
     if (!updatedInfo) {
-        throw 'Error: could not update pet successfully';
+      throw "Error: could not update pet successfully";
     }
 
     return getPetById(id);
-};
+  },
 
-// method to delete pet need to make changes
-// export async function remove(eventId) {
+  // method to delete pet need to make changes
+//   async remove(eventId) {
 //     if (!eventId) throw "You must provide an id to search for";
 //     if (typeof eventId !== "string") throw "Id must be a string";
 //     if (eventId.trim().length === 0)
@@ -165,21 +173,24 @@ export async function updatePet(id,
 //       eventName: deletionInfo.eventName,
 //       deleted: true,
 //     };
-// }
-  
-export async function removeComment(commentId) {
+//   },
+
+  async removeComment(commentId) {
     commentId = helpers.checkId(commentId, "comment id");
     const petsCollection = await pets();
 
     const deletionInfo = await petsCollection.findOneAndUpdate(
-        {"comments._id": commentId},
-        {$pull: {comments: {_id: commentId}}},
-        {returnDocument: "after"}
+      { "comments._id": commentId },
+      { $pull: { comments: { _id: commentId } } },
+      { returnDocument: "after" }
     );
 
     if (!deletionInfo) {
-        throw `Error: Could not delete comment with id of ${commentId}`;
+      throw `Error: Could not delete comment with id of ${commentId}`;
     }
 
-    return deletionInfo;      
+    return deletionInfo;
+  },
 };
+
+export default exportedMethods;
