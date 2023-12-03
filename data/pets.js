@@ -144,6 +144,29 @@ export async function updatePet(id,
     return getPetById(id);
 };
 
+// method to delete pet need to make changes
+// export async function remove(eventId) {
+//     if (!eventId) throw "You must provide an id to search for";
+//     if (typeof eventId !== "string") throw "Id must be a string";
+//     if (eventId.trim().length === 0)
+//       throw "id cannot be an empty string or just spaces";
+//     eventId = eventId.trim();
+//     if (!ObjectId.isValid(eventId)) throw "invalid object ID";
+//     const eventCollection = await events();
+//     const deletionInfo = await eventCollection.findOneAndDelete({
+//       _id: new ObjectId(eventId),
+//     });
+
+//     if (!deletionInfo) {
+//       throw `Could not delete event with id of ${eventId}`;
+//     }
+
+//     return {
+//       eventName: deletionInfo.eventName,
+//       deleted: true,
+//     };
+// }
+  
 export async function removeComment(commentId) {
     commentId = helpers.checkId(commentId, "comment id");
     const petsCollection = await pets();
