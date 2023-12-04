@@ -12,7 +12,7 @@
       <ol>
         {{#each pets}}
           <li>
-            <a href="/pets/{{_id}}">{{name}}</a>
+            <a href="/pets/{{_id}}">{{name}}</a> <a href="/pets/edit/{{_id}}" method="PUT">update</a> 
           </li>
         {{/each}}
       </ol>
