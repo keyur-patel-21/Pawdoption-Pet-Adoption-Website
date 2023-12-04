@@ -39,7 +39,6 @@ export async function createPet(creatorId,
         lastUpdated : new Date().toLocaleDateString(),
         comments : []
     };
-    newPet._id = newPet._id.toString();
 
     let insertInfo = await petCollection.insertOne(newPet);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
@@ -68,10 +67,12 @@ export async function getPetById(id) {
 export async function getPetByCreator(id) {
     id = helpers.checkId(id, "creator id");
     const petsCollection = await pets();
-    const pet = await petsCollection.findOne({ creatorId: id});
-    if (!pet) throw "Error: no pet with that id exist";
+    //const pet = await petsCollection.find({ creatorId: id});
+    let petList = await petsCollection.find({ creatorId: id}).toArray();
 
-    return pet;
+    if (!petList) throw "Error: no pet with that creator id exists";
+
+    return petList;
 };
 
 export async function createComment(petId, userId, comment){
@@ -85,7 +86,6 @@ export async function createComment(petId, userId, comment){
         commentContent: comment
     };
 
-    newComment._id = newComment._id.toString();
     const petsCollection = await pets();
 
     const updatedInfo = await petsCollection.updateOne(
@@ -94,8 +94,7 @@ export async function createComment(petId, userId, comment){
     if (!updatedInfo) {
         throw 'Error: could not create comment successfully';
     }
-    
-    return {commentId: newComment._id};
+    return newComment;
 };
 
 export async function updatePet(id,
@@ -159,4 +158,16 @@ export async function removeComment(commentId) {
     }
 
     return deletionInfo;      
+};
+
+export async function getComment(commentId) {
+    commentId = helpers.checkId(commentId, "comment id");
+    const petsCollection = await pets();
+
+    let petComment = await petsCollection.find({ "comments._id": commentId}).toArray();
+    if (!petComment) {
+        throw `Error: Could not get comment with id of ${commentId}`;
+    }
+
+    return petComment[0].comments[0];     
 };
