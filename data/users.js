@@ -25,8 +25,6 @@ export async function createUser(firstName,
         favoritePets : []
     };
 
-    newUser._id = newUser._id.toString();
-
     let insertInfo = await userCollection.insertOne(newUser);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw "Error: could not add user to database";
@@ -46,7 +44,7 @@ export async function getUserById(id) {
     id = helpers.checkId(id, "user id");
     const usersCollection = await users();
     const user = await usersCollection.findOne({ _id: id});
-    if (!user) throw "Error: no user with that id exist";
+    if (!user) throw "Error: no user with that id exists";
 
     return user;
 };
