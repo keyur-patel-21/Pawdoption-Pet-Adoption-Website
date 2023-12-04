@@ -98,6 +98,24 @@ router.route("/new").get(async (req, res) => {
   }
 });
 
+// route to open form for updating  pet
+router.route("/edit/:petId").get(async (req, res) => {
+  try {
+    req.params.petId = helpers.checkId(req.params.petId, "Id URL Param");
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ error: error.message });
+  }
+
+  try {
+    const pet = await petData.getPetById(req.params.petId);
+    res.render("pets/editform", {pet: pet});
+  } catch (error) {
+    console.log(error);
+    res.status(400).render("pets/editform", { error: error.message });
+  }
+});
+
 // routes to get pet by id, delete pet by id and update pet by id
 router
   .route("/:petId")
@@ -140,9 +158,10 @@ router
   })
   .put(async (req, res) => {
     //code here for PUT
+    console.log("inside put route")
     const updatedpetData = req.body;
     //make sure there is something present in the req.body
-    if (!updatedeventData || Object.keys(updatedeventData).length === 0) {
+    if (!updatedpetData || Object.keys(updatedpetData).length === 0) {
       return res
         .status(400)
         .json({ error: "There are no fields in the request body" });
@@ -150,129 +169,43 @@ router
 
     //here we are validating input params for updatig pet, need to make changes
 
-    // try {
-    //   req.params.eventId = checkId(req.params.eventId, 'ID url param');
-    //   if (
-    //     !updatedeventData.eventName ||
-    //     typeof updatedeventData.eventName !== "string" ||
-    //     updatedeventData.eventName.trim().length < 5
-    //   ) {
-    //     throw "Invalid or missing eventName";
-    //   }
-    //   updatedeventData.eventName = updatedeventData.eventName.trim();
-
-    //   if (
-    //     !updatedeventData.eventDescription ||
-    //     typeof updatedeventData.eventDescription !== "string" ||
-    //     updatedeventData.eventDescription.trim().length < 25
-    //   ) {
-    //     throw "Invalid or missing eventDescription";
-    //   }
-    //   updatedeventData.eventDescription = updatedeventData.eventDescription.trim();
-
-    //   if (
-    //     !updatedeventData.contactEmail ||
-    //     typeof updatedeventData.contactEmail !== "string" ||
-    //     !isValidEmail(updatedeventData.contactEmail.trim())
-    //   ) {
-    //     throw "Invalid or missing contactEmail";
-    //   }
-    //   updatedeventData.contactEmail = updatedeventData.contactEmail.trim();
-
-    //   if (
-    //     !updatedeventData.eventDate ||
-    //     typeof updatedeventData.eventDate !== "string" ||
-    //     !isValidDate(updatedeventData.eventDate)
-    //   ) {
-    //     throw "Invalid or missing eventDate";
-    //   }
-    //   updatedeventData.eventDate = updatedeventData.eventDate.trim();
-
-    //   const eventDate = new Date(updatedeventData.eventDate);
-
-    //   if (eventDate <= new Date()) {
-    //     throw "Event date must be in the future";
-    //   }
-
-    //   if (
-    //     !updatedeventData.startTime ||
-    //     typeof updatedeventData.startTime !== "string" ||
-    //     !isValidTime(updatedeventData.startTime)
-    //   ) {
-    //     throw "Invalid or missing startTime";
-    //   }
-    //   updatedeventData.startTime = updatedeventData.startTime.trim();
-
-    //   if (
-    //     !updatedeventData.endTime ||
-    //     typeof updatedeventData.endTime !== "string" ||
-    //     !isValidTime(updatedeventData.endTime)
-    //   ) {
-    //     throw "Invalid or missing endTime";
-    //   }
-    //   updatedeventData.endTime = updatedeventData.endTime.trim();
-
-    //   const startTime = new Date(`2000-01-01 ${updatedeventData.startTime}`);
-    //   const endTime = new Date(`2000-01-01 ${updatedeventData.endTime}`);
-
-    //   if (startTime >= endTime) {
-    //     throw "Start time must be earlier than end time";
-    //   }
-
-    //   if (endTime - startTime < 30 * 60 * 1000) {
-    //     throw "End time should be at least 30 minutes later than start time";
-    //   }
-
-    //   if (typeof updatedeventData.publicEvent !== "boolean") {
-    //     throw "Invalid or missing publicEvent";
-    //   }
-
-    //   if (
-    //     updatedeventData.maxCapacity === undefined ||
-    //     typeof updatedeventData.maxCapacity !== "number" ||
-    //     updatedeventData.maxCapacity <= 0
-    //   ) {
-    //     throw "Invalid or missing maxCapacity";
-    //   }
-
-    //   if (
-    //     updatedeventData.priceOfAdmission === undefined ||
-    //     (typeof updatedeventData.priceOfAdmission !== "number" &&
-    //       typeof updatedeventData.priceOfAdmission !== "string") ||
-    //     parseFloat(updatedeventData.priceOfAdmission) < 0
-    //   ) {
-    //     throw "Invalid or missing priceOfAdmission";
-    //   }
-
-    //   updatedeventData.maxCapacity = parseInt(updatedeventData.maxCapacity);
-
-    //   if (typeof updatedeventData.eventLocation !== "object") {
-    //     throw "Invalid eventLocation";
-    //   }
-
-    //   if (
-    //     typeof updatedeventData.eventLocation.streetAddress !== "string" ||
-    //     updatedeventData.eventLocation.streetAddress.trim().length < 3 ||
-    //     typeof updatedeventData.eventLocation.city !== "string" ||
-    //     updatedeventData.eventLocation.city.trim().length < 3 ||
-    //     typeof updatedeventData.eventLocation.state !== "string" ||
-    //     !isValidState(updatedeventData.eventLocation.state) ||
-    //     typeof updatedeventData.eventLocation.zip !== "string" ||
-    //     !isValidZip(updatedeventData.eventLocation.zip)
-    //   ) {
-    //     throw "Invalid eventLocation properties";
-    //   }
-    //   updatedeventData.eventLocation.streetAddress =
-    //   updatedeventData.eventLocation.streetAddress.trim();
-    //   updatedeventData.eventLocation.city = updatedeventData.eventLocation.city.trim();
-    //   updatedeventData.eventLocation.state =
-    //   updatedeventData.eventLocation.state.trim();
-    // } catch (error) {
-    //    console.log(error);
-    //   return res.status(400).json({ error: e.message });
-    // }
+    try {
+      console.log("on 4")
+      req.params.petId = helpers.checkId(req.params.petId, "Id URL Param");
+      updatedpetData.nameInput = helpers.checkString(
+        updatedpetData.nameInput,
+        "pet name"
+      );
+      updatedpetData.ageInput = helpers.checkStringisNumber(
+        updatedpetData.ageInput
+      );
+      updatedpetData.genderInput = helpers.checkString(
+        updatedpetData.genderInput,
+        "gender"
+      );
+      updatedpetData.breedInput = helpers.checkString(
+        updatedpetData.breedInput,
+        "breed"
+      );
+      updatedpetData.descriptionInput = helpers.checkString(
+        updatedpetData.descriptionInput,
+        "description"
+      );
+      updatedpetData.typeInput = helpers.checkString(
+        updatedpetData.typeInput,
+        "typeOfAnimal"
+      );
+      updatedpetData.zipInput = helpers.checkZip(updatedpetData.zipInput);
+      updatedpetData.adoptionStatusInput = helpers.checkAdoptedStatus(
+        updatedpetData.adoptionStatusInput
+      );
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ error: e.message });
+    }
 
     try {
+      console.log("trying to update")
       const updatedPet = await petData.updatePet(
         req.params.petId,
         updatedpetData
@@ -280,7 +213,7 @@ router
       res.json(updatedPet);
     } catch (error) {
       console.log(error);
-      res.status(404).json({ error: e.message });
+      res.status(404).json({ error: error.message });
     }
   });
 
