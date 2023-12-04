@@ -139,21 +139,21 @@ router
   })
   .delete(async (req, res) => {
     //code here for DELETE
-
     // here we are validating petId
-    // try {
-    //   req.params.eventId = checkId(req.params.eventId, "Id URL Param");
-    // } catch (error) {
-    //    console.log(error);
-    //   return res.status(400).json({ error: e });
-    // }
-    //try to delete Event
     try {
-      let deletedPet = await petData.remove(req.params.petId);
-      res.json(deletedPet);
+      req.params.petId = helpers.checkId(req.params.petId, "Id URL Param");
     } catch (error) {
       console.log(error);
-      res.status(404).json({ error: e });
+      return res.status(400).json({ error: error.message });
+    }
+    //
+    //try to delete Event
+    try {
+      await petData.removePet(req.params.petId);
+      res.render("pets/pets");
+    } catch (error) {
+      console.log(error);
+      res.status(404).json({ error: error.message });
     }
   })
   .put(async (req, res) => {
