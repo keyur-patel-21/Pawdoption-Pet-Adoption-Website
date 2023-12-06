@@ -3,11 +3,8 @@ import {ObjectId} from 'mongodb';
 import helpers from '../helpers.js';
 import bcrypt from 'bcryptjs';
 
-export async function createUser(firstName,
-    lastName,
-    emailAddress,
-    password  ) {
-
+const exportedMethods = {
+  async createUser(firstName, lastName, emailAddress, password) {
     firstName = helpers.checkString(firstName, "first name");
     lastName = helpers.checkString(lastName, "last name");
     emailAddress = helpers.checkEmail(emailAddress);
@@ -27,101 +24,103 @@ export async function createUser(firstName,
 
     let insertInfo = await userCollection.insertOne(newUser);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
-    throw "Error: could not add user to database";
-        
-    return newUser;
-    };
+      throw "Error: could not add user to database";
 
-export async function getAllUsers() {
+    return newUser;
+  },
+
+  async getAllUsers() {
     const usersCollection = await users();
     let userList = await usersCollection.find({}).toArray();
     if (!userList) throw "Error: Could not get all users";
 
     return userList;
-};
+  },
 
-export async function getUserById(id) {
+  async getUserById(id) {
     id = helpers.checkId(id, "user id");
     const usersCollection = await users();
-    const user = await usersCollection.findOne({ _id: id});
-    if (!user) throw "Error: no user with that id exists";
+    const user = await usersCollection.findOne({ _id: id });
+    if (!user) throw "Error: no user with that id exist";
 
     return user;
-};
+  },
 
-export async function updateUser(id,
-        firstName,
-        lastName,
-        emailAddress) {
+  async updateUser(id, firstName, lastName, emailAddress) {
     id = helpers.checkId(id, "user id");
     firstName = helpers.checkString(firstName, "first name");
     lastName = helpers.checkString(lastName, "last name");
     emailAddress = helpers.checkEmail(emailAddress);
 
-    const usersCollection = await users();   
+    const usersCollection = await users();
 
     let setUser = {
-        firstName : firstName,
-        lastName : lastName,
-        emailAddress : emailAddress,
+      firstName: firstName,
+      lastName: lastName,
+      emailAddress: emailAddress,
     };
 
     const updatedInfo = await usersCollection.updateOne(
-        {_id: id},
-        {$set: setUser}
+      { _id: id },
+      { $set: setUser }
     );
 
     if (!updatedInfo) {
-        throw 'Error: could not update user successfully';
+      throw "Error: could not update user successfully";
     }
 
     return updatedInfo;
-};
+  },
 
-export async function addFavoritePet(petId, userId){
+  async addFavoritePet(petId, userId) {
     petId = helpers.checkId(petId, "pet id");
     userId = helpers.checkId(userId, "user id");
 
     let newFavoritePet = {
-        petId: petId
+      petId: petId,
     };
 
-    const usersCollection = await users();   
+    const usersCollection = await users();
 
     const updatedInfo = await usersCollection.updateOne(
-        {_id: userId}, {$push: {favoritePets: newFavoritePet}});
+      { _id: userId },
+      { $push: { favoritePets: newFavoritePet } }
+    );
 
-    return {favoritePetId: petId, userId: userId};
-};
+    return { favoritePetId: petId, userId: userId };
+  },
 
-export async function removeUser(userId) {
+  async removeUser(userId) {
     userId = helpers.checkId(userId, "user id");
-    const usersCollection = await users();   
+    const usersCollection = await users();
     const deletionInfo = await usersCollection.findOneAndDelete({
-        _id: userId
+      _id: userId,
     });
     if (!deletionInfo) {
-        throw `Error: Could not delete user with id of ${userId}`;
+      throw `Error: Could not delete user with id of ${userId}`;
     }
-    let result = {userName: deletionInfo._id, deleted: true};
+    let result = { userName: deletionInfo._id, deleted: true };
     return result;
-};
+  },
 
-export async function removeFavoritePet(userId, petId) {
+  async removeFavoritePet(userId, petId) {
     userId = helpers.checkId(userId, "user id");
     petId = helpers.checkId(petId, "pet id");
 
-    const usersCollection = await users();   
+    const usersCollection = await users();
 
     const deletionInfo = await usersCollection.findOneAndUpdate(
-        {"_id": userId},
-        {$pull: {favoritePets: {petId: petId}}},
-        {returnDocument: "after"}
+      { _id: userId },
+      { $pull: { favoritePets: { petId: petId } } },
+      { returnDocument: "after" }
     );
 
     if (!deletionInfo) {
-        throw `Error: Could not delete favorite pet of ${petId}`;
+      throw `Error: Could not delete favorite pet of ${petId}`;
     }
 
-    return deletionInfo;      
+    return deletionInfo;
+  },
 };
+
+export default exportedMethods;

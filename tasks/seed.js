@@ -1,10 +1,12 @@
 import {dbConnection, closeConnection} from '../config/mongoConnection.js';
-import * as users from '../data/users.js';
-import * as pets from '../data/pets.js';
+import userDataFunctions from '../data/users.js';
+import petDataFunctions  from '../data/pets.js';
 
 const db = await dbConnection();
 await db.dropDatabase();
 
+const users = userDataFunctions;
+const pets = petDataFunctions;
 //create users
 let fiona;
 try {

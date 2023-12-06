@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Form</title>
+  <link rel="stylesheet" href="/public/css/styles.css">
+</head>
+<body>
+  <form id="pet-form" action="/pets" method="POST">
+    <div>
+      <label for="nameInput"> Name:</label>
+      <input type="text" id="nameInput" name="nameInput" required>
+    </div>
+    <div>
+      <label for="ageInput"> Age:</label>
+      <input type="text" id="ageInput" name="ageInput" required>
+    </div>
+    <div>
+      <label for="genderInput">Role:</label>
+      <select id="genderInput" name="genderInput" required>
+        <option value="" disabled selected>Select Role</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </div>
+    <div>
+      <label for="breedInput">Breed:</label>
+      <input type="text" id="breedInput" name="breedInput" required>
+    </div>
+    <div>
+      <label for="descriptionInput">Description:</label>
+      <input type="text" id="descriptionInput" name="descriptionInput" required>
+    </div>
+    <div>
+      <label for="typeInput">Type:</label>
+      <select id="typeInput" name="typeInput" required>
+        <option value="" disabled selected>Select Role</option>
+        <option value="dog">Dog</option>
+        <option value="cat">Cat</option>
+      </select>
+    </div>
+    <div>
+      <label for="zipInput">Zip:</label>
+      <input type="text" id="zipInput" name="zipInput" required>
+    </div>
+    <div>
+      <label for="adoptionStatusInput">Type:</label>
+      <select id="adoptionStatusInput" name="adoptionStatusInput" required>
+        <option value="" disabled selected>Select Role</option>
+        <option value="true">Adopted</option>
+        <option value="false">Not Adopted</option>
+      </select>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+  <p class="error-message"></p>
+  {{#if error}}
+    <p class="error">{{error}}</p>
+  {{/if}}
+  {{!-- <p>Already have an account? Click <a href="/login">here</a> to log in!</p> --}}
+  <script src="/public/js/client_side_validation.js"></script>
+</body>
+</html>
