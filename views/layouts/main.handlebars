@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/public/img/favicon/site.webmanifest">
+</head>
+
+<body>
+    <header class="main-nav">
+        <nav>
+            <div class="logo">
+                <a href="home">
+                    <img src="/public/img/logo/pawdoption_logo.png"
+                        alt="Pawdoption logo with website title, a dog and cat underneath and slogan.">
+                </a>
+            </div>
+            <ul class="menu-list">
+                <li class="list-item">
+                    <a href="/home">Home</a>
+                </li>
+                <li class="list-item">
+                    <a href="/about">About</a>
+                </li>
+                <li class="list-item">
+                    <a href="/contact">Contact</a>
+                </li>
+                {{#if isUser}}
+                <li class="list-item">
+                    <a href="/profile">Profile</a>
+                </li>
+                <li class="list-item">
+                    <a href="/signout">Log Out</a>
+                </li>
+                {{else}}
+                <li class="list-item">
+                    <a href="/signin">Sign In</a>
+                </li>
+                {{/if}}
+            </ul>
+        </nav>
+    </header>
+
+    {{{body}}}
+
+</body>
+
+</html>
