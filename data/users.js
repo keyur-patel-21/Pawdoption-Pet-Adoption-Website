@@ -1,26 +1,26 @@
-import { users } from "../config/mongoCollections.js";
-import { ObjectId } from "mongodb";
-import helpers from "../helpers.js";
+import {users} from '../config/mongoCollections.js';
+import {ObjectId} from 'mongodb';
+import helpers from '../helpers.js';
+import bcrypt from 'bcryptjs';
 
 const exportedMethods = {
   async createUser(firstName, lastName, emailAddress, password) {
     firstName = helpers.checkString(firstName, "first name");
     lastName = helpers.checkString(lastName, "last name");
     emailAddress = helpers.checkEmail(emailAddress);
-    // TODO: hash password
+
+    var salt = bcrypt.genSaltSync(10);
 
     const userCollection = await users();
 
     let newUser = {
-      _id: new ObjectId(),
-      firstName: firstName,
-      lastName: lastName,
-      emailAddress: emailAddress,
-      hashedPassword: password,
-      favoritePets: [],
+        _id : new ObjectId(),
+        firstName : firstName,
+        lastName : lastName,
+        emailAddress : emailAddress,
+        hashedPassword : bcrypt.hashSync(password, salt),
+        favoritePets : []
     };
-
-    newUser._id = newUser._id.toString();
 
     let insertInfo = await userCollection.insertOne(newUser);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)

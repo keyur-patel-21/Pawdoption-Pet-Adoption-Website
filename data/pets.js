@@ -42,7 +42,6 @@ const exportedMethods = {
       lastUpdated: new Date().toLocaleDateString(),
       comments: [],
     };
-    newPet._id = newPet._id.toString();
 
     let insertInfo = await petCollection.insertOne(newPet);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
@@ -88,7 +87,6 @@ const exportedMethods = {
       commentContent: comment,
     };
 
-    newComment._id = newComment._id.toString();
     const petsCollection = await pets();
 
     const updatedInfo = await petsCollection.updateOne(
