@@ -13,6 +13,17 @@
     --light-background-color: #42ae63;
 }
 
+/* General styling */
+.error {
+    color: #ff0000;
+}
+
+.signup-input,
+.signin-input {
+    font-size: small;
+    margin: 0 0 1rem 0;
+}
+
 /* Navigation style */
 .main-nav nav {
     display: flex;
@@ -104,14 +115,10 @@
 
 .signup-input input, .signin-input input {
     width: 100%;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     border-radius: 5px;
     padding: 0.8rem 0.6rem;
     border: 1.5px solid var(--dark-text-color);
-}
-
-#confirmUserPassword {
-    margin-bottom: 0;
 }
 
 .signup-input input:focus, .signin-input input:focus {
@@ -158,15 +165,6 @@
 .new-user {
     text-align: center;
     margin-top: 1.5rem;
-}
-
-/* General styling */
-.error {
-    color: #ff0000;
-}
-
-.error-border {
-    border: 1.5px solid #ff0000 !important;
 }
 
 /* Profile page */
