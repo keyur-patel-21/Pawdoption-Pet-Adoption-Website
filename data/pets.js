@@ -42,7 +42,6 @@ const exportedMethods = {
       lastUpdated: new Date().toLocaleDateString(),
       comments: [],
     };
-    newPet._id = newPet._id.toString();
 
     let insertInfo = await petCollection.insertOne(newPet);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
@@ -62,7 +61,7 @@ const exportedMethods = {
   async getPetById(id) {
     id = helpers.checkId(id, "pet id");
     const petsCollection = await pets();
-    const user = await petsCollection.findOne({ _id: id });
+    const user = await petsCollection.findOne({ _id: new ObjectId(id) });
     if (!user) throw "Error: no pet with that id exist";
 
     return user;
@@ -71,7 +70,7 @@ const exportedMethods = {
   async getPetByCreator(id) {
     id = helpers.checkId(id, "creator id");
     const petsCollection = await pets();
-    const pet = await petsCollection.findOne({ creatorId: id });
+    const pet = await petsCollection.findOne({ creatorId: new ObjectId(id) });
     if (!pet) throw "Error: no pet with that id exist";
 
     return pet;
@@ -88,11 +87,10 @@ const exportedMethods = {
       commentContent: comment,
     };
 
-    newComment._id = newComment._id.toString();
     const petsCollection = await pets();
 
     const updatedInfo = await petsCollection.updateOne(
-      { _id: petId },
+      { _id: new ObjectId(petId) },
       { $push: { comments: newComment } }
     );
 
@@ -141,7 +139,7 @@ const exportedMethods = {
     };
 
     const updatedInfo = await petsCollection.updateOne(
-      { _id: id },
+      { _id: new ObjectId(id) },
       { $set: setPet }
     );
 

@@ -67,6 +67,7 @@ router
         descriptionInput,
         typeInput,
         zipInput,
+        image,
         adoptionStatusInput,
       } = newPetData;
       const newPet = await petData.createPet(
@@ -78,7 +79,7 @@ router
         descriptionInput,
         typeInput,
         zipInput,
-        "temp_pic.png",
+        image,
         adoptionStatusInput
       );
       res.redirect("/pets");
@@ -134,7 +135,7 @@ router
       res.render("pets/pet", { pet });
     } catch (error) {
       console.log(error);
-      res.status(404).json({ error: e });
+      res.status(404).json({ error: error });
     }
   })
   .delete(async (req, res) => {
