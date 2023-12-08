@@ -3,6 +3,10 @@ const router = Router();
 import { userData } from "../data/index.js";
 import helpers from "../helpers.js";
 
+router.route("/").get(async (req, res) => {
+  return res.json({ error: "YOU SHOULD NOT BE HERE!" });
+});
+
 router
   .route("/register")
   .get(async (req, res) => {
@@ -51,7 +55,7 @@ router
     res.render("users/login", { title: "Login Page" });
   })
   .post(async (req, res) => {
-    console.log("inside login post route")
+    console.log("inside login post route");
     const { emailAddressInput, passwordInput } = req.body;
 
     const emailAddress = helpers.checkEmail(emailAddressInput);
@@ -75,19 +79,28 @@ router
         req.session.user = {
           firstName: user.firstName,
           lastName: user.lastName,
-          emailAddress: user.email,
+          emailAddress: user.emailAddress,
         };
 
         res.redirect("/pets");
       } else {
-        res
-          .status(400)
-          .render("users/login", { error: "Invalid email address and/or password" });
+        res.status(400).render("users/login", {
+          error: "Invalid email address and/or password",
+        });
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       res.status(400).render("users/login", { error: error.message });
     }
   });
+
+router.route("/logout").get(async (req, res) => {
+  console.log("inside logout path");
+  console.log(req.session.user);
+  if (req.session.user) {
+    req.session.destroy();
+    res.status(200).render("users/login", { title: "Logout" });
+  }
+});
 
 export default router;
