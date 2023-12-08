@@ -1,7 +1,7 @@
-import {users} from '../config/mongoCollections.js';
-import {ObjectId} from 'mongodb';
-import helpers from '../helpers.js';
-import bcrypt from 'bcryptjs';
+import { users } from "../config/mongoCollections.js";
+import { ObjectId } from "mongodb";
+import helpers from "../helpers.js";
+import bcrypt from "bcryptjs";
 
 const exportedMethods = {
   async createUser(firstName, lastName, emailAddress, password) {
@@ -14,21 +14,44 @@ const exportedMethods = {
     const userCollection = await users();
 
     let newUser = {
-        _id : new ObjectId(),
-        firstName : firstName,
-        lastName : lastName,
-        emailAddress : emailAddress,
-        hashedPassword : bcrypt.hashSync(password, salt),
-        favoritePets : []
+      _id: new ObjectId(),
+      firstName: firstName,
+      lastName: lastName,
+      emailAddress: emailAddress,
+      hashedPassword: bcrypt.hashSync(password, salt),
+      favoritePets: [],
     };
 
     let insertInfo = await userCollection.insertOne(newUser);
-    if (!insertInfo.acknowledged || !insertInfo.insertedId){
+    if (!insertInfo.acknowledged || !insertInfo.insertedId) {
       throw "Error: could not add user to database";
-    }else{
+    } else {
       return { insertedUser: true };
     }
     // return newUser;
+  },
+
+  async loginUser(emailAddress, password) {
+    emailAddress = helpers.checkEmail(emailAddress);
+    password = password.trim();
+
+    const lowerCaseEmail = emailAddress.toLowerCase();
+
+    const userCollection = await users();
+    const user = await userCollection.findOne({ emailAddress: lowerCaseEmail });
+
+    if (!user) {
+      throw "Either the email address or password is invalid.";
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.hashedPassword);
+
+    if (passwordMatch) {
+      const { firstName, lastName, emailAddress } = user;
+      return { firstName, lastName, emailAddress };
+    } else {
+      throw "Either the email address or password is invalid.";
+    }
   },
 
   async getAllUsers() {

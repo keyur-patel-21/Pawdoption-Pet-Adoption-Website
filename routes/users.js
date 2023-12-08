@@ -36,7 +36,7 @@ router
       );
 
       if (result.insertedUser) {
-        res.redirect("users/login");
+        res.redirect("/login");
       } else {
         res.status(500).send("Internal Server Error");
       }
