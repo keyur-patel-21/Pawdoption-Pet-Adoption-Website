@@ -7,7 +7,7 @@
   {{!-- <link rel="stylesheet" href="/public/css/styles.css"> --}}
 </head>
 <body>
-  <form id="registration-form" action="/users/register" method="POST">
+  <form id="registration-form" action="/register" method="POST">
     <div>
       <label for="firstNameInput">First Name:</label>
       <input type="text" id="firstNameInput" name="firstNameInput" required>
@@ -34,7 +34,7 @@
   {{#if hasErrors}}
     <p class="error">{{error}}</p>
   {{/if}}
-  <p>Already have an account? Click <a href="/users/login">here</a> to log in!</p>
+  <p>Already have an account? Click <a href="/login">here</a> to log in!</p>
   {{!-- <script src="/public/js/client_side_validation.js"></script> --}}
 </body>
 </html>
