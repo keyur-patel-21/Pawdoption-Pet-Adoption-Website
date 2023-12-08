@@ -1,17 +1,19 @@
 // Import the express router as shown in the lecture code
 // Note: please do not forget to export the router!
 import { Router } from "express";
+import isAuthenticated from '../middleware.js';
 const router = Router();
 import { petData } from "../data/index.js";
 import helpers from "../helpers.js";
 
 // routes to list all pets and create new pets
+router.use(isAuthenticated);
 router
   .route("/")
   .get(async (req, res) => {
     try {
       const petList = await petData.getAllPets();
-      res.render("pets/pets", { pets: petList });
+      res.render("pets/pets", { pets: petList, user: req.session.user });
     } catch (error) {
       console.log(error);
       res.status(400).render("pets/pets", { error: error.message });
