@@ -23,10 +23,12 @@ const exportedMethods = {
     };
 
     let insertInfo = await userCollection.insertOne(newUser);
-    if (!insertInfo.acknowledged || !insertInfo.insertedId)
+    if (!insertInfo.acknowledged || !insertInfo.insertedId){
       throw "Error: could not add user to database";
-
-    return newUser;
+    }else{
+      return { insertedUser: true };
+    }
+    // return newUser;
   },
 
   async getAllUsers() {
