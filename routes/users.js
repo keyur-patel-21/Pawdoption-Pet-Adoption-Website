@@ -1,10 +1,11 @@
 import { Router } from "express";
 const router = Router();
+import isAuthenticated from "../middleware.js";
 import { userData } from "../data/index.js";
 import helpers from "../helpers.js";
 
-router.route("/").get(async (req, res) => {
-  return res.json({ error: "YOU SHOULD NOT BE HERE!" });
+router.get("/", isAuthenticated, (req, res) => {
+  return res.redirect('/pets');
 });
 
 router
