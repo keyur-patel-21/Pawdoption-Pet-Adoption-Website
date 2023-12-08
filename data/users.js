@@ -3,11 +3,22 @@ import { ObjectId } from "mongodb";
 import helpers from "../helpers.js";
 import bcrypt from "bcryptjs";
 
+const checkDuplicateEmail = async (email) => {
+  const userCollection = await users();
+  const existingUser = await userCollection.findOne({ emailAddress: email });
+  return !!existingUser;
+};
+
 const exportedMethods = {
   async createUser(firstName, lastName, emailAddress, password) {
     firstName = helpers.checkString(firstName, "first name");
     lastName = helpers.checkString(lastName, "last name");
     emailAddress = helpers.checkEmail(emailAddress);
+
+    const isDuplicateEmail = await checkDuplicateEmail(emailAddress);
+    if (isDuplicateEmail) {
+      throw "Email address already exists.";
+    }
 
     var salt = bcrypt.genSaltSync(10);
 
