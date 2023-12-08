@@ -153,10 +153,6 @@
     background-color: var(--main-color);
 }
 
-.btn-signin {
-    margin-top: 1.5rem;
-}
-
 .btn-signup:hover, .btn-signup:focus, .btn-signin:hover, .btn-signin:focus{
     color: var(--white-text-color);
     background-color: var(--dark-backround-color);
