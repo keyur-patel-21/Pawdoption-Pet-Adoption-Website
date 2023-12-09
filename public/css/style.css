@@ -175,11 +175,11 @@ body {
     grid-template-areas: 
         "details"
         "favorite";
-    grid-template-rows: 200px auto;
+    grid-template-rows: 0.5fr 2fr;
     row-gap: 2rem;
     margin-top: 96px;
     height: fit-content;
-    padding: 1.5rem 2rem;
+    padding: 2rem;
 }
 
 .user-details {
@@ -188,6 +188,7 @@ body {
     grid-template-areas: "profile info";
     column-gap: 2rem;
     grid-template-columns: 1fr 2fr;
+    padding: 0 2rem;
 }
 
 .profile-img {
@@ -219,25 +220,25 @@ body {
 }
 
 .user-info h1 {
+    font-size: x-large;
     text-align: center;
     margin-bottom: 2rem;
 }
 
 .user-info p {
-    font-size: large;
     font-weight: bold;
     margin-bottom: 1rem;
 }
 
 .favorite-pets {
     grid-area: favorite;
-    padding: 1rem 2rem;
+    padding: 0 2rem;
     border-radius: 10px;
 }
 
 .favorite-pets h2 {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .fav-pets-list {
@@ -263,10 +264,19 @@ body {
     cursor: pointer;
 }
 
+.btn-favorite {
+    float: right;
+    color: var(--main-color);
+    border: none;
+    cursor: pointer;
+    background: none;
+}
+
 .fav-pet-details img {
     margin-bottom: 1rem;
+    margin-left: 2rem;
 }
 
 .fav-pet-details p {
-    margin-bottom: 1rem;
+    margin-bottom: 0.6rem;
 }
