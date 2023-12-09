@@ -1,6 +1,7 @@
 import { pets } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import helpers from "../helpers.js";
+import userFn from "./users.js";
 
 const exportedMethods = {
   async createPet(
@@ -24,6 +25,7 @@ const exportedMethods = {
     zip = helpers.checkZip(zip);
     // TODO: picture file validation
     adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
+    picture = "/public/img/pet/" + picture;
 
     const petCollection = await pets();
 
@@ -81,9 +83,12 @@ const exportedMethods = {
     userId = helpers.checkId(userId, "user id");
     comment = helpers.checkString(comment, "comment");
 
+    let userName = await userFn.getUserById(userId)
+
     let newComment = {
       _id: new ObjectId(),
       userId: userId,
+      userName: userName.firstName + " " + userName.lastName,
       commentContent: comment,
     };
 
