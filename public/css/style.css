@@ -13,6 +13,10 @@
     --light-background-color: #42ae63;
 }
 
+body {
+    font-family: cursive;
+}
+
 /* General styling */
 .error {
     color: #ff0000;
@@ -32,6 +36,7 @@
     top: 0;
     left: 0;
     width: 100%;
+    min-width: 900px;
     z-index: 2;
     background-color: #FFFEFC;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.8);
@@ -146,6 +151,7 @@
     height: 3rem;
     font-size: 1rem;
     font-weight: 600;
+    font-family: cursive;
     border-radius: 2rem;
     cursor: pointer;
     border: none;
