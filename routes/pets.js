@@ -4,23 +4,18 @@ import { Router } from "express";
 const router = Router();
 import { petData } from "../data/index.js";
 import helpers from "../helpers.js";
+import multer from 'multer';
 
-// ! implementing storing uploaded image 
-//import mv from "mv";
-
-// import multer from 'multer';
-
-// // SET STORAGE
-// var storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, 'uploads')
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, file.fieldname + '-' + Date.now())
-//   }
-// })
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/img/pet')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
  
-// var upload = multer({ storage: storage })
+var upload = multer({ storage: storage })
 
 // routes to list all pets and create new pets
 router
@@ -34,7 +29,8 @@ router
       res.status(400).render("pets/pets", { error: error.message });
     }
   })
-  .post(async (req, res) => {
+
+  .post(upload.single('image'), async (req, res) => {
     const newPetData = req.body;
     //make sure there is something present in the req.body
     if (!newPetData || Object.keys(newPetData).length === 0) {
@@ -74,18 +70,6 @@ router
       return res.status(400).json({ error: error.message });
     }
 
-    let picFile = req.files
-    if (!req.files) return res.status(400).json({ error: "No picture" });
-    newPetData.picture = req.files.image.name
-    let name = newPetData.picture
-    console.log("before " + newPetData.picture)
-    //let file =
-    //console.log("__dirname" + "  + '/upload' " + "newPetData.picture")
-    // picFile.mv('/public/img/pet' + newPetData.picture)
-   // mv(newPetData.picture, '/public/image/pet/${newPetData.picture}')
-    //name.mv('')
-    //console.log("dir " + )
-
     // here we are creating new pet
     try {
       const {
@@ -107,10 +91,10 @@ router
         descriptionInput,
         typeInput,
         zipInput,
-        req.files.image.name,
+        req.file.path,
         adoptionStatusInput
       );
-      console.log("after creating" + newPet.picture)
+
       res.redirect("/pets");
     } catch (error) {
       console.log(error);
@@ -171,12 +155,12 @@ router
     //code here for DELETE
 
     // here we are validating petId
-    // try {
-    //   req.params.eventId = checkId(req.params.eventId, "Id URL Param");
-    // } catch (error) {
-    //    console.log(error);
-    //   return res.status(400).json({ error: e });
-    // }
+    try {
+      req.params.eventId = checkId(req.params.eventId, "Id URL Param");
+    } catch (error) {
+       console.log(error);
+      return res.status(400).json({ error: e });
+    }
     //try to delete Event
     try {
       let deletedPet = await petData.remove(req.params.petId);
