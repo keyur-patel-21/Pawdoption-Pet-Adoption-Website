@@ -3,7 +3,7 @@
 <main class="profile">
     <div class="user-details">
         <div class="profile-img">
-            <img src="/public/img/user/user.png" alt="User profile picture" style="width: 100px;">
+            <img src="/public/img/user/user.png" alt="User profile" style="width: 100px;">
             <p>{{user.firstName}} {{user.lastName}}</p>
             <p>{{user.email}}</p>
         </div>
@@ -20,9 +20,10 @@
         <ul class="fav-pets-list">
             {{#each pets as |pet key|}}
             <li class="fav-pet">
+                <button class="btn-favorite"><span class="material-icons-outlined">favorite_border</span></button>
                 <a href="/pet">
                     <div class="fav-pet-details">
-                        <img src="{{pet.picture}}" alt="Pet image" style="width: 100px;">
+                        <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 100px;">
                         <p>Name: {{pet.name}}</p>
                         <p>Age: {{pet.age}}</p>
                         <p>Gender: {{pet.gender}}</p>
