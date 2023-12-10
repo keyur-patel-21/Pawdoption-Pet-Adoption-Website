@@ -5,7 +5,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "author": "Fiona Brockner, Keyur Patel, Dhanvin Patel, Darsh Patel",
   "license": "ISC",
@@ -16,7 +16,6 @@
     "express-fileupload": "^1.4.3",
     "express-handlebars": "^7.1.2",
     "express-session": "^1.17.3",
-    "mongodb": "^6.3.0",
-    "nodemon": "^3.0.2"
+    "mongodb": "^6.3.0"
   }
 }
