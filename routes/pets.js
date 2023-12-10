@@ -6,6 +6,23 @@ const router = Router();
 import { petData } from "../data/index.js";
 import helpers from "../helpers.js";
 
+// ! implementing storing uploaded image 
+//import mv from "mv";
+
+// import multer from 'multer';
+
+// // SET STORAGE
+// var storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, 'uploads')
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, file.fieldname + '-' + Date.now())
+//   }
+// })
+ 
+// var upload = multer({ storage: storage })
+
 // routes to list all pets and create new pets
 router.use(isAuthenticated);
 router
@@ -59,6 +76,18 @@ router
       return res.status(400).json({ error: error.message });
     }
 
+    let picFile = req.files
+    if (!req.files) return res.status(400).json({ error: "No picture" });
+    newPetData.picture = req.files.image.name
+    let name = newPetData.picture
+    console.log("before " + newPetData.picture)
+    //let file =
+    //console.log("__dirname" + "  + '/upload' " + "newPetData.picture")
+    // picFile.mv('/public/img/pet' + newPetData.picture)
+   // mv(newPetData.picture, '/public/image/pet/${newPetData.picture}')
+    //name.mv('')
+    //console.log("dir " + )
+
     // here we are creating new pet
     try {
       const {
@@ -69,8 +98,7 @@ router
         descriptionInput,
         typeInput,
         zipInput,
-        image,
-        adoptionStatusInput,
+        adoptionStatusInput
       } = newPetData;
       const newPet = await petData.createPet(
         "temp ID",
@@ -81,9 +109,10 @@ router
         descriptionInput,
         typeInput,
         zipInput,
-        image,
+        req.files.image.name,
         adoptionStatusInput
       );
+      console.log("after creating" + newPet.picture)
       res.redirect("/pets");
     } catch (error) {
       console.log(error);

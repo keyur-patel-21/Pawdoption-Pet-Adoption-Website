@@ -11,8 +11,8 @@
         {{#if pet.name}}
           <h1>{{pet.name}}</h1>
         {{/if}}
-        {{#if pet.image}}
-          <p>{{pet.image}}</p>
+        {{#if pet.picture}}
+          <img src={{pet.picture}}>
         {{/if}}
         {{#if pet.age}}
           <p>{{pet.age}}</p>
@@ -35,7 +35,12 @@
         {{#if pet.adoptionStatus}}
           <p>{{pet.adoptionStatus}}</p>
         {{/if}}
-       
+        {{#if pet.comments}}
+          {{#each pet.comments}}
+            <p>{{commentContent}}</p>
+            <p>- {{userName}}</p>
+          {{/each}}
+        {{/if}}       
       </article>
     </main>
   </body>

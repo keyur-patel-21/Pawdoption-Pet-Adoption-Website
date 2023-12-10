@@ -36,8 +36,20 @@ try {
         "Pella is a sweet dog who loves going on hikes and chasing squirrels.",
         "Dog",
         "06812",
-        "pellaPicture.png",
+        "pellaPicture.jpeg",
         "false");
+} catch (e) {
+    console.log(e);
+}
+
+try{
+    let comment = await pets.createComment(pella._id, fiona._id, "Does she like other dogs?")
+} catch (e) {
+    console.log(e);
+}
+
+try{
+    let comment = await pets.createComment(pella._id, fiona._id, "Too cute!")
 } catch (e) {
     console.log(e);
 }
