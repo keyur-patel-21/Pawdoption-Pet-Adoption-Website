@@ -172,58 +172,54 @@ router
 
   .post(async (req, res) => {
     //code here for PUT
-    console.log("inside put route");
-    const updatedpetData = req.body;
+    console.log("inside edit post route");
+    console.log(req.body);
+    const newPetData = req.body;
     //make sure there is something present in the req.body
-    if (!updatedpetData || Object.keys(updatedpetData).length === 0) {
+    if (!newPetData || Object.keys(newPetData).length === 0) {
       return res
         .status(400)
         .json({ error: "There are no fields in the request body" });
     }
-
-    //here we are validating input params for updatig pet, need to make changes
-
+    // Change here for validating input params
     try {
-      req.params.petId = helpers.checkId(req.params.petId, "Id URL Param");
-      updatedpetData.nameInput = helpers.checkString(
-        updatedpetData.nameInput,
+      newPetData.nameInput = helpers.checkString(
+        newPetData.nameInput,
         "pet name"
       );
-      updatedpetData.ageInput = helpers.checkStringisNumber(
-        updatedpetData.ageInput
-      );
-      updatedpetData.genderInput = helpers.checkString(
-        updatedpetData.genderInput,
+      newPetData.ageInput = helpers.checkStringisNumber(newPetData.ageInput);
+      newPetData.genderInput = helpers.checkString(
+        newPetData.genderInput,
         "gender"
       );
-      updatedpetData.breedInput = helpers.checkString(
-        updatedpetData.breedInput,
+      newPetData.breedInput = helpers.checkString(
+        newPetData.breedInput,
         "breed"
       );
-      updatedpetData.descriptionInput = helpers.checkString(
-        updatedpetData.descriptionInput,
+      newPetData.descriptionInput = helpers.checkString(
+        newPetData.descriptionInput,
         "description"
       );
-      updatedpetData.typeInput = helpers.checkString(
-        updatedpetData.typeInput,
+      newPetData.typeInput = helpers.checkString(
+        newPetData.typeInput,
         "typeOfAnimal"
       );
-      updatedpetData.zipInput = helpers.checkZip(updatedpetData.zipInput);
-      updatedpetData.adoptionStatusInput = helpers.checkAdoptedStatus(
-        updatedpetData.adoptionStatusInput
+      newPetData.zipInput = helpers.checkZip(newPetData.zipInput);
+      newPetData.adoptionStatusInput = helpers.checkAdoptedStatus(
+        newPetData.adoptionStatusInput
       );
     } catch (error) {
-      console.log(error);
-      return res.status(400).json({ error: e.message });
+      // console.log(error);
+      return res.status(400).json({ error: error.message });
     }
 
     try {
       console.log("trying to update");
       const updatedPet = await petData.updatePet(
         req.params.petId,
-        updatedpetData
+        newPetData
       );
-      res.json(updatedPet);
+      return res.redirect("/pets/" + req.params.petId);
     } catch (error) {
       console.log(error);
       res.status(404).json({ error: error.message });
@@ -233,7 +229,7 @@ router
 router.route("/delete/:petId").get(async (req, res) => {
   //code here for DELETE
   // here we are validating petId
-  console.log("inside pet delete route")
+  console.log("inside pet delete route");
   try {
     req.params.petId = helpers.checkId(req.params.petId, "Id URL Param");
   } catch (error) {

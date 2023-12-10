@@ -108,25 +108,18 @@ const exportedMethods = {
 
   async updatePet(
     id,
-    name,
-    age,
-    gender,
-    breed,
-    description,
-    typeOfAnimal,
-    zip,
-    picture,
-    adoptionStatus
+    updatedData
   ) {
-    name = helpers.checkString(name, "pet name");
-    age = helpers.checkStringisNumber(age);
-    gender = helpers.checkString(gender, "gender");
-    breed = helpers.checkString(breed, "breed");
-    description = helpers.checkString(description, "description");
-    typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal");
-    zip = helpers.checkZip(zip);
+    // console.log(name);
+    const name = helpers.checkString(updatedData.nameInput, "pet name");
+    const age = helpers.checkStringisNumber(updatedData.ageInput);
+    const gender = helpers.checkString(updatedData.genderInput, "gender");
+    const breed = helpers.checkString(updatedData.breedInput, "breed");
+    const description = helpers.checkString(updatedData.descriptionInput, "description");
+    const typeOfAnimal = helpers.checkString(updatedData.typeInput, "typeOfAnimal");
+    const zip = helpers.checkZip(updatedData.zipInput);
     // TODO: picture file validation
-    adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
+    const adoptionStatus = helpers.checkAdoptedStatus(updatedData.adoptionStatusInput);
 
     const petsCollection = await pets();
 
@@ -138,7 +131,7 @@ const exportedMethods = {
       description: description,
       typeOfAnimal: typeOfAnimal,
       zip: zip,
-      picture: picture,
+      // picture: picture,
       adoptionStatus: adoptionStatus,
       lastUpdated: new Date().toLocaleDateString(),
     };
@@ -152,7 +145,7 @@ const exportedMethods = {
       throw "Error: could not update pet successfully";
     }
 
-    return getPetById(id);
+    // return getPetById(id);
   },
 
   // method to delete pet need to make changes
