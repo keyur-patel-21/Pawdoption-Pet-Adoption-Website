@@ -17,6 +17,7 @@
 
     <div class="favorite-pets">
         <h2>Favorite Pets</h2>
+        {{#if pets}}
         <ul class="fav-pets-list">
             {{#each pets as |pet key|}}
             <li class="fav-pet">
@@ -33,5 +34,9 @@
             </li>
             {{/each}}
         </ul>
+        {{else}}
+        <p class="pet-not-found"><span class="material-icons-outlined">sentiment_dissatisfied</span></p>
+        <p class="pet-not-found">No pets found</p>
+        {{/if}}
     </div>
 </main>
