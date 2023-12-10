@@ -4,10 +4,10 @@
     <div class="pet-profile">
         <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 200px;">
         <div class="update-pet">
-            <a href="/pets/update-pet">Update <span class="material-icons-outlined">edit</span></a>
+            <a href="/pets/update-pet/{{pet._id}}">Update <span class="material-icons-outlined">edit</span></a>
         </div>
         <div class="delete-pet">
-            <a href="">Delete <span class="material-icons-outlined">delete</span></a>
+            <a href="/pets/delete/{{pet._id}}">Delete <span class="material-icons-outlined">delete</span></a>
         </div>
     </div>
     <div class="pet-details">
