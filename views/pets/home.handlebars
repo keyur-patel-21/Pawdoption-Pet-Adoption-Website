@@ -26,6 +26,7 @@
         </div>
     </div>
     <div class="pet-search-result">
+        {{#if pets}}
         <ul class="search-pets-list">
             {{#each pets as |pet key|}}
             <li class="search-pet">
@@ -42,5 +43,9 @@
             </li>
             {{/each}}
         </ul>
+        {{else}}
+        <p class="pet-not-found"><span class="material-icons-outlined">sentiment_dissatisfied</span></p>
+        <p class="pet-not-found">No pets found</p>
+        {{/if}}
     </div>
 </main>
