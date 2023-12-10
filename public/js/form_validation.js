@@ -1,49 +1,43 @@
-// Set error if signin input is invalid
+// Set error if signin form input is invalid
 function setSigninInputError(element, errorMessage) {
-    const invalidSignin = document.getElementById("invalidSignin");
-    const signinInput = document.getElementById("signinInput");
-    const parentElement = element.parentElement;
-    const error = parentElement.querySelector("p");
+    const signupInput = element.parentElement;
+    const error = signupInput.querySelector("p");
 
     error.innerText = errorMessage;
-    error.className = "error signin-input";
-
-    if (signinInput) {
-        signinInput.classList.remove("error");
-        signinInput.classList.remove("signin-input");
-        signinInput.innerText = "";
-    }
-
-    if (invalidSignin) {
-        invalidSignin.classList.remove("error");
-        invalidSignin.classList.remove("signin-input");
-        invalidSignin.innerText = "";
-    }
+    error.className = "error signin-error";
+    parentElement.classList.add("invalid");
 }
 
-// Set error if signup input is invalid
+// Set error if signup form input is invalid
 function setSignupFormError(element, errorMessage) {
-    const errorSvr = document.getElementsByClassName("error-svr");
     const parentElement = element.parentElement;
     const error = parentElement.querySelector("p");
 
     error.innerText = errorMessage;
-    error.className = "error signup-input";
+    error.className = "error signup-error";
+    parentElement.classList.add("invalid");
 
-    for (let element of errorSvr) {
-        element.classList.remove("error");
-        element.classList.remove("signup-input");
-        element.innerText = "";
-    }
+}
+
+// Set error if new pet form input is invalid
+function setNewPetFormError(element, errorMessage) {
+    const parentElement = element.parentElement;
+    const error = parentElement.querySelector("p");
+
+    error.innerText = errorMessage;
+    error.className = "error new-pet-error";
+    parentElement.classList.add("invalid");
 }
 
 // Remove error if input is valid
 function setInputSuccess(element, className) {
     const parentElement = element.parentElement;
     const error = parentElement.querySelector("p");
+
     error.classList.remove("error");
     error.classList.remove(className);
     error.innerText = "";
+    parentElement.classList.remove("invalid");
 }
 
 // Validate name
@@ -93,6 +87,65 @@ function matchPassword(password, confirmPassword) {
     return isPasswordMatch;
 }
 
+// Validate gender
+function validateGender(gender) {
+    let isGenderValid = true;
+
+    if (gender !== "female" && gender !== "male") {
+        isGenderValid = false;
+    }
+
+    return isGenderValid;
+}
+
+// Validate adoption status
+function validateAdoptionStatus(status) {
+    let isAdoptionStatusValid = true;
+
+    if (status !== "true" && status !== "false") {
+        isAdoptionStatusValid = false;
+    }
+
+    return isAdoptionStatusValid;
+}
+
+// Validate age
+function validateAge(age) {
+    let isAgeValid = true;
+    age = Number(age);
+
+    if (!age || age < 0 || !Number.isInteger(age)) {
+        isAgeValid = false;
+    }
+
+    return isAgeValid;
+}
+
+// Validate zip code
+function validateZipCode(zipCode) {
+    let isZipCodeValid = true;
+
+    const zipCodeReg = /^\d{5}$/;
+
+    if (zipCode.length === 0 || !zipCodeReg.test(zipCode)) {
+        isZipCodeValid = false;
+    }
+
+    return isZipCodeValid;
+}
+
+// Validate description
+function validateDescription(description) {
+    let isDescriptionValid = true;
+
+    if (description.length === 0 || description.length < 5) {
+        isDescriptionValid = false;
+    }
+
+    return isDescriptionValid;
+}
+
+
 // Get the signup form element
 const signupForm = document.forms["signupForm"];
 
@@ -125,45 +178,45 @@ if (signupForm) {
         const isPasswordMatch = matchPassword(password, confirmPassword);
 
         if (isFirstNameValid) {
-            setInputSuccess(signupFirstName, "signup-input");
+            setInputSuccess(signupFirstName, "signup-error");
         } else {
             setSignupFormError(signupFirstName, "Please provide a valid first name.");
         }
 
         if (isLastNameValid) {
-            setInputSuccess(signupLastName, "signup-input");
+            setInputSuccess(signupLastName, "signup-error");
         } else {
             setSignupFormError(signupLastName, "Please provide a valid last name.");
         }
 
         if (isEmailValid) {
-            setInputSuccess(signupEmailAddress, "signup-input");
+            setInputSuccess(signupEmailAddress, "signup-error");
         } else {
             setSignupFormError(signupEmailAddress, "Please provide a valid email.");
         }
 
         if (isPasswordValid) {
-            setInputSuccess(signupPassword, "signup-input");
+            setInputSuccess(signupPassword, "signup-error");
         } else {
             setSignupFormError(signupPassword, "Please provide a valid password.");
         }
 
         if (isConfirmPasswordValid) {
-            setInputSuccess(signupConfirmPassword, "signup-input");
+            setInputSuccess(signupConfirmPassword, "signup-error");
         } else {
             setSignupFormError(signupConfirmPassword, "Please provide a valid password.");
         }
 
         if (isPasswordValid && isConfirmPasswordValid) {
             if (isPasswordMatch) {
-                setInputSuccess(signupConfirmPassword, "signup-input");
+                setInputSuccess(signupConfirmPassword, "signup-error");
             } else {
                 setSignupFormError(signupConfirmPassword, "Please make sure your passwords match.");
             }
         }
 
         if (isFirstNameValid && isLastNameValid && isEmailValid && isPasswordValid &&
-            isConfirmPasswordValid && isPasswordMatch && isRoleValid) {
+            isConfirmPasswordValid && isPasswordMatch) {
             signupForm.submit();
         }
     }
@@ -191,10 +244,104 @@ if (signinForm) {
         const isPasswordValid = validatePassword(password);
 
         if (isEmailValid && isPasswordValid) {
-            setInputSuccess(signinPassword, "signin-input");
+            setInputSuccess(signinPassword, "signin-error");
             signinForm.submit();
         } else {
             setSigninInputError(signinPassword, "Please provide valid email and password.");
+        }
+    }
+}
+
+// Get the new pet form element
+const newPetForm = document.forms["newPetForm"];
+
+if (newPetForm) {
+    const newPetName = newPetForm.elements["petName"];
+    const newPetAge = newPetForm.elements["petAge"];
+    const newPetGender = newPetForm.elements["petGender"];
+    const newPetBreed = newPetForm.elements["petBreed"];
+    const newPetType = newPetForm.elements["petType"];
+    const newPetZipCode = newPetForm.elements["petZipCode"];
+    const newPetAdoptionStatus = newPetForm.elements["petAdoptionStatus"];
+    const newPetDescription = newPetForm.elements["petDescription"];
+
+    newPetForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        validateNewPetForm();
+    });
+
+    // Validate new pet form inputs
+    function validateNewPetForm() {
+        const petName = newPetName.value.trim();
+        const petAge = newPetAge.value.trim();
+        const petGender = newPetGender.value.trim();
+        const petBreed = newPetBreed.value.trim();
+        const petType = newPetType.value.trim();
+        const petZipCode = newPetZipCode.value.trim();
+        const petAdoptionStatus = newPetAdoptionStatus.value.trim();
+        const petDescription = newPetDescription.value.trim();
+
+        const isPetNameValid = validateName(petName);
+        const isPetAgeValid = validateAge(petAge);
+        const isPetGenderValid = validateGender(petGender);
+        const isPetBreedValid = validateName(petBreed);
+        const isPetTypeValid = validateName(petType);
+        const isPetZipCodeValid = validateZipCode(petZipCode);
+        const isPetAdoptionStatusValid = validateAdoptionStatus(petAdoptionStatus);
+        const isPetDescriptionValid = validateDescription(petDescription);
+
+        if (isPetNameValid) {
+            setInputSuccess(newPetName, "new-pet-error");
+        } else {
+            setNewPetFormError(newPetName, "Please provide a valid name.");
+        }
+
+        if (isPetAgeValid) {
+            setInputSuccess(newPetAge, "new-pet-error");
+        } else {
+            setNewPetFormError(newPetAge, "Please provide a valid age.");
+        }
+
+        if (isPetGenderValid) {
+            setInputSuccess(newPetGender, "new-pet-error");
+        } else {
+            setNewPetFormError(newPetGender, "Please provide a valid gender.");
+        }
+
+        if (isPetBreedValid) {
+            setInputSuccess(newPetBreed, "new-pet-error");
+        } else {
+            setNewPetFormError(newPetBreed, "Please provide a valid breed.");
+        }
+
+        if (isPetTypeValid) {
+            setInputSuccess(newPetType, "new-pet-error");
+        } else {
+            setNewPetFormError(newPetType, "Please provide a valid pet type.");
+        }
+
+        if (isPetZipCodeValid) {
+            setInputSuccess(newPetZipCode, "new-pet-error");
+        } else {
+            setNewPetFormError(newPetZipCode, "Please provide a valid zip code.");
+        }
+
+        if (isPetAdoptionStatusValid) {
+            setInputSuccess(newPetAdoptionStatus, "new-pet-error");
+        } else {
+            setNewPetFormError(newPetAdoptionStatus, "Please provide a valid adoption status.");
+        }
+
+        if (isPetDescriptionValid) {
+            setInputSuccess(newPetDescription, "new-pet-error");
+        } else {
+            setNewPetFormError(newPetDescription, "Please provide a valid description.");
+        }
+
+        if (isPetNameValid && isPetAgeValid && isPetGenderValid && isPetBreedValid && isPetTypeValid &&
+            isPetZipCodeValid && isPetAdoptionStatusValid && isPetDescriptionValid) {
+            newPetForm.submit();
         }
     }
 }
