@@ -446,6 +446,16 @@ a {
     margin: 0 2rem;
 }
 
+.pet-not-found {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.pet-not-found span {
+    font-size: 2.5rem;
+}
+
 /* New pet form */
 .add-new-pet {
     margin-top: 150px;
