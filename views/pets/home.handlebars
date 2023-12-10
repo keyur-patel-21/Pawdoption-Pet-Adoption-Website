@@ -1,0 +1,46 @@
+{{!-- Home page --}}
+
+<main class="home">
+    <div class="motivation">
+        <img src="/public/img/adoption/motivation.png" alt="Motivation banner">
+    </div>
+    <div class="pet-search">
+        <form id="petSearchForm">
+            <span class="material-icons-outlined">search</span>
+
+            <label for="searchPetName"></label>
+            <input type="text" name="searchPetName" id="searchPetName" placeholder="Find a pet">
+
+            <label for="searchPetZip"></label>
+            <input type="text" name="searchPetZip" id="searchPetZip" placeholder="Zip Code">
+
+            <button type="submit" class="btn-pet-search">Search</button>
+        </form>
+    </div>
+    <div class="add-pet-conatiner">
+        <div class="add-pet">
+            <p class="btn-text">Add Pet</p>
+            <a href="/pets/new-pet">
+                <span class="btn-icon"><span class="material-icons-outlined">add</span></span>
+            </a>
+        </div>
+    </div>
+    <div class="pet-search-result">
+        <ul class="search-pets-list">
+            {{#each pets as |pet key|}}
+            <li class="search-pet">
+                <span class="btn-favorite"><span class="material-icons-outlined">favorite_border</span></span>
+                <a href="/pets/{{pet._id}}">
+                    <div class="search-pet-details">
+                        <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 100px;">
+                        <p>Name: {{pet.name}}</p>
+                        <p>Age: {{pet.age}}</p>
+                        <p>Gender: {{pet.gender}}</p>
+                        <p>Breed: {{pet.breed}}</p>
+                    </div>
+                </a>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+</main>
