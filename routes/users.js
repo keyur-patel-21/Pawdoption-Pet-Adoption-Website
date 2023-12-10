@@ -56,7 +56,6 @@ router
     res.render("users/login", { title: "Login Page" });
   })
   .post(async (req, res) => {
-    console.log("inside login post route");
     const { emailAddressInput, passwordInput } = req.body;
 
     const emailAddress = helpers.checkEmail(emailAddressInput);

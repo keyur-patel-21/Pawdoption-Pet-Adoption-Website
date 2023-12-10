@@ -1,12 +1,12 @@
 // Import the express router as shown in the lecture code
 // Note: please do not forget to export the router!
 import { Router } from "express";
-import isAuthenticated from '../middleware.js';
+import isAuthenticated from "../middleware.js";
 const router = Router();
 import { petData } from "../data/index.js";
 import helpers from "../helpers.js";
 
-// ! implementing storing uploaded image 
+// ! implementing storing uploaded image
 //import mv from "mv";
 
 // import multer from 'multer';
@@ -20,7 +20,7 @@ import helpers from "../helpers.js";
 //     cb(null, file.fieldname + '-' + Date.now())
 //   }
 // })
- 
+
 // var upload = multer({ storage: storage })
 
 // routes to list all pets and create new pets
@@ -76,15 +76,15 @@ router
       return res.status(400).json({ error: error.message });
     }
 
-    let picFile = req.files
+    let picFile = req.files;
     if (!req.files) return res.status(400).json({ error: "No picture" });
-    newPetData.picture = req.files.image.name
-    let name = newPetData.picture
-    console.log("before " + newPetData.picture)
+    newPetData.picture = req.files.image.name;
+    let name = newPetData.picture;
+    console.log("before " + newPetData.picture);
     //let file =
     //console.log("__dirname" + "  + '/upload' " + "newPetData.picture")
     // picFile.mv('/public/img/pet' + newPetData.picture)
-   // mv(newPetData.picture, '/public/image/pet/${newPetData.picture}')
+    // mv(newPetData.picture, '/public/image/pet/${newPetData.picture}')
     //name.mv('')
     //console.log("dir " + )
 
@@ -98,7 +98,7 @@ router
         descriptionInput,
         typeInput,
         zipInput,
-        adoptionStatusInput
+        adoptionStatusInput,
       } = newPetData;
       const newPet = await petData.createPet(
         "temp ID",
@@ -112,7 +112,7 @@ router
         req.files.image.name,
         adoptionStatusInput
       );
-      console.log("after creating" + newPet.picture)
+      console.log("after creating" + newPet.picture);
       res.redirect("/pets");
     } catch (error) {
       console.log(error);
@@ -141,7 +141,7 @@ router.route("/edit/:petId").get(async (req, res) => {
 
   try {
     const pet = await petData.getPetById(req.params.petId);
-    res.render("pets/editform", {pet: pet});
+    res.render("pets/editform", { pet: pet });
   } catch (error) {
     console.log(error);
     res.status(400).render("pets/editform", { error: error.message });
@@ -169,28 +169,10 @@ router
       res.status(404).json({ error: error });
     }
   })
-  .delete(async (req, res) => {
-    //code here for DELETE
-    // here we are validating petId
-    try {
-      req.params.petId = helpers.checkId(req.params.petId, "Id URL Param");
-    } catch (error) {
-      console.log(error);
-      return res.status(400).json({ error: error.message });
-    }
-    //
-    //try to delete Event
-    try {
-      await petData.removePet(req.params.petId);
-      res.render("pets/pets");
-    } catch (error) {
-      console.log(error);
-      res.status(404).json({ error: error.message });
-    }
-  })
-  .put(async (req, res) => {
+
+  .post(async (req, res) => {
     //code here for PUT
-    console.log("inside put route")
+    console.log("inside put route");
     const updatedpetData = req.body;
     //make sure there is something present in the req.body
     if (!updatedpetData || Object.keys(updatedpetData).length === 0) {
@@ -202,7 +184,6 @@ router
     //here we are validating input params for updatig pet, need to make changes
 
     try {
-      console.log("on 4")
       req.params.petId = helpers.checkId(req.params.petId, "Id URL Param");
       updatedpetData.nameInput = helpers.checkString(
         updatedpetData.nameInput,
@@ -237,7 +218,7 @@ router
     }
 
     try {
-      console.log("trying to update")
+      console.log("trying to update");
       const updatedPet = await petData.updatePet(
         req.params.petId,
         updatedpetData
@@ -248,5 +229,26 @@ router
       res.status(404).json({ error: error.message });
     }
   });
+
+router.route("/delete/:petId").get(async (req, res) => {
+  //code here for DELETE
+  // here we are validating petId
+  console.log("inside pet delete route")
+  try {
+    req.params.petId = helpers.checkId(req.params.petId, "Id URL Param");
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ error: error.message });
+  }
+  //
+  //try to delete Event
+  try {
+    await petData.removePet(req.params.petId);
+    return res.redirect("/pets");
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: error.message });
+  }
+});
 
 export default router;
