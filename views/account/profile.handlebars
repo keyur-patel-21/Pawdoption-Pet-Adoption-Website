@@ -1,4 +1,4 @@
-{{!-- Profile Page --}}
+{{!-- Profile page --}}
 
 <main class="profile">
     <div class="user-details">
@@ -10,7 +10,7 @@
         <div class="user-info">
             <h1>Personal Information</h1>
             <p>First Name: {{user.firstName}}</p>
-            <p>Last Name: {{user.firstName}}</p>
+            <p>Last Name: {{user.lastName}}</p>
             <p>Email: {{user.email}}</p>
         </div>
     </div>
@@ -21,7 +21,7 @@
             {{#each pets as |pet key|}}
             <li class="fav-pet">
                 <button class="btn-favorite"><span class="material-icons-outlined">favorite_border</span></button>
-                <a href="/pet">
+                <a href="/pets/{{pet._id}}">
                     <div class="fav-pet-details">
                         <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 100px;">
                         <p>Name: {{pet.name}}</p>
