@@ -477,483 +477,94 @@ a {
 
 .new-pet-input input[type=file] {
     border: none;
-}* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
 }
 
-:root {
-    /* Colors */
-    --main-color: #15b946;
-    --dark-text-color: #040705;
-    --white-text-color: #ffffff;
-    --dark-backround-color: #0a4d1e;
-    --light-background-color: #42ae63;
-}
-
-body {
-    font-family: cursive;
-}
-
-/* General styling */
-.error {
-    color: #ff0000;
-}
-
-a {
-    color: #000000;
-}
-
-/* Navigation style */
-.main-nav nav {
-    display: flex;
-    padding: 1rem 4rem 1rem 1rem;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-width: 900px;
-    z-index: 2;
-    background-color: #fffefc;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.8);
-}
-
-.main-nav .logo {
-    height: 4rem;
-    margin-left: 3.5rem;
-}
-
-.logo img {
-    height: 100%;
-    border-radius: 5px;
-}
-
-.main-nav .menu-list {
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    width: 100%;
-    list-style-type: none;
-}
-
-.menu-list .list-item {
-    margin-left: 4rem;
-}
-
-.list-item a {
-    color: #000000;
-    font-size: large;
-    text-decoration: none;
-}
-
-.list-item a:hover {
-    color: var(--main-color);
-}
-
-/* Registration header style */
-.registration-header {
-    padding-top: 1rem;
-    padding-left: 4.5rem;
-}
-
-.nav-logo img {
-    height: 64px;
-    border-radius: 5px;
-}
-
-/* Sign up & Sign in page */
-.signup,
-.signin {
-    padding: 2rem 0;
-}
-
-.card-layout {
-    margin: 0 auto;
-    width: 430px;
-    padding: 2rem 3rem;
-    border-radius: 10px;
-    font-weight: bold;
-    color: var(--dark-text-color);
-    box-shadow: 0 10px 15px 0 rgba(10, 77, 30, 1);
-}
-
-.signup-container h1,
-.signin-container h1 {
-    font-size: x-large;
-    margin-bottom: 1rem;
-    text-align: center;
-}
-
-.signup-container .slogan,
-.signin-container .signin-msg {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: var(--main-color);
-}
-
-.signup-input,
-.signin-input,
-.new-pet-input {
-    margin-bottom: 0.8rem;
-}
-
-.signup-input label,
-.signin-input label,
-.new-pet-input label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
-}
-
-.signup-input input,
-.signin-input input,
-.new-pet-input input,
-.new-pet-input select {
-    width: 100%;
-    margin-bottom: 0.2rem;
-    padding: 0.8rem 0.6rem;
-    border-radius: 5px;
-    border: 1.5px solid var(--dark-text-color);
-}
-
-.signup-input input:focus,
-.signin-input input:focus,
-.new-pet-input input:focus {
-    outline: none;
-    border: 1.5px solid var(--main-color);
-}
-
-.existing-user {
-    text-align: center;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.existing-user a,
-.new-user a {
-    color: var(--main-color);
-    text-decoration: none;
-}
-
-.signup-submit,
-.signin-submit,
-.new-pet-submit {
-    text-align: center;
-}
-
-.btn-signup,
-.btn-signin,
-.btn-new-pet {
-    width: 50%;
-    height: 3rem;
-    font-size: 1rem;
-    font-weight: 600;
-    font-family: cursive;
-    border-radius: 2rem;
-    cursor: pointer;
-    border: none;
-    color: var(--dark-text-color);
-    background-color: var(--main-color);
-}
-
-.btn-signup:hover,
-.btn-signup:focus,
-.btn-signin:hover,
-.btn-signin:focus,
-.btn-new-pet:hover,
-.btn-new-pet:focus {
-    color: var(--white-text-color);
-    background-color: var(--dark-backround-color);
-}
-
-.new-user {
-    text-align: center;
-    margin-top: 1.5rem;
-}
-
-.signup-error,
-.signin-error,
-.new-pet-error {
-    font-size: small;
-    margin-bottom: 0.5rem;
-}
-
-.signup-input.invalid input,
-.signin-input.invalid input,
-.new-pet-input.invalid input {
-    border-color: #ff0000;
-}
-
-/* Profile page */
-.profile {
+/* Pet page */
+.pet {
     display: grid;
     grid-template-areas:
-        "details"
-        "favorite";
-    grid-template-rows: 0.5fr 2fr;
+        "profile details"
+        "profile details"
+        ". comments"
+        ". comments";
+    grid-template-columns: 0.5fr 2fr;
     row-gap: 2rem;
-    margin-top: 96px;
-    height: fit-content;
-    padding: 2rem;
-}
-
-.user-details {
-    grid-area: details;
-    display: grid;
-    grid-template-areas: "profile info";
     column-gap: 2rem;
-    grid-template-columns: 1fr 2fr;
-    padding: 0 2rem;
-}
-
-.profile-img {
-    grid-area: profile;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    line-height: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.8);
-    background-color: var(--light-background-color);
-}
-
-.profile-img img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 1rem;
-}
-
-.user-info {
-    grid-area: info;
-    padding: 1rem 2rem;
-    border-radius: 10px;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.8);
-    background-color: var(--light-background-color);
-}
-
-.user-info h1 {
-    font-size: x-large;
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.user-info p {
-    font-weight: bold;
-    margin-bottom: 1rem;
-}
-
-.favorite-pets {
-    grid-area: favorite;
-    padding: 0 2rem;
-    border-radius: 10px;
-}
-
-.favorite-pets h2 {
-    text-align: center;
-    margin-bottom: 1rem;
-}
-
-.fav-pets-list,
-.search-pets-list {
-    grid-area: favorite;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(250px, 1fr));
-    row-gap: 1rem;
-    column-gap: 1rem;
-    grid-auto-rows: 300px;
-    list-style-type: none;
-    text-align: center;
-    border-radius: 10px;
-}
-
-.fav-pet,
-.search-pet {
-    padding: 2rem 1rem;
-    border-radius: 10px;
-    border: 2px solid var(--main-color);
-}
-
-.fav-pet a,
-.search-pet a {
-    all: unset;
-    cursor: pointer;
-}
-
-.btn-favorite {
-    float: right;
-    color: var(--main-color);
-    border: none;
-    cursor: pointer;
-    background: none;
-}
-
-.fav-pet-details img,
-.search-pet-details img {
-    margin-bottom: 1rem;
-    margin-left: 2rem;
-}
-
-.fav-pet-details p,
-.search-pet-details p {
-    margin-bottom: 0.6rem;
-}
-
-/* Home page */
-.home {
-    display: grid;
-    grid-template-areas:
-        "pet1 motivation pet2"
-        "search search search"
-        "addpet addpet addpet"
-        "pets pets pets";
-    grid-template-rows: 0.5fr 0.2fr 0.1fr 2fr;
-    row-gap: 2rem;
     margin-top: 96px;
     padding: 2rem;
     height: fit-content;
 }
 
-.motivation img {
-    border-radius: 5px;
-}
-
-.motivation {
-    grid-area: motivation;
-    margin: 0 auto;
-}
-
-.pet-search {
-    grid-area: search;
-    margin: auto auto;
-    border: 2px solid var(--main-color);
-    width: 65%;
-    min-width: 555px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-    flex-wrap: wrap;
-}
-
-.pet-search span {
+.pet-profile {
+    grid-area: profile;
+    text-align: center;
     align-self: center;
-    padding: 10px 20px;
-    color: var(--main-color);
 }
 
-.pet-search form {
+.pet-profile img {
+    margin-bottom: 1rem;
+    border-radius: 5px;
+}
+
+.pet-profile a {
+    display: block;
     width: 100%;
-    height: 55px;
-    display: flex;
-
+    text-decoration: none;
 }
 
-.pet-search form input {
-    flex: 1;
-    flex-shrink: inherit;
-    border: none;
-    outline: none;
-}
-
-.pet-search form #searchPetName {
-    border-right: 2px solid var(--main-color);
-}
-
-.pet-search form #searchPetZip {
-    padding-left: 1rem;
-}
-
-.btn-pet-search {
-    background: var(--main-color);
-    padding: 10px 50px;
-    border: none;
-    outline: none;
-    color: var(--dark-text-color);
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: cursive;
-}
-
-.btn-pet-search:hover {
-    color: var(--white-text-color);
-    background-color: var(--dark-backround-color);
-}
-
-.add-pet-conatiner {
-    grid-area: addpet;
-    margin-right: 2rem;
-}
-
-.add-pet {
-    float: right;
-    display: inline-flex;
-    align-items: center;
-    font-weight: 600;
-    font-family: cursive;
-    border-radius: 5px;
-    cursor: default;
-    border: none;
-    color: var(--dark-text-color);
+.delete-pet,
+.update-pet {
+    width: 50%;
+    margin: 1rem auto;
+    padding: 0.2rem 0.2rem;
     background-color: var(--main-color);
-    text-align: center;
+    border-radius: 5px;
 }
 
-.add-pet .btn-icon:hover {
-    color: var(--white-text-color);
+.update-pet span,
+.delete-pet span {
+    display: block;
+    width: 100%;
+    font-size: larger;
+}
+
+.delete-pet:hover,
+.update-pet:hover {
     background-color: var(--dark-backround-color);
 }
 
-.add-pet .btn-text,
-.add-pet .btn-icon {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
+.delete-pet:hover a,
+.update-pet:hover a {
+    color: var(--white-text-color);
 }
 
-.add-pet .btn-icon {
-    border-radius: 5px;
-    background: rgba(0, 0, 0, 0.09);
+.pet-details {
+    grid-area: details;
+    width: 100%;
 }
 
-.pet-search-result {
-    grid-area: pets;
-    margin: 0 2rem;
+.pet-details table {
+    width: 100%;
+    table-layout: fixed;
+    border: 2px solid var(--main-color);
 }
 
-/* New pet form */
-.add-new-pet {
-    margin-top: 150px;
-    padding-bottom: 2rem;
+.pet-details th,
+.pet-details td {
+    text-align: left;
+    padding: 5px;
 }
 
-.add-new-pet .card-layout {
-    width: 460px;
+.pet-details th {
+    font-size: larger;
+    border: 2px solid var(--main-color);
 }
 
-.new-pet-container h1 span {
-    transform: rotate(45deg);
+.pet-details td {
+    border: 2px solid var(--main-color);
 }
 
-.new-pet-container h1 {
-    font-size: x-large;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.new-pet-input select {
-    background-color: #ffffff;
-}
-
-.new-pet-input select:focus {
-    outline: none;
-    border: 1.5px solid var(--main-color);
-}
-
-.new-pet-input input[type=file] {
-    border: none;
+.pet-comments {
+    grid-area: comments;
+    border: 2px solid var(--main-color);
 }
