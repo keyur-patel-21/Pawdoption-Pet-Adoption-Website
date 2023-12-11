@@ -6,17 +6,17 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>this is all pets</h1>
+    <h1>this is all pets</h1><p><a href="/logout">Logout</a></p>
+    {{#if user}}
+      <p>{{user.firstName}}</p>
+    {{/if}}
     <a href="/pets/new">Add new Pet</a>
     {{#if pets}}
       <ol>
         {{#each pets}}
           <li>
-            <a href="/pets/{{_id}}">{{name}}</a> <a href="/pets/edit/{{_id}}" method="PUT">update</a> 
-            <form action="/pets/{{_id}}" method="POST" onsubmit="return confirm('Are you sure you want to delete this pet?')">
-            <input type="hidden" name="_method" value="DELETE">
-            <button type="submit">Delete</button>
-          </form>
+            <a href="/pets/{{_id}}">{{name}}</a> <a href="/pets/edit/{{_id}}">update</a> 
+            <a href="/pets/delete/{{_id}}">delete</a>
           </li>
         {{/each}}
       </ol>
