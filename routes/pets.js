@@ -85,8 +85,9 @@ router
         zipInput,
         adoptionStatusInput,
       } = newPetData;
+      console.log("pet routes: "+req.session.user.userId)
       const newPet = await petData.createPet(
-        "temp ID",
+        req.session.user.userId,
         nameInput,
         ageInput,
         genderInput,
@@ -250,7 +251,9 @@ router.route("/delete/:petId").get(async (req, res) => {
       }
       // create comment
       try {
-        const pet = await petData.createComment(req.params.petId, "6574ec348e7808f37c8224e2", req.body.comment_input);    
+        //! change to user id
+        console.log("in comments - user id: " + req.session.user.userId)
+        const pet = await petData.createComment(req.params.petId, req.session.user.userId, req.body.comment_input);    
        } catch (error) {
         console.log(error);
         res.status(404).json({ error: error });

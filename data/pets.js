@@ -16,12 +16,13 @@ const exportedMethods = {
     picture,
     adoptionStatus
   ) {
+    creatorId = helpers.checkId(creatorId, "creator id")
     name = helpers.checkString(name, "pet name");
     age = helpers.checkStringisNumber(age);
-    gender = helpers.checkString(gender, "gender"); //implement as drop down menu
-    breed = helpers.checkString(breed, "breed"); //implement as drop down menu
+    gender = helpers.checkString(gender, "gender"); 
+    breed = helpers.checkString(breed, "breed");
     description = helpers.checkString(description, "description");
-    typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal"); //implement as drop down menu
+    typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal");
     zip = helpers.checkZip(zip);
     // TODO: picture file validation
     adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
@@ -31,7 +32,7 @@ const exportedMethods = {
 
     let newPet = {
       _id: new ObjectId(),
-      creatorId: creatorId,
+      creatorId: new ObjectId(creatorId),
       name: name,
       age: age,
       gender: gender,
@@ -79,18 +80,19 @@ const exportedMethods = {
   },
 
   // ! Full name and user id are not implemented because there is no user authorization yet
+
+  // ! get user by id is not working
   async createComment(petId, userId, comment) {
     petId = helpers.checkId(petId, "pet id");
-    //userId = helpers.checkId(userId, "user id");
+    userId = helpers.checkId(userId, "user id");
     comment = helpers.checkString(comment, "comment");
 
-    //let userName = await userFn.getUserById(userId)
+    let userName = await userFn.getUserById(userId)
 
     let newComment = {
       _id: new ObjectId(),
       userId: userId,
-      //userName: userName.firstName + " " + userName.lastName,
-      userName: "Test Person",
+      userName: userName.firstName + " " + userName.lastName,
       commentContent: comment,
     };
 
@@ -112,7 +114,6 @@ const exportedMethods = {
     id,
     updatedData
   ) {
-    // console.log(name);
     const name = helpers.checkString(updatedData.nameInput, "pet name");
     const age = helpers.checkStringisNumber(updatedData.ageInput);
     const gender = helpers.checkString(updatedData.genderInput, "gender");
@@ -133,7 +134,7 @@ const exportedMethods = {
       description: description,
       typeOfAnimal: typeOfAnimal,
       zip: zip,
-      // picture: picture,
+      //picture: picture,
       adoptionStatus: adoptionStatus,
       lastUpdated: new Date().toLocaleDateString(),
     };
@@ -175,6 +176,8 @@ const exportedMethods = {
   async removeComment(commentId) {
     commentId = helpers.checkId(commentId, "comment id");
     const petsCollection = await pets();
+
+    // TODO: check if req.session.user.userId is equal to userId of comment
 
     const deletionInfo = await petsCollection.findOneAndUpdate(
       { "comments._id": commentId },

@@ -58,8 +58,8 @@ const exportedMethods = {
     const passwordMatch = await bcrypt.compare(password, user.hashedPassword);
 
     if (passwordMatch) {
-      const { firstName, lastName, emailAddress } = user;
-      return { firstName, lastName, emailAddress };
+      const { firstName, lastName, emailAddress, _id } = user;
+      return { firstName, lastName, emailAddress, _id };
     } else {
       throw "Either the email address or password is invalid.";
     }
@@ -76,7 +76,7 @@ const exportedMethods = {
   async getUserById(id) {
     id = helpers.checkId(id, "user id");
     const usersCollection = await users();
-    const user = await usersCollection.findOne({ _id: id });
+    const user = await usersCollection.findOne({ _id: new Object(id) });
     if (!user) throw "Error: no user with that id exist";
 
     return user;
@@ -90,10 +90,12 @@ const exportedMethods = {
 
     const usersCollection = await users();
 
+    // ! add user id too
     let setUser = {
       firstName: firstName,
       lastName: lastName,
       emailAddress: emailAddress,
+      //userId: id
     };
 
     const updatedInfo = await usersCollection.updateOne(

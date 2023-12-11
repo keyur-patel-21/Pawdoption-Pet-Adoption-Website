@@ -80,7 +80,9 @@ router
           firstName: user.firstName,
           lastName: user.lastName,
           emailAddress: user.emailAddress,
+          userId: user._id
         };
+        //console.log("user id: " + req.session.user.userId)
 
         res.redirect("/pets");
       } else {

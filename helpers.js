@@ -4,7 +4,7 @@ let exportedMethods = {
   checkId(id, varName) {
     if (!id) throw `Error: You must provide a id for ${varName}`;
     if (!ObjectId.isValid(id)) throw `Error: ${varName} invalid object ID`;
-    return id;
+    return new ObjectId(id)
   },
 
   checkString(strVal, varName) {
