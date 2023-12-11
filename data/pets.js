@@ -158,27 +158,26 @@ const exportedMethods = {
   },
 
   // method to delete pet need to make changes
-//   async remove(eventId) {
-//     if (!eventId) throw "You must provide an id to search for";
-//     if (typeof eventId !== "string") throw "Id must be a string";
-//     if (eventId.trim().length === 0)
-//       throw "id cannot be an empty string or just spaces";
-//     eventId = eventId.trim();
-//     if (!ObjectId.isValid(eventId)) throw "invalid object ID";
-//     const eventCollection = await events();
-//     const deletionInfo = await eventCollection.findOneAndDelete({
-//       _id: new ObjectId(eventId),
-//     });
+  async removePet(petId) {
+    try{
+      petId = helpers.checkId(petId, "pet id");
+      const petCollection = await pets();
+      const deletionInfo = await petCollection.deleteOne({
+        _id: new ObjectId(petId),
+      });
 
-//     if (!deletionInfo) {
-//       throw `Could not delete event with id of ${eventId}`;
-//     }
+      if (!deletionInfo) {
+        throw `Could not delete event with id of ${petId}`;
+      }
 
-//     return {
-//       eventName: deletionInfo.eventName,
-//       deleted: true,
-//     };
-//   },
+      // return {
+      //   eventName: deletionInfo.eventName,
+      //   deleted: true,
+      // };
+    }catch(error){
+      console.log(error.message)
+    }
+  },
 
   async removeComment(commentId) {
     commentId = helpers.checkId(commentId, "comment id");
