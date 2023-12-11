@@ -78,17 +78,19 @@ const exportedMethods = {
     return pet;
   },
 
+  // ! Full name and user id are not implemented because there is no user authorization yet
   async createComment(petId, userId, comment) {
     petId = helpers.checkId(petId, "pet id");
-    userId = helpers.checkId(userId, "user id");
+    //userId = helpers.checkId(userId, "user id");
     comment = helpers.checkString(comment, "comment");
 
-    let userName = await userFn.getUserById(userId)
+    //let userName = await userFn.getUserById(userId)
 
     let newComment = {
       _id: new ObjectId(),
       userId: userId,
-      userName: userName.firstName + " " + userName.lastName,
+      //userName: userName.firstName + " " + userName.lastName,
+      userName: "Test Person",
       commentContent: comment,
     };
 

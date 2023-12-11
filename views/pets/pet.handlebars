@@ -35,13 +35,24 @@
         {{#if pet.adoptionStatus}}
           <p>{{pet.adoptionStatus}}</p>
         {{/if}}
-        {{#if pet.comments}}
-          {{#each pet.comments}}
-            <p>{{commentContent}}</p>
-            <p>- {{userName}}</p>
-          {{/each}}
-        {{/if}}       
+        <form id="comment_form" name="comment_form" method="POST", action="/pets/addComment/{{pet._id}}">
+          <textarea name="comment_input" id="comment_input" type="text"></textarea>
+          <br/>
+          <button type="submit" id="commentButton" name="commentButton">Post</button>
+        </form>
+        <div id="commentDiv">
+          {{#if pet.comments}}
+            {{#each pet.comments}}
+              <p>{{commentContent}}</p>
+              <p>- {{userName}}</p>
+            {{/each}}
+          {{/if}}
+        </div>
+
+         <a href="/pets" id="rootLink">Back to All Pets</a>      
       </article>
     </main>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+      integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
   </body>
 </html>

@@ -30,6 +30,7 @@ router
     }
   })
 
+  // route to create new pet 
   .post(upload.single('image'), async (req, res) => {
     const newPetData = req.body;
     //make sure there is something present in the req.body
@@ -229,6 +230,40 @@ router
       console.log(error);
       res.status(404).json({ error: error.message });
     }
+  });
+
+  // route to add a comment
+  router.route("/addComment/:petId")
+  .post(async (req, res) => {
+      //validating pet id
+      try {
+        req.params.petId = helpers.checkId(req.params.petId, "pet ID");
+      } catch (error) {
+        console.log(error);
+        return res.status(400).json({ error: error.message });
+      }
+      //validate comment
+      try {
+        req.body.comment_input = helpers.checkString(req.body.comment_input, "Comment");
+      } catch (error) {
+        console.log(error);
+        return res.status(400).json({ error: error.message });
+      }
+      // create comment
+      try {
+        const pet = await petData.createComment(req.params.petId, "6574ec348e7808f37c8224e2", req.body.comment_input);    
+       } catch (error) {
+        console.log(error);
+        res.status(404).json({ error: error });
+      }
+      //reload page to show new comment
+      try {
+        const pet = await petData.getPetById(req.params.petId);
+        res.render("pets/pet", { pet });
+      } catch (error) {
+        console.log(error);
+        res.status(404).json({ error: error });
+      }
   });
 
 export default router;
