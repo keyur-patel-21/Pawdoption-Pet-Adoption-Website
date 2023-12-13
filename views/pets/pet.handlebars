@@ -13,7 +13,8 @@
         {{/if}}
         {{#if isFavorite}}
         <div class="dislike-pet">
-            <a href="/removeFromFavourites/{{pet._id}}">Unlike <span class="material-icons-outlined">favorite_border</span></a>
+            <a href="/removeFromFavourites/{{pet._id}}">Unlike <span
+                    class="material-icons-outlined">favorite_border</span></a>
         </div>
         {{else}}
         <div class="like-pet">
@@ -65,6 +66,26 @@
         </table>
     </div>
     <div class="pet-comments">
-
+        <p class="comment-title">Comments</p>
+        <div class="comments-container">
+            {{#if pet.comments}}
+            {{#each pet.comments}}
+            <div class="comment-box">
+                <img src="/public/img/user/user.png" alt="User profile." style="width: 40px;">
+                <p class="user-name">{{userName}}</p>
+                <p class="user-comment">{{commentContent}}</p>
+            </div>
+            {{/each}}
+            {{else}}
+            <p class="no-comments">No comments</p>
+            {{/if}}
+        </div>
+        <div class="make-comment">
+            <form action="/pets/addComment{{pet._id}}" method="post" id="comment_form">
+                <textarea name="comment" id="comment" class="commentArea" cols="30" rows="1"
+                    placeholder="Your comment ..."></textarea>
+                <button type="submit" class="btn-comment">Comment</button>
+            </form>
+        </div>
     </div>
 </main>
