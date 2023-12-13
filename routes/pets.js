@@ -161,11 +161,13 @@ router
           favoritePets: updatedUser.favoritePets,
         };
       }
-      let isFavorite = false;
-      if (req.session.user.favoritePets.includes(pet._id.toString())) {
-        res.render("pets/pet", { pet: pet, isFavorite: true });
+
+      let isCreator = false;
+      if (JSON.stringify(req.session.user.id) === JSON.stringify(pet.creatorId)) isCreator = true;
+      if (JSON.stringify(req.session.user.favoritePets).includes( JSON.stringify(pet._id))) {
+        res.render("pets/pet", { pet: pet, isFavorite: true, isCreator: isCreator });
       } else {
-        res.render("pets/pet", { pet: pet });
+        res.render("pets/pet", { pet: pet, isFavorite: false, isCreator: isCreator });
       }
     } catch (error) {
       console.log(error);
@@ -173,8 +175,6 @@ router
     }
   })
 
-  // TODO: ! NOT SAVING PICTURE 
-  // TODO: create pet form
   .post(upload.single('image'), async (req, res) => {
     //code here for PUT
 
@@ -227,8 +227,8 @@ router
       res.status(404).json({ error: error.message });
     }
   });
-// TODO: add authorization
-// route to delete
+
+  // route to delete
 router.route("/delete/:petId").get(async (req, res) => {
   //code here for DELETE
   // here we are validating petId
@@ -268,8 +268,6 @@ router.route("/delete/:petId").get(async (req, res) => {
       }
       // create comment
       try {
-        //! change to user id
-        console.log("in comments - user id: " + req.session.user.id)
         const pet = await petData.createComment(req.params.petId, req.session.user.id, req.body.comment_input);    
        } catch (error) {
         console.log(error);
