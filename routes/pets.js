@@ -74,6 +74,8 @@ router
       return res.status(400).json({ error: error.message });
     }
 
+    console.log("user" , req.session.user)
+    console.log("req " , req.body)
     // here we are creating new pet
     try {
       const {
@@ -87,7 +89,7 @@ router
         adoptionStatusInput,
       } = newPetData;
       const newPet = await petData.createPet(
-        req.session.user.userId,
+        req.session.user.id,
         nameInput,
         ageInput,
         genderInput,
@@ -267,8 +269,8 @@ router.route("/delete/:petId").get(async (req, res) => {
       // create comment
       try {
         //! change to user id
-        console.log("in comments - user id: " + req.session.user.userId)
-        const pet = await petData.createComment(req.params.petId, req.session.user.userId, req.body.comment_input);    
+        console.log("in comments - user id: " + req.session.user.id)
+        const pet = await petData.createComment(req.params.petId, req.session.user.id, req.body.comment_input);    
        } catch (error) {
         console.log(error);
         res.status(404).json({ error: error });
