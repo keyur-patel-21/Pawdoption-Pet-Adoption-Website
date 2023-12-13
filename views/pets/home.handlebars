@@ -30,7 +30,6 @@
         <ul class="search-pets-list">
             {{#each pets as |pet key|}}
             <li class="search-pet">
-                <span class="btn-favorite"><span class="material-icons-outlined">favorite_border</span></span>
                 <a href="/pets/{{pet._id}}">
                     <div class="search-pet-details">
                         <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 100px;">
