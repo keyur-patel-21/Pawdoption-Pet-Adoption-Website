@@ -5,7 +5,7 @@ import { userData } from "../data/index.js";
 import helpers from "../helpers.js";
 
 router.get("/", isAuthenticated, (req, res) => {
-  return res.redirect('/pets');
+  return res.redirect("/pets");
 });
 
 router
@@ -75,11 +75,12 @@ router
 
       if (user) {
         res.cookie("AuthState", true);
-
         req.session.user = {
+          id: user._id,
           firstName: user.firstName,
           lastName: user.lastName,
           emailAddress: user.emailAddress,
+          favoritePets: user.favoritePets,
         };
 
         res.redirect("/pets");
@@ -100,6 +101,25 @@ router.route("/logout").get(async (req, res) => {
   if (req.session.user) {
     req.session.destroy();
     res.status(200).render("users/login", { title: "Logout" });
+  }
+});
+
+router.route("/addToFavourites/:petId").get(async (req, res) => {
+
+  const petId = helpers.checkId(req.params.petId, "pet id");
+  const userId = helpers.checkId(req.session.user.id, "user id");
+
+  try {
+    const result = await userData.addFavoritePet(petId, userId);
+
+    if (result) {
+      res.redirect("/pets");
+    } else {
+      res.status(500).send("Internal Server Error");
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.redirect("/pets");
   }
 });
 

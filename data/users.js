@@ -58,8 +58,8 @@ const exportedMethods = {
     const passwordMatch = await bcrypt.compare(password, user.hashedPassword);
 
     if (passwordMatch) {
-      const { firstName, lastName, emailAddress } = user;
-      return { firstName, lastName, emailAddress };
+      const { _id, firstName, lastName, emailAddress, favoritePets } = user;
+      return { _id, firstName, lastName, emailAddress, favoritePets };
     } else {
       throw "Either the email address or password is invalid.";
     }
@@ -112,18 +112,19 @@ const exportedMethods = {
     petId = helpers.checkId(petId, "pet id");
     userId = helpers.checkId(userId, "user id");
 
-    let newFavoritePet = {
-      petId: petId,
-    };
-
+    try{
     const usersCollection = await users();
 
     const updatedInfo = await usersCollection.updateOne(
-      { _id: userId },
-      { $push: { favoritePets: newFavoritePet } }
+      { _id: new ObjectId(userId) },
+      { $push: { favoritePets: petId } }
     );
 
+
     return { favoritePetId: petId, userId: userId };
+    } catch(error){
+      console.log(error)
+    }
   },
 
   async removeUser(userId) {
