@@ -76,7 +76,7 @@ const exportedMethods = {
   async getUserById(id) {
     id = helpers.checkId(id, "user id");
     const usersCollection = await users();
-    const user = await usersCollection.findOne({ _id: id });
+    const user = await usersCollection.findOne({ _id: new ObjectId(id) });
     if (!user) throw "Error: no user with that id exist";
 
     return user;

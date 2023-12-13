@@ -4,6 +4,7 @@ import { Router } from "express";
 import isAuthenticated from "../middleware.js";
 const router = Router();
 import { petData } from "../data/index.js";
+import { userData } from "../data/index.js";
 import helpers from "../helpers.js";
 
 // ! implementing storing uploaded image
@@ -163,10 +164,17 @@ router
     //try getting the event by ID
     try {
       const pet = await petData.getPetById(req.params.petId);
+      const updatedUser = await userData.getUserById(req.session.user.id)
+      if (updatedUser){
+        req.session.user = {
+          id: updatedUser._id,
+          firstName: updatedUser.firstName,
+          lastName: updatedUser.lastName,
+          emailAddress: updatedUser.emailAddress,
+          favoritePets: updatedUser.favoritePets,
+        };
+      }
       let isFavorite = false;
-      console.log(req.session.user.favoritePets);
-      console.log(pet._id.toString());
-      console.log(req.session.user.favoritePets.includes(pet._id.toString()));
       if (req.session.user.favoritePets.includes(pet._id.toString())) {
         res.render("pets/pet", { pet: pet, isFavorite: true });
       } else {
