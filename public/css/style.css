@@ -446,7 +446,8 @@ a {
     margin: 0 2rem;
 }
 
-.pet-not-found {
+.pet-not-found,
+.no-favorite-pets {
     font-size: 2rem;
     font-weight: bold;
     text-align: center;
