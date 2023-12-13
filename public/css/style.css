@@ -565,7 +565,6 @@ a {
 .pet-details table {
     width: 100%;
     table-layout: fixed;
-    border: 2px solid var(--main-color);
 }
 
 .pet-details th,
@@ -577,10 +576,14 @@ a {
 .pet-details th {
     font-size: larger;
     border: 2px solid var(--main-color);
+    border-radius: 5px;
+    padding: 0.5rem;
 }
 
 .pet-details td {
     border: 2px solid var(--main-color);
+    border-radius: 5px;
+    padding: 0.5rem;
 }
 
 .pet-comments {
