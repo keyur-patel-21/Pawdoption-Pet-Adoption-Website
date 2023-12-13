@@ -123,4 +123,23 @@ router.route("/addToFavourites/:petId").get(async (req, res) => {
   }
 });
 
+router.route("/removeFromFavourites/:petId").get(async (req, res) => {
+
+  const petId = helpers.checkId(req.params.petId, "pet id");
+  const userId = helpers.checkId(req.session.user.id, "user id");
+
+  try {
+    const result = await userData.removeFavoritePet(petId, userId);
+
+    if (result) {
+      res.redirect("/pets");
+    } else {
+      res.status(500).send("Internal Server Error");
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.redirect("/pets");
+  }
+});
+
 export default router;

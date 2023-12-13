@@ -127,6 +127,25 @@ const exportedMethods = {
     }
   },
 
+  async removeFavoritePet(petId, userId) {
+    petId = helpers.checkId(petId, "pet id");
+    userId = helpers.checkId(userId, "user id");
+
+    try{
+    const usersCollection = await users();
+
+    const updatedInfo = await usersCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $pull: { favoritePets: petId } }
+    );
+
+
+    return { favoritePetId: petId, userId: userId };
+    } catch(error){
+      console.log(error)
+    }
+  },
+
   async removeUser(userId) {
     userId = helpers.checkId(userId, "user id");
     const usersCollection = await users();

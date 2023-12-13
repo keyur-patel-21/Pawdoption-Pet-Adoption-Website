@@ -163,7 +163,15 @@ router
     //try getting the event by ID
     try {
       const pet = await petData.getPetById(req.params.petId);
-      res.render("pets/pet", { pet });
+      let isFavorite = false;
+      console.log(req.session.user.favoritePets);
+      console.log(pet._id.toString());
+      console.log(req.session.user.favoritePets.includes(pet._id.toString()));
+      if (req.session.user.favoritePets.includes(pet._id.toString())) {
+        res.render("pets/pet", { pet: pet, isFavorite: true });
+      } else {
+        res.render("pets/pet", { pet: pet });
+      }
     } catch (error) {
       console.log(error);
       res.status(404).json({ error: error });
@@ -215,10 +223,7 @@ router
 
     try {
       console.log("trying to update");
-      const updatedPet = await petData.updatePet(
-        req.params.petId,
-        newPetData
-      );
+      const updatedPet = await petData.updatePet(req.params.petId, newPetData);
       return res.redirect("/pets/" + req.params.petId);
     } catch (error) {
       console.log(error);

@@ -40,7 +40,12 @@
             <p>{{commentContent}}</p>
             <p>- {{userName}}</p>
           {{/each}}
-        {{/if}}       
+        {{/if}}     
+        {{#if isFavorite}}
+          <a href="/removeFromFavourites/{{pet._id}}">Remove from Favourites</a>  
+        {{else}}
+          <a href="/addToFavourites/{{pet._id}}">Add to Favourites</a>  
+        {{/if}}
       </article>
     </main>
   </body>
