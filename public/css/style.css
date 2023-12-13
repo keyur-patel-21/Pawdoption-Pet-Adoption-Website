@@ -524,7 +524,9 @@ a {
 }
 
 .delete-pet,
-.update-pet {
+.update-pet,
+.like-pet,
+.dislike-pet {
     width: 50%;
     margin: 1rem auto;
     padding: 0.2rem 0.2rem;
@@ -533,19 +535,25 @@ a {
 }
 
 .update-pet span,
-.delete-pet span {
+.delete-pet span,
+.like-pet span,
+.dislike-pet span {
     display: block;
     width: 100%;
     font-size: larger;
 }
 
 .delete-pet:hover,
-.update-pet:hover {
+.update-pet:hover,
+.like-pet:hover,
+.dislike-pet:hover {
     background-color: var(--dark-backround-color);
 }
 
 .delete-pet:hover a,
-.update-pet:hover a {
+.update-pet:hover a,
+.like-pet:hover a,
+.dislike-pet:hover a {
     color: var(--white-text-color);
 }
 
