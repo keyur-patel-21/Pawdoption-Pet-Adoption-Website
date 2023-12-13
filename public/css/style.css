@@ -236,9 +236,8 @@ a {
     align-items: center;
     text-align: center;
     line-height: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.8);
-    background-color: var(--light-background-color);
+    border-radius: 5px;
+    box-shadow: 0 5px 15px 0 rgba(10, 77, 30, 1);
 }
 
 .profile-img img {
@@ -251,9 +250,8 @@ a {
 .user-info {
     grid-area: info;
     padding: 1rem 2rem;
-    border-radius: 10px;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.8);
-    background-color: var(--light-background-color);
+    border-radius: 5px;
+    box-shadow: 0 10px 15px 0 rgba(10, 77, 30, 1);
 }
 
 .user-info h1 {
@@ -304,18 +302,9 @@ a {
     cursor: pointer;
 }
 
-.btn-favorite {
-    float: right;
-    color: var(--main-color);
-    border: none;
-    cursor: pointer;
-    background: none;
-}
-
 .fav-pet-details img,
 .search-pet-details img {
     margin-bottom: 1rem;
-    margin-left: 2rem;
 }
 
 .fav-pet-details p,
@@ -448,7 +437,7 @@ a {
 
 .pet-not-found,
 .no-favorite-pets {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
 }
