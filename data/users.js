@@ -82,6 +82,7 @@ const exportedMethods = {
     return user;
   },
 
+  // not implemented in website yet
   async updateUser(id, firstName, lastName, emailAddress) {
     id = helpers.checkId(id, "user id");
     firstName = helpers.checkString(firstName, "first name");

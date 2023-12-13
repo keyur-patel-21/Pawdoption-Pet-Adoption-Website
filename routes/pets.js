@@ -85,7 +85,6 @@ router
         zipInput,
         adoptionStatusInput,
       } = newPetData;
-      console.log("pet routes: "+req.session.user.userId)
       const newPet = await petData.createPet(
         req.session.user.userId,
         nameInput,
@@ -156,10 +155,11 @@ router
     }
   })
 
-  .post(async (req, res) => {
+  // TODO: ! NOT SAVING PICTURE 
+  // TODO: create pet form
+  .post(upload.single('image'), async (req, res) => {
     //code here for PUT
-    console.log("inside edit post route");
-    console.log(req.body);
+
     const newPetData = req.body;
     //make sure there is something present in the req.body
     if (!newPetData || Object.keys(newPetData).length === 0) {
@@ -194,24 +194,26 @@ router
       newPetData.adoptionStatusInput = helpers.checkAdoptedStatus(
         newPetData.adoptionStatusInput
       );
+      newPetData.picture = req.file.path;
     } catch (error) {
       // console.log(error);
       return res.status(400).json({ error: error.message });
     }
-
+    console.log(newPetData)
     try {
-      console.log("trying to update");
       const updatedPet = await petData.updatePet(
         req.params.petId,
         newPetData
       );
-      return res.redirect("/pets/" + req.params.petId);
+      //return res.redirect("/pets/" + req.params.petId);
+      res.redirect("/pets/" + req.params.petId);
     } catch (error) {
       console.log(error);
       res.status(404).json({ error: error.message });
     }
   });
-
+// TODO: add authorization
+// route to delete
 router.route("/delete/:petId").get(async (req, res) => {
   //code here for DELETE
   // here we are validating petId

@@ -79,9 +79,6 @@ const exportedMethods = {
     return pet;
   },
 
-  // ! Full name and user id are not implemented because there is no user authorization yet
-
-  // ! get user by id is not working
   async createComment(petId, userId, comment) {
     petId = helpers.checkId(petId, "pet id");
     userId = helpers.checkId(userId, "user id");
@@ -123,6 +120,7 @@ const exportedMethods = {
     const zip = helpers.checkZip(updatedData.zipInput);
     // TODO: picture file validation
     const adoptionStatus = helpers.checkAdoptedStatus(updatedData.adoptionStatusInput);
+    updatedData.picture = '\\' + updatedData.picture ;
 
     const petsCollection = await pets();
 
@@ -134,7 +132,7 @@ const exportedMethods = {
       description: description,
       typeOfAnimal: typeOfAnimal,
       zip: zip,
-      //picture: picture,
+      picture: updatedData.picture,
       adoptionStatus: adoptionStatus,
       lastUpdated: new Date().toLocaleDateString(),
     };
