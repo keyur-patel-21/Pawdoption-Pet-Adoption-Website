@@ -112,37 +112,17 @@ const exportedMethods = {
     petId = helpers.checkId(petId, "pet id");
     userId = helpers.checkId(userId, "user id");
 
-    try{
-    const usersCollection = await users();
+    try {
+      const usersCollection = await users();
 
-    const updatedInfo = await usersCollection.updateOne(
-      { _id: new ObjectId(userId) },
-      { $push: { favoritePets: petId } }
-    );
+      const updatedInfo = await usersCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $push: { favoritePets: petId } }
+      );
 
-
-    return { favoritePetId: petId, userId: userId };
-    } catch(error){
-      console.log(error)
-    }
-  },
-
-  async removeFavoritePet(petId, userId) {
-    petId = helpers.checkId(petId, "pet id");
-    userId = helpers.checkId(userId, "user id");
-
-    try{
-    const usersCollection = await users();
-
-    const updatedInfo = await usersCollection.updateOne(
-      { _id: new ObjectId(userId) },
-      { $pull: { favoritePets: petId } }
-    );
-
-
-    return { favoritePetId: petId, userId: userId };
-    } catch(error){
-      console.log(error)
+      return { favoritePetId: petId, userId: userId };
+    } catch (error) {
+      console.log(error);
     }
   },
 
@@ -159,23 +139,23 @@ const exportedMethods = {
     return result;
   },
 
-  async removeFavoritePet(userId, petId) {
-    userId = helpers.checkId(userId, "user id");
+  async removeFavoritePet(petId, userId) {
+    console.log("n remove fav method");
     petId = helpers.checkId(petId, "pet id");
+    userId = helpers.checkId(userId, "user id");
 
-    const usersCollection = await users();
+    try {
+      const usersCollection = await users();
 
-    const deletionInfo = await usersCollection.findOneAndUpdate(
-      { _id: userId },
-      { $pull: { favoritePets: { petId: petId } } },
-      { returnDocument: "after" }
-    );
+      const updatedInfo = await usersCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $pull: { favoritePets: petId } }
+      );
 
-    if (!deletionInfo) {
-      throw `Error: Could not delete favorite pet of ${petId}`;
+      return { favoritePetId: petId, userId: userId };
+    } catch (error) {
+      console.log(error);
     }
-
-    return deletionInfo;
   },
 };
 
