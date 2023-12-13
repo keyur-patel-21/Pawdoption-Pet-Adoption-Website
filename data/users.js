@@ -58,8 +58,8 @@ const exportedMethods = {
     const passwordMatch = await bcrypt.compare(password, user.hashedPassword);
 
     if (passwordMatch) {
-      const { firstName, lastName, emailAddress, _id } = user;
-      return { firstName, lastName, emailAddress, _id };
+      const { _id, firstName, lastName, emailAddress, favoritePets } = user;
+      return { _id, firstName, lastName, emailAddress, favoritePets };
     } else {
       throw "Either the email address or password is invalid.";
     }
@@ -76,7 +76,7 @@ const exportedMethods = {
   async getUserById(id) {
     id = helpers.checkId(id, "user id");
     const usersCollection = await users();
-    const user = await usersCollection.findOne({ _id: new Object(id) });
+    const user = await usersCollection.findOne({ _id: new ObjectId(id) });
     if (!user) throw "Error: no user with that id exist";
 
     return user;
@@ -115,18 +115,18 @@ const exportedMethods = {
     petId = helpers.checkId(petId, "pet id");
     userId = helpers.checkId(userId, "user id");
 
-    let newFavoritePet = {
-      petId: petId,
-    };
+    try {
+      const usersCollection = await users();
 
-    const usersCollection = await users();
+      const updatedInfo = await usersCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $push: { favoritePets: petId } }
+      );
 
-    const updatedInfo = await usersCollection.updateOne(
-      { _id: userId },
-      { $push: { favoritePets: newFavoritePet } }
-    );
-
-    return { favoritePetId: petId, userId: userId };
+      return { favoritePetId: petId, userId: userId };
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   async removeUser(userId) {
@@ -142,23 +142,23 @@ const exportedMethods = {
     return result;
   },
 
-  async removeFavoritePet(userId, petId) {
-    userId = helpers.checkId(userId, "user id");
+  async removeFavoritePet(petId, userId) {
+    console.log("n remove fav method");
     petId = helpers.checkId(petId, "pet id");
+    userId = helpers.checkId(userId, "user id");
 
-    const usersCollection = await users();
+    try {
+      const usersCollection = await users();
 
-    const deletionInfo = await usersCollection.findOneAndUpdate(
-      { _id: userId },
-      { $pull: { favoritePets: { petId: petId } } },
-      { returnDocument: "after" }
-    );
+      const updatedInfo = await usersCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $pull: { favoritePets: petId } }
+      );
 
-    if (!deletionInfo) {
-      throw `Error: Could not delete favorite pet of ${petId}`;
+      return { favoritePetId: petId, userId: userId };
+    } catch (error) {
+      console.log(error);
     }
-
-    return deletionInfo;
   },
 };
 

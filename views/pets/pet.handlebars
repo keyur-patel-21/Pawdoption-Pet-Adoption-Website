@@ -48,8 +48,12 @@
             {{/each}}
           {{/if}}
         </div>
-
-         <a href="/pets" id="rootLink">Back to All Pets</a>      
+        {{#if isFavorite}}
+          <a href="/removeFromFavourites/{{pet._id}}">Remove from Favourites</a>  
+        {{else}}
+          <a href="/addToFavourites/{{pet._id}}">Add to Favourites</a>  
+        {{/if}}
+         <a href="/pets" id="rootLink">Back to All Pets</a> 
       </article>
     </main>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
