@@ -8,14 +8,17 @@
         <form id="petSearchForm">
             <span class="material-icons-outlined">search</span>
 
-            <label for="searchPetName"></label>
-            <input type="text" name="searchPetName" id="searchPetName" placeholder="Find a pet">
+            <label for="searchPetType"></label>
+            <input type="text" name="searchPetType" id="searchPetType" placeholder="Find a pet">
 
             <label for="searchPetZip"></label>
-            <input type="text" name="searchPetZip" id="searchPetZip" placeholder="Zip Code">
+            <input type="text" name="searchPetZip" id="searchPetZip" placeholder="ZIP Code">
 
             <button type="submit" class="btn-pet-search">Search</button>
         </form>
+    </div>
+    <div class="search-location">
+        <button type="button" id="btnLocation">Use my location</button>
     </div>
     <div class="add-pet-conatiner">
         <div class="add-pet">
@@ -32,7 +35,7 @@
             <li class="search-pet">
                 <a href="/pets/{{pet._id}}">
                     <div class="search-pet-details">
-                        <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 100px;">
+                        <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 50%;">
                         <p>Name: {{pet.name}}</p>
                         <p>Age: {{pet.age}}</p>
                         <p>Gender: {{pet.gender}}</p>
@@ -43,8 +46,10 @@
             {{/each}}
         </ul>
         {{else}}
-        <p class="pet-not-found"><span class="material-icons-outlined">sentiment_dissatisfied</span></p>
-        <p class="pet-not-found">No pets found</p>
+        <div class="pet-not-found" hidden>
+            <p><span class="material-icons-outlined">sentiment_dissatisfied</span></p>
+            <p>No pets found</p>
+        </div>
         {{/if}}
     </div>
 </main>
