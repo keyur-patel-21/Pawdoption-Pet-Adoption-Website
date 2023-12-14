@@ -318,9 +318,10 @@ a {
     grid-template-areas:
         "pet1 motivation pet2"
         "search search search"
+        "location location location"
         "addpet addpet addpet"
         "pets pets pets";
-    grid-template-rows: 0.5fr 0.2fr 0.1fr 2fr;
+    grid-template-rows: 0.5fr 0.2fr 0.1fr 0.1fr 2fr;
     row-gap: 2rem;
     margin-top: 96px;
     padding: 2rem;
@@ -367,9 +368,11 @@ a {
     flex-shrink: inherit;
     border: none;
     outline: none;
+    font-size: medium;
+    font-family: cursive;
 }
 
-.pet-search form #searchPetName {
+.pet-search form #searchPetType {
     border-right: 2px solid var(--main-color);
 }
 
@@ -397,6 +400,31 @@ a {
 .add-pet-conatiner {
     grid-area: addpet;
     margin-right: 2rem;
+}
+
+.search-location {
+    grid-area: location;
+    text-align: center;
+    margin-left: 5rem;
+}
+
+.search-location button {
+    width: 15%;
+    min-width: 148px;
+    height: 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: cursive;
+    border-radius: 2rem;
+    cursor: pointer;
+    border: none;
+    color: var(--dark-text-color);
+    background-color: var(--main-color);
+}
+
+.search-location button:hover {
+    color: var(--white-text-color);
+    background-color: var(--dark-backround-color);
 }
 
 .add-pet {
