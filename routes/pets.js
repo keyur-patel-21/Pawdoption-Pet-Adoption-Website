@@ -282,4 +282,20 @@ router.route("/delete/:petId").get(async (req, res) => {
         res.status(404).json({ error: error });
       }
   });
+
+  router.route("/api").get(async (req, res) => {
+    const petSearch = req.query;
+  
+    //make sure there is something present in the req.query
+    if (!petSearch) {
+      return res.status(400).json({ error: "There are no fields in the request query" });
+    }
+  
+    try {
+      const petList = await petData.getPetsBySearch(petSearch.searchPetZip, petSearch.searchPetType);
+      res.json(petList);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
 export default router;
