@@ -21,10 +21,9 @@
         <ul class="fav-pets-list">
             {{#each pets as |pet key|}}
             <li class="fav-pet">
-                <button class="btn-favorite"><span class="material-icons-outlined">favorite_border</span></button>
                 <a href="/pets/{{pet._id}}">
                     <div class="fav-pet-details">
-                        <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 100px;">
+                        <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 50%;">
                         <p>Name: {{pet.name}}</p>
                         <p>Age: {{pet.age}}</p>
                         <p>Gender: {{pet.gender}}</p>
