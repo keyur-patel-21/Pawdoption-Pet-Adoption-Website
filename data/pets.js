@@ -189,6 +189,22 @@ const exportedMethods = {
 
     return deletionInfo;
   },
+
+  async getPetsBySearch(zip, typeOfAnimal) {
+    zip = helpers.checkZip(zip);
+    const petsCollection = await pets();
+		let petList = [];
+
+    if (zip && typeOfAnimal.length === 0) {
+      petList = await petsCollection.find({ zip: zip }).toArray();
+    } else {
+      petList = await petsCollection.find({ typeOfAnimal: typeOfAnimal, zip: zip }).toArray();
+    }
+
+    if(!petList) throw "Error: no pets with that type and zip exist";
+
+    return petList;
+  }
 };
 
 export default exportedMethods;
