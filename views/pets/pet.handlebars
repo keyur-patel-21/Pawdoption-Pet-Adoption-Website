@@ -54,8 +54,8 @@
           <a href="/addToFavourites/{{pet._id}}">Add to Favourites</a>  
         {{/if}}
         {{#if isCreator}}
-          <a href="/pets/edit/{{_id}}" id="update_link" >update</a> 
-          <a href="/pets/delete/{{_id}}" id="delete_link">delete</a>
+          <a href="/pets/edit/{{pet._id}}" id="update_link" >update</a> 
+          <a href="/pets/delete/{{pet._id}}" id="delete_link">delete</a>
         {{/if}}
          <a href="/pets" id="rootLink">Back to All Pets</a> 
       </article>

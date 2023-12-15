@@ -120,7 +120,8 @@ const exportedMethods = {
 
       const updatedInfo = await usersCollection.updateOne(
         { _id: new ObjectId(userId) },
-        { $push: { favoritePets: petId } }
+        { $push: { favoritePets: petId } },
+        { upsert: true }
       );
 
       return { favoritePetId: petId, userId: userId };
