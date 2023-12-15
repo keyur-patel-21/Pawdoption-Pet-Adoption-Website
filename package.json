@@ -5,7 +5,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "seed": "node tasks/seed"
   },
   "author": "Fiona Brockner, Keyur Patel, Dhanvin Patel, Darsh Patel",
   "license": "ISC",
