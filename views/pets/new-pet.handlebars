@@ -5,20 +5,20 @@
         <div class="new-pet-container">
             <h1><span class="material-icons-outlined">pets</span> Add a Paw to the Family <span
                     class="material-icons-outlined">pets</span></h1>
-            <form action="/pets/new-pet" method="post" id="newPetForm" autocomplete="off">
+            <form action="/pets" method="post" id="newPetForm" autocomplete="off">
                 <div class="new-pet-input">
-                    <label for="petName">Name</label>
-                    <input type="text" name="petName" id="petName" required>
+                    <label for="nameInput">Name</label>
+                    <input type="text" name="nameInput" id="nameInput" required>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petAge">Age</label>
-                    <input type="text" name="petAge" id="petAge" required>
+                    <label for="ageInput">Age</label>
+                    <input type="text" name="ageInput" id="ageInput" required>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petGender">Gender</label>
-                    <select name="petGender" id="petGender" required>
+                    <label for="genderInput">Gender</label>
+                    <select name="genderInput" id="genderInput" required>
                         <option value="" selected disabled>-- Please choose a gender --</option>
                         <option value="female">Female</option>
                         <option value="male">Male</option>
@@ -26,23 +26,23 @@
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petType">Type of Animal</label>
-                    <input type="text" name="petType" id="petType" placeholder="e.g. Dog, Cat" required>
+                    <label for="typeInput">Type of Animal</label>
+                    <input type="text" name="typeInput" id="typeInput" placeholder="e.g. Dog, Cat" required>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petBreed">Breed</label>
-                    <input type="text" name="petBreed" id="petBreed" required>
+                    <label for="breedInput">Breed</label>
+                    <input type="text" name="breedInput" id="breedInput" required>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petZipCode">Zip Code</label>
-                    <input type="text" name="petZipCode" id="petZipCode" required>
+                    <label for="zipInput">Zip Code</label>
+                    <input type="text" name="zipInput" id="zipInput" required>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petAdoptionStatus">Adoption Status</label>
-                    <select name="petAdoptionStatus" id="petAdoptionStatus" required>
+                    <label for="adoptionStatusInput">Adoption Status</label>
+                    <select name="adoptionStatusInput" id="adoptionStatusInput" required>
                         <option value="" selected disabled>-- Please choose adoption status --</option>
                         <option value="true">Adopted</option>
                         <option value="false">Not Adopted</option>
@@ -50,8 +50,8 @@
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petDescription">Description</label>
-                    <input type="text" name="petDescription" id="petDescription"
+                    <label for="descriptionInput">Description</label>
+                    <input type="text" name="descriptionInput" id="descriptionInput"
                         placeholder="Tell us about your paw . . ." required>
                     <p></p>
                 </div>
