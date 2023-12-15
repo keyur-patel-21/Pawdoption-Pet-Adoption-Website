@@ -1,34 +1,47 @@
 import {dbConnection, closeConnection} from '../config/mongoConnection.js';
 import userDataFunctions from '../data/users.js';
 import petDataFunctions  from '../data/pets.js';
-
 const db = await dbConnection();
 await db.dropDatabase();
-
 const users = userDataFunctions;
 const pets = petDataFunctions;
+
 //create users
-let fiona;
+let fiona, dhanvin, keyur;
 try {
     fiona = await users.createUser(
         "Fiona",
         "Brockner",
         "fbrockne@stevens.edu",
-        "testerpassword");
-} catch (e) {
-    console.log(e);
-}
-try {
-    const allUsers = await users.getAllUsers();
-    //console.log(allUsers);
+        "tester123!");
 } catch (e) {
     console.log(e);
 }
 
-//create pets
-let pella;
 try {
-    pella = await pets.createPet(fiona._id, 
+    dhanvin = await users.createUser(
+        "Dhanvin",
+        "Patel",
+        "dhanvin@stevens.edu",
+        "tester123!");
+} catch (e) {
+    console.log(e);
+}
+
+try {
+    keyur = await users.createUser(
+        "Keyur",
+        "Patel",
+        "keyur@stevens.edu",
+        "tester123!");
+} catch (e) {
+    console.log(e);
+}
+
+// create dogs
+let pella, coco;
+try {
+    pella = await pets.createPet(fiona.insertedUserId, 
         "Pella", 
         "12", 
         "Female", 
@@ -42,44 +55,119 @@ try {
     console.log(e);
 }
 
-try{
-    let comment = await pets.createComment(pella._id, fiona._id, "Does she like other dogs?")
+try {
+    coco = await pets.createPet(dhanvin.insertedUserId, 
+        "Coco", 
+        "12", 
+        "Female", 
+        "German Shepard", 
+        "Coco is looking for a new home. She loves other dogs and playing fetch!",
+        "Dog",
+        "07020",
+        "cocoPicture.jpeg",
+        "false");
 } catch (e) {
     console.log(e);
 }
 
-try{
-    let comment = await pets.createComment(pella._id, fiona._id, "Too cute!")
+// create cats
+let polly, murphy
+try {
+    polly = await pets.createPet(keyur.insertedUserId, 
+        "Polly", 
+        "3", 
+        "Female", 
+        "Domestic Shorthair", 
+        "Polly loves bird watching. She can't wait to find a loving home.",
+        "Cat",
+        "07020",
+        "pollyPicture.jpg",
+        "false");
 } catch (e) {
     console.log(e);
 }
 
 try {
-    const allPets = await pets.getAllPets();
-    console.log(allPets);
-} catch (e){
-    console.log (e)
+    murphy = await pets.createPet(fiona.insertedUserId, 
+        "Murphy", 
+        "7", 
+        "Male", 
+        "Domestic Shorthair", 
+        "Murphy is a lazy cat who loves cat treats and cuddling!",
+        "Cat",
+        "07020",
+        "murphyPicture.jpg",
+        "false");
+} catch (e) {
+    console.log(e);
 }
 
+// create fish
+let fin;
 try {
-    const petPella = await pets.getPetById(pella._id);
-    console.log(petPella);
-} catch (e){
-    console.log (e)
+    fin = await pets.createPet(dhanvin.insertedUserId, 
+        "Fin", 
+        "1", 
+        "Male", 
+        "Goldfish", 
+        "Fin is a quiet fish who needs a new home.",
+        "Fish",
+        "07020",
+        "finPicture.jpg",
+        "false");
+} catch (e) {
+    console.log(e);
 }
 
+// create rabbit
+let bunny;
 try {
-    const fionaPet = await pets.getPetByCreator(fiona._id);
-    console.log(fionaPet);
-} catch (e){
-    console.log (e)
+    bunny = await pets.createPet(keyur.insertedUserId, 
+        "Bunny", 
+        "2", 
+        "Male", 
+        "English Spot", 
+        "Bunny's favrotie food is hay and he loves playing hide and seek.",
+        "Rabbit",
+        "07020",
+        "bunnyPicture.jpg",
+        "false");
+} catch (e) {
+    console.log(e);
 }
 
+// create reptile
+let rex;
 try {
-    const fionaPet = await users.getUserById(fiona._id);
-    console.log(fionaPet);
-} catch (e){
-    console.log (e)
+    rex = await pets.createPet(fiona.insertedUserId, 
+        "Rex", 
+        "10", 
+        "Male", 
+        "Chameleon", 
+        "Rex loves his sun lamp. He's looking for a new owner that loves chameleons!",
+        "Reptile",
+        "07020",
+        "rexPicture.jpeg",
+        "false");
+} catch (e) {
+    console.log(e);
+}
+
+// create bird
+let diego;
+try {
+    rex = await pets.createPet(dhanvin.insertedUserId, 
+        "Diego", 
+        "3", 
+        "Male", 
+        "Parrot", 
+        "Rex is looking for a new home, preferably with another bird",
+        "Bird",
+        "07020",
+        "diegoPicture.jpg",
+        "false");
+} catch (e) {
+    console.log(e);
 }
 
  await closeConnection();

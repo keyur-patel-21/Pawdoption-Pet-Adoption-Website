@@ -16,7 +16,7 @@ const exportedMethods = {
     picture,
     adoptionStatus
   ) {
-    creatorId = helpers.checkId(creatorId, "creator id")
+    creatorId = helpers.checkId(creatorId, "creator id");
     name = helpers.checkString(name, "pet name");
     age = helpers.checkStringisNumber(age);
     gender = helpers.checkString(gender, "gender"); 

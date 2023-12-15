@@ -37,7 +37,7 @@ const exportedMethods = {
     if (!insertInfo.acknowledged || !insertInfo.insertedId) {
       throw "Error: could not add user to database";
     } else {
-      return { insertedUser: true };
+      return { insertedUser: true, insertedUserId: newUser._id };
     }
     // return newUser;
   },
