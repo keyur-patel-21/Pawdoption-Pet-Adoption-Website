@@ -16,22 +16,23 @@ const exportedMethods = {
     picture,
     adoptionStatus
   ) {
+    creatorId = helpers.checkId(creatorId, "creator id");
     name = helpers.checkString(name, "pet name");
     age = helpers.checkStringisNumber(age);
-    gender = helpers.checkString(gender, "gender"); //implement as drop down menu
-    breed = helpers.checkString(breed, "breed"); //implement as drop down menu
+    gender = helpers.checkString(gender, "gender"); 
+    breed = helpers.checkString(breed, "breed");
     description = helpers.checkString(description, "description");
-    typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal"); //implement as drop down menu
+    typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal");
     zip = helpers.checkZip(zip);
     // TODO: picture file validation
     adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
-    picture = "/public/img/pet/" + picture;
+    picture = '\\' + picture;
 
     const petCollection = await pets();
 
     let newPet = {
       _id: new ObjectId(),
-      creatorId: creatorId,
+      creatorId: new ObjectId(creatorId),
       name: name,
       age: age,
       gender: gender,
@@ -110,7 +111,6 @@ const exportedMethods = {
     id,
     updatedData
   ) {
-    // console.log(name);
     const name = helpers.checkString(updatedData.nameInput, "pet name");
     const age = helpers.checkStringisNumber(updatedData.ageInput);
     const gender = helpers.checkString(updatedData.genderInput, "gender");
@@ -120,6 +120,7 @@ const exportedMethods = {
     const zip = helpers.checkZip(updatedData.zipInput);
     // TODO: picture file validation
     const adoptionStatus = helpers.checkAdoptedStatus(updatedData.adoptionStatusInput);
+    updatedData.picture = '\\' + updatedData.picture ;
 
     const petsCollection = await pets();
 
@@ -131,7 +132,7 @@ const exportedMethods = {
       description: description,
       typeOfAnimal: typeOfAnimal,
       zip: zip,
-      // picture: picture,
+      picture: updatedData.picture,
       adoptionStatus: adoptionStatus,
       lastUpdated: new Date().toLocaleDateString(),
     };
@@ -174,6 +175,8 @@ const exportedMethods = {
     commentId = helpers.checkId(commentId, "comment id");
     const petsCollection = await pets();
 
+    // TODO: check if req.session.user.userId is equal to userId of comment
+
     const deletionInfo = await petsCollection.findOneAndUpdate(
       { "comments._id": commentId },
       { $pull: { comments: { _id: commentId } } },
@@ -186,6 +189,22 @@ const exportedMethods = {
 
     return deletionInfo;
   },
+
+  async getPetsBySearch(zip, typeOfAnimal) {
+    zip = helpers.checkZip(zip);
+    const petsCollection = await pets();
+		let petList = [];
+
+    if (zip && typeOfAnimal.length === 0) {
+      petList = await petsCollection.find({ zip: zip }).toArray();
+    } else {
+      petList = await petsCollection.find({ typeOfAnimal: typeOfAnimal, zip: zip }).toArray();
+    }
+
+    if(!petList) throw "Error: no pets with that type and zip exist";
+
+    return petList;
+  }
 };
 
 export default exportedMethods;

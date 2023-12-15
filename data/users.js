@@ -37,7 +37,7 @@ const exportedMethods = {
     if (!insertInfo.acknowledged || !insertInfo.insertedId) {
       throw "Error: could not add user to database";
     } else {
-      return { insertedUser: true };
+      return { insertedUser: true, insertedUserId: newUser._id };
     }
     // return newUser;
   },
@@ -82,6 +82,7 @@ const exportedMethods = {
     return user;
   },
 
+  // not implemented in website yet
   async updateUser(id, firstName, lastName, emailAddress) {
     id = helpers.checkId(id, "user id");
     firstName = helpers.checkString(firstName, "first name");
@@ -90,10 +91,12 @@ const exportedMethods = {
 
     const usersCollection = await users();
 
+    // ! add user id too
     let setUser = {
       firstName: firstName,
       lastName: lastName,
       emailAddress: emailAddress,
+      //userId: id
     };
 
     const updatedInfo = await usersCollection.updateOne(
@@ -117,7 +120,8 @@ const exportedMethods = {
 
       const updatedInfo = await usersCollection.updateOne(
         { _id: new ObjectId(userId) },
-        { $push: { favoritePets: petId } }
+        { $push: { favoritePets: petId } },
+        { upsert: true }
       );
 
       return { favoritePetId: petId, userId: userId };

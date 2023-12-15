@@ -6,23 +6,19 @@ const router = Router();
 import { petData } from "../data/index.js";
 import { userData } from "../data/index.js";
 import helpers from "../helpers.js";
+import multer from 'multer';
+import xss from 'xss';
 
-// ! implementing storing uploaded image
-//import mv from "mv";
-
-// import multer from 'multer';
-
-// // SET STORAGE
-// var storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, 'uploads')
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, file.fieldname + '-' + Date.now())
-//   }
-// })
-
-// var upload = multer({ storage: storage })
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/img/pet')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+ 
+var upload = multer({ storage: storage })
 
 // routes to list all pets and create new pets
 router.use(isAuthenticated);
@@ -31,13 +27,15 @@ router
   .get(async (req, res) => {
     try {
       const petList = await petData.getAllPets();
-      res.render("pets/pets", { pets: petList, user: req.session.user });
+      res.render("pets/pets", { pets: petList, user: xss(req.session.user) });
     } catch (error) {
       console.log(error);
       res.status(400).render("pets/pets", { error: error.message });
     }
   })
-  .post(async (req, res) => {
+
+  // route to create new pet 
+  .post(upload.single('image'), async (req, res) => {
     const newPetData = req.body;
     //make sure there is something present in the req.body
     if (!newPetData || Object.keys(newPetData).length === 0) {
@@ -48,46 +46,34 @@ router
     // Change here for validating input params
     try {
       newPetData.nameInput = helpers.checkString(
-        newPetData.nameInput,
+        xss(newPetData.nameInput),
         "pet name"
       );
-      newPetData.ageInput = helpers.checkStringisNumber(newPetData.ageInput);
+      newPetData.ageInput = helpers.checkStringisNumber(xss(newPetData.ageInput));
       newPetData.genderInput = helpers.checkString(
-        newPetData.genderInput,
+        xss(newPetData.genderInput),
         "gender"
       );
       newPetData.breedInput = helpers.checkString(
-        newPetData.breedInput,
+        xss(newPetData.breedInput),
         "breed"
       );
       newPetData.descriptionInput = helpers.checkString(
-        newPetData.descriptionInput,
+        xss(newPetData.descriptionInput),
         "description"
       );
       newPetData.typeInput = helpers.checkString(
-        newPetData.typeInput,
+        xss(newPetData.typeInput),
         "typeOfAnimal"
       );
-      newPetData.zipInput = helpers.checkZip(newPetData.zipInput);
+      newPetData.zipInput = helpers.checkZip(xss(newPetData.zipInput));
       newPetData.adoptionStatusInput = helpers.checkAdoptedStatus(
-        newPetData.adoptionStatusInput
+        xss(newPetData.adoptionStatusInput)
       );
     } catch (error) {
       console.log(error);
       return res.status(400).json({ error: error.message });
     }
-
-    let picFile = req.files;
-    if (!req.files) return res.status(400).json({ error: "No picture" });
-    newPetData.picture = req.files.image.name;
-    let name = newPetData.picture;
-    console.log("before " + newPetData.picture);
-    //let file =
-    //console.log("__dirname" + "  + '/upload' " + "newPetData.picture")
-    // picFile.mv('/public/img/pet' + newPetData.picture)
-    // mv(newPetData.picture, '/public/image/pet/${newPetData.picture}')
-    //name.mv('')
-    //console.log("dir " + )
 
     // here we are creating new pet
     try {
@@ -102,18 +88,18 @@ router
         adoptionStatusInput,
       } = newPetData;
       const newPet = await petData.createPet(
-        "temp ID",
-        nameInput,
-        ageInput,
-        genderInput,
-        breedInput,
-        descriptionInput,
-        typeInput,
-        zipInput,
-        req.files.image.name,
-        adoptionStatusInput
+        xss(req.session.user.id),
+        xss(nameInput),
+        xss(ageInput),
+        xss(genderInput),
+        xss(breedInput),
+        xss(descriptionInput),
+        xss(typeInput),
+        xss(zipInput),
+        xss(req.file.path),
+        xss(adoptionStatusInput)
       );
-      console.log("after creating" + newPet.picture);
+
       res.redirect("/pets");
     } catch (error) {
       console.log(error);
@@ -134,14 +120,14 @@ router.route("/new").get(async (req, res) => {
 // route to open form for updating  pet
 router.route("/edit/:petId").get(async (req, res) => {
   try {
-    req.params.petId = helpers.checkId(req.params.petId, "Id URL Param");
+    req.params.petId = helpers.checkId(xss(req.params.petId), "Id URL Param");
   } catch (error) {
     console.log(error);
     return res.status(400).json({ error: error.message });
   }
 
   try {
-    const pet = await petData.getPetById(req.params.petId);
+    let pet = await petData.getPetById(xss(req.params.petId));
     res.render("pets/editform", { pet: pet });
   } catch (error) {
     console.log(error);
@@ -156,29 +142,31 @@ router
     //code here for GET
     //here we are validating petString
     try {
-      req.params.petId = helpers.checkId(req.params.petId, "Id URL Param");
+      req.params.petId = helpers.checkId(xss(req.params.petId), "Id URL Param");
     } catch (error) {
       console.log(error);
       return res.status(400).json({ error: error.message });
     }
     //try getting the event by ID
     try {
-      const pet = await petData.getPetById(req.params.petId);
-      const updatedUser = await userData.getUserById(req.session.user.id)
+      const pet = await petData.getPetById(xss(req.params.petId));
+      const updatedUser = await userData.getUserById(xss(req.session.user.id))
       if (updatedUser){
         req.session.user = {
-          id: updatedUser._id,
-          firstName: updatedUser.firstName,
-          lastName: updatedUser.lastName,
-          emailAddress: updatedUser.emailAddress,
-          favoritePets: updatedUser.favoritePets,
+          id: xss(updatedUser._id),
+          firstName: xss(updatedUser.firstName),
+          lastName: xss(updatedUser.lastName),
+          emailAddress: xss(updatedUser.emailAddress),
+          favoritePets: xss(updatedUser.favoritePets),
         };
       }
-      let isFavorite = false;
-      if (req.session.user.favoritePets.includes(pet._id.toString())) {
-        res.render("pets/pet", { pet: pet, isFavorite: true });
+
+      let isCreator = false;
+      if (JSON.stringify(req.session.user.id) === JSON.stringify(pet.creatorId)) isCreator = true;
+      if (JSON.stringify(req.session.user.favoritePets).includes( JSON.stringify(pet._id))) {
+        res.render("pets/pet", { pet: pet, isFavorite: true, isCreator: isCreator });
       } else {
-        res.render("pets/pet", { pet: pet });
+        res.render("pets/pet", { pet: pet, isFavorite: false, isCreator: isCreator });
       }
     } catch (error) {
       console.log(error);
@@ -186,10 +174,9 @@ router
     }
   })
 
-  .post(async (req, res) => {
+  .post(upload.single('image'), async (req, res) => {
     //code here for PUT
-    console.log("inside edit post route");
-    console.log(req.body);
+
     const newPetData = req.body;
     //make sure there is something present in the req.body
     if (!newPetData || Object.keys(newPetData).length === 0) {
@@ -200,51 +187,53 @@ router
     // Change here for validating input params
     try {
       newPetData.nameInput = helpers.checkString(
-        newPetData.nameInput,
+        xss(newPetData.nameInput),
         "pet name"
       );
-      newPetData.ageInput = helpers.checkStringisNumber(newPetData.ageInput);
+      newPetData.ageInput = helpers.checkStringisNumber(xss(newPetData.ageInput));
       newPetData.genderInput = helpers.checkString(
-        newPetData.genderInput,
+        xss(newPetData.genderInput),
         "gender"
       );
       newPetData.breedInput = helpers.checkString(
-        newPetData.breedInput,
+        xss(newPetData.breedInput),
         "breed"
       );
       newPetData.descriptionInput = helpers.checkString(
-        newPetData.descriptionInput,
+        xss(newPetData.descriptionInput),
         "description"
       );
       newPetData.typeInput = helpers.checkString(
-        newPetData.typeInput,
+        xss(newPetData.typeInput),
         "typeOfAnimal"
       );
-      newPetData.zipInput = helpers.checkZip(newPetData.zipInput);
+      newPetData.zipInput = helpers.checkZip(xss(newPetData.zipInput));
       newPetData.adoptionStatusInput = helpers.checkAdoptedStatus(
-        newPetData.adoptionStatusInput
+        xss(newPetData.adoptionStatusInput)
       );
+      newPetData.picture = xss(req.file.path);
     } catch (error) {
       // console.log(error);
       return res.status(400).json({ error: error.message });
     }
-
+    //console.log(newPetData)
     try {
       console.log("trying to update");
-      const updatedPet = await petData.updatePet(req.params.petId, newPetData);
-      return res.redirect("/pets/" + req.params.petId);
+      const updatedPet = await petData.updatePet(xss(req.params.petId), newPetData);
+      return res.redirect("/pets/" + xss(req.params.petId));
     } catch (error) {
       console.log(error);
       res.status(404).json({ error: error.message });
     }
   });
 
+  // route to delete
 router.route("/delete/:petId").get(async (req, res) => {
   //code here for DELETE
   // here we are validating petId
   console.log("inside pet delete route");
   try {
-    req.params.petId = helpers.checkId(req.params.petId, "Id URL Param");
+    req.params.petId = helpers.checkId(xss(req.params.petId), "Id URL Param");
   } catch (error) {
     console.log(error);
     return res.status(400).json({ error: error.message });
@@ -252,12 +241,60 @@ router.route("/delete/:petId").get(async (req, res) => {
   //
   //try to delete Event
   try {
-    await petData.removePet(req.params.petId);
+    await petData.removePet(xss(req.params.petId));
     return res.redirect("/pets");
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: error.message });
   }
 });
+  // route to add a comment
+  router.route("/addComment/:petId")
+  .post(async (req, res) => {
+      //validating pet id
+      try {
+        req.params.petId = helpers.checkId(xss(req.params.petId), "pet ID");
+      } catch (error) {
+        console.log(error);
+        return res.status(400).json({ error: error.message });
+      }
+      //validate comment
+      try {
+        req.body.comment_input = helpers.checkString(xss(req.body.comment_input), "Comment");
+      } catch (error) {
+        console.log(error);
+        return res.status(400).json({ error: error.message });
+      }
+      // create comment
+      try {
+        const pet = await petData.createComment(xss(req.params.petId), xss(req.session.user.id), xss(req.body.comment_input));    
+       } catch (error) {
+        console.log(error);
+        res.status(404).json({ error: error });
+      }
+      //reload page to show new comment
+      try {
+        const pet = await petData.getPetById(xss(req.params.petId));
+        res.render("pets/pet", { pet });
+      } catch (error) {
+        console.log(error);
+        res.status(404).json({ error: error });
+      }
+  });
 
+  router.route("/api").get(async (req, res) => {
+    const petSearch = req.query;
+  
+    //make sure there is something present in the req.query
+    if (!petSearch) {
+      return res.status(400).json({ error: "There are no fields in the request query" });
+    }
+  
+    try {
+      const petList = await petData.getPetsBySearch(xss(petSearch.searchPetZip), xss(petSearch.searchPetType));
+      res.json(petList);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
 export default router;

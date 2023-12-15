@@ -3,6 +3,7 @@ const router = Router();
 import isAuthenticated from "../middleware.js";
 import { userData } from "../data/index.js";
 import helpers from "../helpers.js";
+import xss from 'xss';
 
 router.get("/", isAuthenticated, (req, res) => {
   return res.redirect("/pets");
@@ -22,9 +23,9 @@ router
       confirmPasswordInput,
     } = req.body;
 
-    const firstName = helpers.checkString(firstNameInput, "first name");
-    const lastName = helpers.checkString(lastNameInput, "last name");
-    const emailAddress = helpers.checkEmail(emailAddressInput);
+    const firstName = helpers.checkString(xss(firstNameInput), "first name");
+    const lastName = helpers.checkString(xss(lastNameInput), "last name");
+    const emailAddress = helpers.checkEmail(xss(emailAddressInput));
 
     if (passwordInput !== confirmPasswordInput) {
       return res.status(400).render("users/register", {
@@ -34,10 +35,10 @@ router
 
     try {
       const result = await userData.createUser(
-        firstName,
-        lastName,
-        emailAddress,
-        passwordInput
+        xss(firstName),
+        xss(lastName),
+        xss(emailAddress),
+        xss(passwordInput)
       );
 
       if (result.insertedUser) {
@@ -58,8 +59,8 @@ router
   .post(async (req, res) => {
     const { emailAddressInput, passwordInput } = req.body;
 
-    const emailAddress = helpers.checkEmail(emailAddressInput);
-    const trimmedPassword = passwordInput.trim();
+    const emailAddress = helpers.checkEmail(xss(emailAddressInput));
+    const trimmedPassword = xss(passwordInput.trim());
 
     if (!emailAddress || !trimmedPassword) {
       return res
@@ -76,12 +77,13 @@ router
       if (user) {
         res.cookie("AuthState", true);
         req.session.user = {
-          id: user._id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          emailAddress: user.emailAddress,
-          favoritePets: user.favoritePets,
+          id: xss(user._id),
+          firstName: xss(user.firstName),
+          lastName: xss(user.lastName),
+          emailAddress: xss(user.emailAddress),
+          favoritePets: xss(user.favoritePets),
         };
+        //console.log("user id: " + req.session.user.userId)
 
         res.redirect("/pets");
       } else {
