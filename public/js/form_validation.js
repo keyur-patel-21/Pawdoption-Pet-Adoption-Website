@@ -150,11 +150,11 @@ function validateDescription(description) {
 const signupForm = document.forms["signupForm"];
 
 if (signupForm) {
-    const signupFirstName = signupForm.elements["firstName"];
-    const signupLastName = signupForm.elements["lastName"];
-    const signupEmailAddress = signupForm.elements["userEmailAddress"];
-    const signupPassword = signupForm.elements["userPassword"];
-    const signupConfirmPassword = signupForm.elements["confirmUserPassword"];
+    const signupFirstName = signupForm.elements["firstNameInput"];
+    const signupLastName = signupForm.elements["lastNameInput"];
+    const signupEmailAddress = signupForm.elements["emailAddressInput"];
+    const signupPassword = signupForm.elements["passwordInput"];
+    const signupConfirmPassword = signupForm.elements["confirmPasswordInput"];
 
     signupForm.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -226,8 +226,8 @@ if (signupForm) {
 const signinForm = document.forms["signinForm"];
 
 if (signinForm) {
-    const signinEmailAddress = signinForm.elements["emailAddress"];
-    const signinPassword = signinForm.elements["password"];
+    const signinEmailAddress = signinForm.elements["emailAddressInput"];
+    const signinPassword = signinForm.elements["passwordInput"];
 
     signinForm.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -256,14 +256,14 @@ if (signinForm) {
 const newPetForm = document.forms["newPetForm"];
 
 if (newPetForm) {
-    const newPetName = newPetForm.elements["petName"];
-    const newPetAge = newPetForm.elements["petAge"];
-    const newPetGender = newPetForm.elements["petGender"];
-    const newPetBreed = newPetForm.elements["petBreed"];
-    const newPetType = newPetForm.elements["petType"];
-    const newPetZipCode = newPetForm.elements["petZipCode"];
-    const newPetAdoptionStatus = newPetForm.elements["petAdoptionStatus"];
-    const newPetDescription = newPetForm.elements["petDescription"];
+    const newPetName = newPetForm.elements["nameInput"];
+    const newPetAge = newPetForm.elements["ageInput"];
+    const newPetGender = newPetForm.elements["genderInput"];
+    const newPetType = newPetForm.elements["typeInput"];
+    const newPetBreed = newPetForm.elements["breedInput"];
+    const newPetZipCode = newPetForm.elements["zipInput"];
+    const newPetAdoptionStatus = newPetForm.elements["adoptionStatusInput"];
+    const newPetDescription = newPetForm.elements["descriptionInput"];
 
     newPetForm.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -276,8 +276,8 @@ if (newPetForm) {
         const petName = newPetName.value.trim();
         const petAge = newPetAge.value.trim();
         const petGender = newPetGender.value.trim();
-        const petBreed = newPetBreed.value.trim();
         const petType = newPetType.value.trim();
+        const petBreed = newPetBreed.value.trim();
         const petZipCode = newPetZipCode.value.trim();
         const petAdoptionStatus = newPetAdoptionStatus.value.trim();
         const petDescription = newPetDescription.value.trim();
@@ -285,8 +285,8 @@ if (newPetForm) {
         const isPetNameValid = validateName(petName);
         const isPetAgeValid = validateAge(petAge);
         const isPetGenderValid = validateGender(petGender);
-        const isPetBreedValid = validateName(petBreed);
         const isPetTypeValid = validateName(petType);
+        const isPetBreedValid = validateName(petBreed);
         const isPetZipCodeValid = validateZipCode(petZipCode);
         const isPetAdoptionStatusValid = validateAdoptionStatus(petAdoptionStatus);
         const isPetDescriptionValid = validateDescription(petDescription);
@@ -308,17 +308,17 @@ if (newPetForm) {
         } else {
             setNewPetFormError(newPetGender, "Please provide a valid gender.");
         }
+        
+        if (isPetTypeValid) {
+            setInputSuccess(newPetType, "new-pet-error");
+        } else {
+            setNewPetFormError(newPetType, "Please provide a valid pet type.");
+        }
 
         if (isPetBreedValid) {
             setInputSuccess(newPetBreed, "new-pet-error");
         } else {
             setNewPetFormError(newPetBreed, "Please provide a valid breed.");
-        }
-
-        if (isPetTypeValid) {
-            setInputSuccess(newPetType, "new-pet-error");
-        } else {
-            setNewPetFormError(newPetType, "Please provide a valid pet type.");
         }
 
         if (isPetZipCodeValid) {
