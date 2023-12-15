@@ -11,7 +11,7 @@ import xss from 'xss';
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './public/img/pet')
+    cb(null, './public/img/pet/')
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname)
