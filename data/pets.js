@@ -26,7 +26,7 @@ const exportedMethods = {
     zip = helpers.checkZip(zip);
     // TODO: picture file validation
     adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
-    picture = '\\' + picture;
+    //picture = '\\' + picture;
 
     const petCollection = await pets();
 

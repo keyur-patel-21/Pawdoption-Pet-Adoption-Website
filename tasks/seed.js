@@ -49,12 +49,11 @@ try {
         "Pella is a sweet dog who loves going on hikes and chasing squirrels.",
         "Dog",
         "06812",
-        "pellaPicture.jpeg",
+        "/public/img/pet/pellaPicture.jpeg",
         "false");
 } catch (e) {
     console.log(e);
 }
-
 try {
     coco = await pets.createPet(dhanvin.insertedUserId, 
         "Coco", 
@@ -64,7 +63,7 @@ try {
         "Coco is looking for a new home. She loves other dogs and playing fetch!",
         "Dog",
         "07020",
-        "cocoPicture.jpeg",
+        "/public/img/pet/cocoPicture.jpeg",
         "false");
 } catch (e) {
     console.log(e);
@@ -81,7 +80,7 @@ try {
         "Polly loves bird watching. She can't wait to find a loving home.",
         "Cat",
         "07020",
-        "pollyPicture.jpg",
+        "/public/img/pet/pollyPicture.jpg",
         "false");
 } catch (e) {
     console.log(e);
@@ -96,7 +95,7 @@ try {
         "Murphy is a lazy cat who loves cat treats and cuddling!",
         "Cat",
         "07020",
-        "murphyPicture.jpg",
+        "/public/img/pet/murphyPicture.jpg",
         "false");
 } catch (e) {
     console.log(e);
@@ -113,7 +112,7 @@ try {
         "Fin is a quiet fish who needs a new home.",
         "Fish",
         "07020",
-        "finPicture.jpg",
+        "/public/img/pet/finPicture.jpg",
         "false");
 } catch (e) {
     console.log(e);
@@ -130,7 +129,7 @@ try {
         "Bunny's favrotie food is hay and he loves playing hide and seek.",
         "Rabbit",
         "07020",
-        "bunnyPicture.jpg",
+        "/public/img/pet/bunnyPicture.jpg",
         "false");
 } catch (e) {
     console.log(e);
@@ -147,7 +146,7 @@ try {
         "Rex loves his sun lamp. He's looking for a new owner that loves chameleons!",
         "Reptile",
         "07020",
-        "rexPicture.jpeg",
+        "/public/img/pet/rexPicture.jpeg",
         "false");
 } catch (e) {
     console.log(e);
@@ -164,7 +163,7 @@ try {
         "Rex is looking for a new home, preferably with another bird",
         "Bird",
         "07020",
-        "diegoPicture.jpg",
+        "/public/img/pet/diegoPicture.jpg",
         "false");
 } catch (e) {
     console.log(e);
