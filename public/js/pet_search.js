@@ -69,7 +69,11 @@ $(function () {
                             searchPetsList.append(`<li class="search-pet" id="pet${i}">`);
                             $(`#pet${i}`).append(`<a href="/pets/${pet._id}" id="petlink${i}"></a>`);
                             $(`#petlink${i}`).append(`<div class="search-pet-details" id="pet-det${i}"></div>`);
-                            $(`#pet-det${i}`).append(`<img src="${pet.picture}" alt="${pet.name}" style="width: 50%;">`);
+                            if (pet.picture) {
+                                $(`#pet-det${i}`).append(`<img src="${pet.picture}" alt="${pet.name}" style="width: 110px; height: 110px; border-radius: 5px;">`);
+                            } else {
+                                $(`#pet-det${i}`).append(`<img src="/public/img/user/no_image.png" alt="${pet.name}" style="width: 110px; height: 110px; border-radius: 5px;">`);
+                            }
                             $(`#pet-det${i}`).append(`<p>Name: ${pet.name}</p>`);
                             $(`#pet-det${i}`).append(`<p>Age: ${pet.age}</p>`);
                             $(`#pet-det${i}`).append(`<p>Gender: ${pet.gender}</p>`);
