@@ -35,7 +35,11 @@
             <li class="search-pet">
                 <a href="/pets/{{pet._id}}">
                     <div class="search-pet-details">
-                        <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 50%;">
+                        {{#if pet.picture}}
+                        <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 110px; height: 110px; border-radius: 5px;">
+                        {{else}}
+                        <img src="/public/img/user/no_image.png" alt="{{pet.name}}" style="width: 110px; height: 110px; border-radius: 5px;">
+                        {{/if}}
                         <p>Name: {{pet.name}}</p>
                         <p>Age: {{pet.age}}</p>
                         <p>Gender: {{pet.gender}}</p>
