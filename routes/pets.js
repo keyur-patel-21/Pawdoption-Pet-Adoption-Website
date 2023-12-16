@@ -16,11 +16,28 @@ var storage = multer.diskStorage({
     cb(null, file.originalname)
   }
 })
- 
+
 var upload = multer({ storage: storage })
 
 // routes to list all pets and create new pets
 router.use(isAuthenticated);
+
+router.route("/api").get(async (req, res) => {
+  const petSearch = req.query;
+
+  //make sure there is something present in the req.query
+  if (!petSearch) {
+    return res.status(400).json({ error: "There are no fields in the request query" });
+  }
+
+  try {
+    const petList = await petData.getPetsBySearch(petSearch.searchPetZip, petSearch.searchPetType);
+    res.json(petList);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 router
   .route("/")
   .get(async (req, res) => {
@@ -74,8 +91,8 @@ router
       return res.status(400).json({ error: error.message });
     }
 
-    console.log("user" , req.session.user)
-    console.log("req " , req.body)
+    console.log("user", req.session.user)
+    console.log("req ", req.body)
     // here we are creating new pet
     try {
       const {
@@ -152,7 +169,7 @@ router
     try {
       const pet = await petData.getPetById(req.params.petId);
       const updatedUser = await userData.getUserById(req.session.user.id)
-      if (updatedUser){
+      if (updatedUser) {
         req.session.user = {
           id: updatedUser._id,
           firstName: updatedUser.firstName,
@@ -164,7 +181,7 @@ router
 
       let isCreator = false;
       if (JSON.stringify(req.session.user.id) === JSON.stringify(pet.creatorId)) isCreator = true;
-      if (JSON.stringify(req.session.user.favoritePets).includes( JSON.stringify(pet._id))) {
+      if (JSON.stringify(req.session.user.favoritePets).includes(JSON.stringify(pet._id))) {
         res.render("pets/pet", { pet: pet, isFavorite: true, isCreator: isCreator });
       } else {
         res.render("pets/pet", { pet: pet, isFavorite: false, isCreator: isCreator });
@@ -228,7 +245,7 @@ router
     }
   });
 
-  // route to delete
+// route to delete
 router.route("/delete/:petId").get(async (req, res) => {
   //code here for DELETE
   // here we are validating petId
@@ -249,53 +266,38 @@ router.route("/delete/:petId").get(async (req, res) => {
     res.status(404).json({ error: error.message });
   }
 });
-  // route to add a comment
-  router.route("/addComment/:petId")
+// route to add a comment
+router.route("/addComment/:petId")
   .post(async (req, res) => {
-      //validating pet id
-      try {
-        req.params.petId = helpers.checkId(req.params.petId, "pet ID");
-      } catch (error) {
-        console.log(error);
-        return res.status(400).json({ error: error.message });
-      }
-      //validate comment
-      try {
-        req.body.comment_input = helpers.checkString(req.body.comment_input, "Comment");
-      } catch (error) {
-        console.log(error);
-        return res.status(400).json({ error: error.message });
-      }
-      // create comment
-      try {
-        const pet = await petData.createComment(req.params.petId, req.session.user.id, req.body.comment_input);    
-       } catch (error) {
-        console.log(error);
-        res.status(404).json({ error: error });
-      }
-      //reload page to show new comment
-      try {
-        const pet = await petData.getPetById(req.params.petId);
-        res.render("pets/pet", { pet });
-      } catch (error) {
-        console.log(error);
-        res.status(404).json({ error: error });
-      }
+    //validating pet id
+    try {
+      req.params.petId = helpers.checkId(req.params.petId, "pet ID");
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ error: error.message });
+    }
+    //validate comment
+    try {
+      req.body.comment_input = helpers.checkString(req.body.comment_input, "Comment");
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ error: error.message });
+    }
+    // create comment
+    try {
+      const pet = await petData.createComment(req.params.petId, req.session.user.id, req.body.comment_input);
+    } catch (error) {
+      console.log(error);
+      res.status(404).json({ error: error });
+    }
+    //reload page to show new comment
+    try {
+      const pet = await petData.getPetById(req.params.petId);
+      res.render("pets/pet", { pet });
+    } catch (error) {
+      console.log(error);
+      res.status(404).json({ error: error });
+    }
   });
 
-  router.route("/api").get(async (req, res) => {
-    const petSearch = req.query;
-  
-    //make sure there is something present in the req.query
-    if (!petSearch) {
-      return res.status(400).json({ error: "There are no fields in the request query" });
-    }
-  
-    try {
-      const petList = await petData.getPetsBySearch(petSearch.searchPetZip, petSearch.searchPetType);
-      res.json(petList);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  });
 export default router;
