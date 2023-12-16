@@ -13,7 +13,7 @@ try {
         "Fiona",
         "Brockner",
         "fbrockne@stevens.edu",
-        "tester123!");
+        "Tester123!");
 } catch (e) {
     console.log(e);
 }
@@ -23,7 +23,7 @@ try {
         "Dhanvin",
         "Patel",
         "dhanvin@stevens.edu",
-        "tester123!");
+        "Tester123!");
 } catch (e) {
     console.log(e);
 }
@@ -33,7 +33,7 @@ try {
         "Keyur",
         "Patel",
         "keyur@stevens.edu",
-        "tester123!");
+        "Tester123!");
 } catch (e) {
     console.log(e);
 }
