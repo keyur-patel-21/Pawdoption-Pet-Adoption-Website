@@ -47,7 +47,7 @@ router
       res.render("pets/home", { pets: petList, user: xss(req.session.user) });
     } catch (error) {
       console.log(error);
-      res.status(400).render("pets/home", { error: error.message });
+      res.status(400).render("pets/home", { error: error.message, user:req.session.user });
     }
   })
 
@@ -127,10 +127,10 @@ router
 // route to open form for creating new pet
 router.route("/new").get(async (req, res) => {
   try {
-    res.render("pets/new-pet");
+    res.render("pets/new-pet",{ user:req.session.user });
   } catch (error) {
     console.log(error);
-    res.status(400).render("pets/new-pet", { error: error.message });
+    res.status(400).render("pets/new-pet", { error: error.message , user:req.session.user });
   }
 });
 
@@ -145,10 +145,10 @@ router.route("/edit/:petId").get(async (req, res) => {
 
   try {
     let pet = await petData.getPetById(xss(req.params.petId));
-    res.render("pets/update-pet", { pet: pet });
+    res.render("pets/update-pet", { pet: pet, user:req.session.user });
   } catch (error) {
     console.log(error);
-    res.status(400).render("pets/update-pet", { error: error.message });
+    res.status(400).render("pets/update-pet", { error: error.message , user:req.session.user});
   }
 });
 
@@ -181,9 +181,10 @@ router
       let isCreator = false;
       if (JSON.stringify(req.session.user.id) === JSON.stringify(pet.creatorId)) isCreator = true;
       if (JSON.stringify(req.session.user.favoritePets).includes(JSON.stringify(pet._id))) {
-        res.render("pets/pet", { pet: pet, isFavorite: true, isCreator: isCreator });
+        res.render("pets/pet", { pet: pet, isFavorite: true, isCreator: isCreator, user: req.session.user });
       } else {
-        res.render("pets/pet", { pet: pet, isFavorite: false, isCreator: isCreator });
+        console.log(req.session.user)
+        res.render("pets/pet", { pet: pet, isFavorite: false, isCreator: isCreator, user: req.session.user });
       }
     } catch (error) {
       console.log(error);
@@ -292,7 +293,7 @@ router.route("/addComment/:petId")
       //reload page to show new comment
       try {
         const pet = await petData.getPetById(xss(req.params.petId));
-        res.render("pets/pet", { pet });
+        res.render("pets/pet", { pet , user:req.session.user});
       } catch (error) {
         console.log(error);
         res.status(404).json({ error: error });
