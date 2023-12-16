@@ -4,20 +4,20 @@
     <div class="card-layout">
         <div class="new-pet-container">
             <h1>Update {{pet.name}} Information</h1>
-            <form action="/pets/update-pet" method="post" id="newPetForm" autocomplete="off">
+            <form action="/pets/{{pet._id}}" method="post" id="newPetForm" autocomplete="off">
                 <div class="new-pet-input">
-                    <label for="petName">Name</label>
-                    <input type="text" name="petName" id="petName" value="{{pet.name}}" required>
+                    <label for="nameInput">Name</label>
+                    <input type="text" name="nameInput" id="nameInput" value="{{pet.name}}" required>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petAge">Age</label>
-                    <input type="text" name="petAge" id="petAge" value="{{pet.age}}" required>
+                    <label for="ageInput">Age</label>
+                    <input type="text" name="ageInput" id="ageInput" value="{{pet.age}}" required>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petGender">Gender</label>
-                    <select name="petGender" id="petGender" required>
+                    <label for="genderInput">Gender</label>
+                    <select name="genderInput" id="genderInput" required>
                         <option value="" selected disabled>-- Please choose a gender --</option>
                         <option value="female">Female</option>
                         <option value="male">Male</option>
@@ -25,23 +25,31 @@
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petType">Type of Animal</label>
-                    <input type="text" name="petType" id="petType" placeholder="e.g. Dog, Cat" value="{{pet.typeOfAnimal}}" required>
+                    <label for="typeInput">Type of Animal</label>
+                    <select name="typeInput" id="typeInput" required>
+                        <option value="" selected disabled>-- Please select type --</option>
+                        <option value="dog">Dog</option>
+                        <option value="cat">Cat</option>
+                        <option value="bird">Bird</option>
+                        <option value="rabbit">Rabbit</option>
+                        <option value="fish">Fish</option>
+                        <option value="reptile">Reptile</option>
+                    </select>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petBreed">Breed</label>
-                    <input type="text" name="petBreed" id="petBreed" value="{{pet.breed}}" required>
+                    <label for="breedInput">Breed</label>
+                    <input type="text" name="breedInput" id="breedInput" value="{{pet.breed}}" required>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petZipCode">Zip Code</label>
-                    <input type="text" name="petZipCode" id="petZipCode" value="{{pet.zip}}" required>
+                    <label for="zipInput">Zip Code</label>
+                    <input type="text" name="zipInput" id="zipInput" value="{{pet.zip}}" required>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petAdoptionStatus">Adoption Status</label>
-                    <select name="petAdoptionStatus" id="petAdoptionStatus" required>
+                    <label for="adoptionStatusInput">Adoption Status</label>
+                    <select name="adoptionStatusInput" id="adoptionStatusInput" required>
                         <option value="" selected disabled>-- Please choose adoption status --</option>
                         <option value="true">Adopted</option>
                         <option value="false">Not Adopted</option>
@@ -49,16 +57,19 @@
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petDescription">Description</label>
-                    <input type="text" name="petDescription" id="petDescription"
+                    <label for="descriptionInput">Description</label>
+                    <input type="text" name="descriptionInput" id="descriptionInput"
                         placeholder="Tell us about your paw . . ." value="{{pet.description}}" required>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petPicture">Choose a picture</label>
-                    <input type="file" name="petPicture" id="petPicture">
+                    <label for="image">Choose a picture</label>
+                    <input type="file" name="image" id="image">
                     <p></p>
                 </div>
+                {{#if error}}
+                <p class="error">{{error}}</p>
+                {{/if}}
                 <div class="new-pet-submit">
                     <button type="submit" class="btn-new-pet">Add Pet</button>
                 </div>
