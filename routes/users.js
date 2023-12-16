@@ -12,7 +12,7 @@ router.get("/", isAuthenticated, (req, res) => {
 router
   .route("/register")
   .get(async (req, res) => {
-    res.render("users/register", { title: "Sign up" });
+    res.render("users/signup", { title: "Sign up" });
   })
   .post(async (req, res) => {
     const {
@@ -28,7 +28,7 @@ router
     const emailAddress = helpers.checkEmail(xss(emailAddressInput));
 
     if (passwordInput !== confirmPasswordInput) {
-      return res.status(400).render("users/register", {
+      return res.status(400).render("users/signup", {
         error: "Password and confirmPassword do not match",
       });
     }
@@ -47,14 +47,14 @@ router
         res.status(500).send("Internal Server Error");
       }
     } catch (error) {
-      res.status(400).render("users/register", { error: error.message });
+      res.status(400).render("users/signup", { error: error.message });
     }
   });
 
 router
   .route("/login")
   .get(async (req, res) => {
-    res.render("users/login", { title: "Login Page" });
+    res.render("users/signin", { title: "Login Page" });
   })
   .post(async (req, res) => {
     const { emailAddressInput, passwordInput } = req.body;
@@ -65,7 +65,7 @@ router
     if (!emailAddress || !trimmedPassword) {
       return res
         .status(400)
-        .render("login", { error: "Email address and password are required" });
+        .render("signin", { error: "Email address and password are required" });
     }
 
     try {
@@ -87,13 +87,13 @@ router
 
         res.redirect("/pets");
       } else {
-        res.status(400).render("users/login", {
+        res.status(400).render("users/signin", {
           error: "Invalid email address and/or password",
         });
       }
     } catch (error) {
       console.log(error);
-      res.status(400).render("users/login", { error: error.message });
+      res.status(400).render("users/signin", { error: error.message });
     }
   });
 
@@ -102,7 +102,7 @@ router.route("/logout").get(async (req, res) => {
   console.log(req.session.user);
   if (req.session.user) {
     req.session.destroy();
-    res.status(200).render("users/login", { title: "Logout" });
+    res.status(200).render("users/signin", { title: "Logout" });
   }
 });
 
