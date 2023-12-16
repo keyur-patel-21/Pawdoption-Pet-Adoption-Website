@@ -12,7 +12,7 @@ router.get("/", isAuthenticated, (req, res) => {
 router
   .route("/register")
   .get(async (req, res) => {
-    res.render("users/signup", { title: "Sign up" });
+    res.render("users/signup", { title: "Sign up" ,  layout: "account" });
   })
   .post(async (req, res) => {
     const {
@@ -30,6 +30,7 @@ router
     if (passwordInput !== confirmPasswordInput) {
       return res.status(400).render("users/signup", {
         error: "Password and confirmPassword do not match",
+        layout: "account" 
       });
     }
 
@@ -47,14 +48,14 @@ router
         res.status(500).send("Internal Server Error");
       }
     } catch (error) {
-      res.status(400).render("users/signup", { error: error.message });
+      res.status(400).render("users/signup", { error: error.message, layout: "account" });
     }
   });
 
 router
   .route("/login")
   .get(async (req, res) => {
-    res.render("users/signin", { title: "Login Page" });
+    res.render("users/signin", { title: "Login Page" ,  layout: "account" });
   })
   .post(async (req, res) => {
     const { emailAddressInput, passwordInput } = req.body;
@@ -65,7 +66,7 @@ router
     if (!emailAddress || !trimmedPassword) {
       return res
         .status(400)
-        .render("signin", { error: "Email address and password are required" });
+        .render("signin", { error: "Email address and password are required",  layout: "account"  });
     }
 
     try {
@@ -89,20 +90,19 @@ router
       } else {
         res.status(400).render("users/signin", {
           error: "Invalid email address and/or password",
+          layout: "account" 
         });
       }
     } catch (error) {
       console.log(error);
-      res.status(400).render("users/signin", { error: error.message });
+      res.status(400).render("users/signin", { error: error.message ,  layout: "account" });
     }
   });
 
 router.route("/logout").get(async (req, res) => {
-  console.log("inside logout path");
-  console.log(req.session.user);
   if (req.session.user) {
     req.session.destroy();
-    res.status(200).render("users/signin", { title: "Logout" });
+    res.status(200).render("users/signin", { title: "Logout" ,  layout: "account" });
   }
 });
 
