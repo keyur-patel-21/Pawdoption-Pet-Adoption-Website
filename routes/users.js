@@ -26,6 +26,14 @@ router
     const firstName = helpers.checkString(xss(firstNameInput), "first name");
     const lastName = helpers.checkString(xss(lastNameInput), "last name");
     const emailAddress = helpers.checkEmail(xss(emailAddressInput));
+    const passwordReg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[~`!@#$%^&*()\-_=+{}[\]:;"'<>,.?/|\\]).{8,}$/;
+
+    if (passwordInput.length === 0 || /\s/.test(passwordInput) || !passwordReg.test(passwordInput)) {
+      return res.status(400).render("users/signup", {
+        error: "Please provide valid password",
+        layout: "account" 
+      });
+    }
 
     if (passwordInput !== confirmPasswordInput) {
       return res.status(400).render("users/signup", {

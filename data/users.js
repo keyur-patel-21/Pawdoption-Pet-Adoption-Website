@@ -14,7 +14,11 @@ const exportedMethods = {
     firstName = helpers.checkString(firstName, "first name");
     lastName = helpers.checkString(lastName, "last name");
     emailAddress = helpers.checkEmail(emailAddress);
+    const passwordReg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[~`!@#$%^&*()\-_=+{}[\]:;"'<>,.?/|\\]).{8,}$/;
 
+    if (password.length === 0 || /\s/.test(password) || !passwordReg.test(password)) {
+      throw "Please provide valid password"
+    }
     const isDuplicateEmail = await checkDuplicateEmail(emailAddress);
     if (isDuplicateEmail) {
       throw "Email address already exists.";
