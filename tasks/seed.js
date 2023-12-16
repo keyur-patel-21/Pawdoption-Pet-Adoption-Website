@@ -146,7 +146,7 @@ try {
         "Rex loves his sun lamp. He's looking for a new owner that loves chameleons!",
         "Reptile",
         "07020",
-        "\public\img\pet\rexPicture.jpeg",
+        "/public/img/pet/diegoPicture.jpg",
         "false");
 } catch (e) {
     console.log(e);

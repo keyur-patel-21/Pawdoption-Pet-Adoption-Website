@@ -71,7 +71,7 @@
             {{#each pet.comments}}
             <div class="comment-box">
                 <img src="/public/img/user/user.png" alt="User profile." style="width: 40px;">
-                <p class="user-name">{{userName}}</p>
+                <p class="user-name">{{userName}}</p> 
                 <p class="user-comment">{{commentContent}}</p>
             </div>
             {{/each}}
@@ -80,7 +80,7 @@
             {{/if}}
         </div>
         <div class="make-comment">
-            <form action="/pets/addComment{{pet._id}}" method="post" id="comment_form">
+            <form action="/pets/addComment/{{pet._id}}" method="post" id="comment_form">
                 <textarea name="comment_input" id="comment_input" class="commentArea" cols="30" rows="1"
                     placeholder="Your comment ..."></textarea>
                 <button type="submit" class="btn-comment">Comment</button>
