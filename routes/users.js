@@ -143,4 +143,12 @@ router.route("/removeFromFavourites/:petId").get(async (req, res) => {
   }
 });
 
+router.route("/about").get(async (req, res) => {
+  res.render("pages/about");
+});
+
+router.route("/profile").get(async (req, res) => {
+  res.render("users/profile", { user: req.session.user});
+});
+
 export default router;

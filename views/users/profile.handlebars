@@ -11,13 +11,13 @@
             <h1>Personal Information</h1>
             <p>First Name: {{user.firstName}}</p>
             <p>Last Name: {{user.lastName}}</p>
-            <p>Email: {{user.email}}</p>
+            <p>Email: {{user.emailAddress}}</p>
         </div>
     </div>
 
     <div class="favorite-pets">
         <h2>Favorite Pets</h2>
-        {{#if pets}}
+        {{#if favoritePets}}
         <ul class="fav-pets-list">
             {{#each pets as |pet key|}}
             <li class="fav-pet">
