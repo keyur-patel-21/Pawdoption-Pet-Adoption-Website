@@ -13,7 +13,7 @@
                 </div>
                 <div class="new-pet-input">
                     <label for="ageInput">Age</label>
-                    <input type="text" name="ageInput" id="ageInput" required>
+                    <input type="number" name="ageInput" id="ageInput" min="0" max="150" required>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
@@ -27,16 +27,15 @@
                 </div>
                 <div class="new-pet-input">
                     <label for="typeInput">Type of Animal</label>
-                    <select name="typeInput" id="typeInput" required>
-                        <option value="" selected disabled>-- Please select type --</option>
-                        <option value="dog">Dog</option>
-                        <option value="cat">Cat</option>
-                        <option value="bird">Bird</option>
-                        <option value="rabbit">Rabbit</option>
-                        <option value="fish">Fish</option>
-                        <option value="reptile">Reptile</option>
+                    <select id="typeInput" name="typeInput" required>
+                        <option value="" disabled selected>-- Please Select Type --</option>
+                        <option value="Dog">Dog</option>
+                        <option value="Cat">Cat</option>
+                        <option value="Bird">Bird</option>
+                        <option value="Rabbit">Rabbit</option>
+                        <option value="Fish">Fish</option>
+                        <option value="Reptile">Reptile</option>
                     </select>
-                    <p></p>
                 </div>
                 <div class="new-pet-input">
                     <label for="breedInput">Breed</label>
@@ -45,7 +44,7 @@
                 </div>
                 <div class="new-pet-input">
                     <label for="zipInput">Zip Code</label>
-                    <input type="text" name="zipInput" id="zipInput" required>
+                    <input type="text" name="zipInput" id="zipInput" pattern="[0-9]{5}" required>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
