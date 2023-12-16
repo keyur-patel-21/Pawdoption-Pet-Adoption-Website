@@ -16,6 +16,11 @@
                     <input type="password" name="passwordInput" id="passwordInput" required>
                     <p></p>
                 </div>
+                {{#if error}}
+                <div class="signin-input">
+                    <p class="error">{{error}}</p>
+                </div>
+                {{/if}}
                 <div class="signin-submit">
                     <button type="submit" class="btn-signin">Sign In</button>
                 </div>

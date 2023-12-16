@@ -31,6 +31,11 @@
                     <input type="password" name="confirmPasswordInput" id="confirmPasswordInput" required>
                     <p></p>
                 </div>
+                {{#if error}}
+                <div class="signup-input">
+                    <p class="error">{{error}}</p>
+                </div>
+                {{/if}}
                 <div class="existing-user" id="existingUser">
                     <p>Already have an account&#63; <a href="/login">Sign In</a></p>
                 </div>
