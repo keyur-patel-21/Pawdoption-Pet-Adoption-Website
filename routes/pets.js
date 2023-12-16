@@ -32,7 +32,7 @@ router.route("/api").get(async (req, res) => {
   }
 
   try {
-    const petList = await petData.getPetsBySearch(petSearch.searchPetZip, petSearch.searchPetType);
+    const petList = await petData.getPetsBySearch(xss(petSearch.searchPetZip), xss(petSearch.searchPetType));
     res.json(petList);
   } catch (error) {
     res.status(400).json({ error: error.message });
