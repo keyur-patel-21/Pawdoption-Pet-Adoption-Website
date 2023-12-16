@@ -166,15 +166,15 @@ router
     }
     //try getting the event by ID
     try {
-      const pet = await petData.getPetById(xss(req.params.petId));
-      const updatedUser = await userData.getUserById(xss(req.session.user.id))
+      const pet = await petData.getPetById((req.params.petId));
+      const updatedUser = await userData.getUserById((req.session.user.id))
       if (updatedUser){
         req.session.user = {
           id: xss(updatedUser._id),
           firstName: xss(updatedUser.firstName),
           lastName: xss(updatedUser.lastName),
           emailAddress: xss(updatedUser.emailAddress),
-          favoritePets: xss(updatedUser.favoritePets),
+          favoritePets: (updatedUser.favoritePets),
         };
       }
 

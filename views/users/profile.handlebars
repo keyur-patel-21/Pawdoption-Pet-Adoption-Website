@@ -19,19 +19,19 @@
         <h2>Favorite Pets</h2>
         {{#if user.favoritePets}}
         <ul class="fav-pets-list">
-            {{#each pets as |pet key|}}
+            {{#each user.favoritePets }}
             <li class="fav-pet">
-                <a href="/pets/{{pet._id}}">
+                <a href="/pets/{{this._id}}">
                     <div class="fav-pet-details">
-                        {{#if pet.picture}}
-                        <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 110px; height: 110px; border-radius: 5px;">
+                        {{#if this.picture}}
+                        <img src="{{this.picture}}" alt="{{this.name}}" style="width: 110px; height: 110px; border-radius: 5px;">
                         {{else}}
-                        <img src="/public/img/user/no_image.png" alt="{{pet.name}}" style="width: 110px; height: 110px; border-radius: 5px;">
+                        <img src="/public/img/user/no_image.png" alt="{{this.name}}" style="width: 110px; height: 110px; border-radius: 5px;">
                         {{/if}}
-                        <p>Name: {{pet.name}}</p>
-                        <p>Age: {{pet.age}}</p>
-                        <p>Gender: {{pet.gender}}</p>
-                        <p>Breed: {{pet.breed}}</p>
+                        <p>Name: {{this.name}}</p>
+                        <p>Age: {{this.age}}</p>
+                        <p>Gender: {{this.gender}}</p>
+                        <p>Breed: {{this.breed}}</p>
                     </div>
                 </a>
             </li>

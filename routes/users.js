@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 import isAuthenticated from "../middleware.js";
-import { userData } from "../data/index.js";
+import { petData, userData } from "../data/index.js";
 import helpers from "../helpers.js";
 import xss from 'xss';
 
@@ -90,7 +90,7 @@ router
           firstName: xss(user.firstName),
           lastName: xss(user.lastName),
           emailAddress: xss(user.emailAddress),
-          favoritePets: xss(user.favoritePets),
+          favoritePets: (user.favoritePets),
         };
         //console.log("user id: " + req.session.user.userId)
 
@@ -156,6 +156,7 @@ router.route("/about").get(async (req, res) => {
 });
 
 router.route("/profile").get(async (req, res) => {
+  console.log(req.session.user.favoritePets)
   res.render("users/profile", { user: req.session.user});
 });
 
