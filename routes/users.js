@@ -152,7 +152,7 @@ router.route("/removeFromFavourites/:petId").get(async (req, res) => {
 });
 
 router.route("/about").get(async (req, res) => {
-  res.render("pages/about");
+  res.render("pages/about", { user:req.session.user});
 });
 
 router.route("/profile").get(async (req, res) => {
