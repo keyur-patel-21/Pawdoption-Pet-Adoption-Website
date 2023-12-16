@@ -26,8 +26,15 @@
                 </div>
                 <div class="new-pet-input">
                     <label for="petType">Type of Animal</label>
-                    <input type="text" name="petType" id="petType" placeholder="e.g. Dog, Cat" value="{{pet.typeOfAnimal}}" required>
-                    <p></p>
+                    <select id="petType" name="petType" required>
+                        <option value="{{pet.typeOfAnimal}}">{{pet.typeOfAnimal}}</option>
+                        <option value="Dog">Dog</option>
+                        <option value="Cat">Cat</option>
+                        <option value="Bird">Bird</option>
+                        <option value="Rabbit">Rabbit</option>
+                        <option value="Fish">Fish</option>
+                        <option value="Reptile">Reptile</option>
+                    </select>
                 </div>
                 <div class="new-pet-input">
                     <label for="petBreed">Breed</label>
