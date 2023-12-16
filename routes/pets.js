@@ -27,10 +27,10 @@ router
   .get(async (req, res) => {
     try {
       const petList = await petData.getAllPets();
-      res.render("pets/pets", { pets: petList, user: xss(req.session.user) });
+      res.render("pets/home", { pets: petList, user: xss(req.session.user) });
     } catch (error) {
       console.log(error);
-      res.status(400).render("pets/pets", { error: error.message });
+      res.status(400).render("pets/home", { error: error.message });
     }
   })
 
@@ -110,10 +110,10 @@ router
 // route to open form for creating new pet
 router.route("/new").get(async (req, res) => {
   try {
-    res.render("pets/form");
+    res.render("pets/new-pet");
   } catch (error) {
     console.log(error);
-    res.status(400).render("pets/form", { error: error.message });
+    res.status(400).render("pets/new-pet", { error: error.message });
   }
 });
 
@@ -128,10 +128,10 @@ router.route("/edit/:petId").get(async (req, res) => {
 
   try {
     let pet = await petData.getPetById(xss(req.params.petId));
-    res.render("pets/editform", { pet: pet });
+    res.render("pets/update-pet", { pet: pet });
   } catch (error) {
     console.log(error);
-    res.status(400).render("pets/editform", { error: error.message });
+    res.status(400).render("pets/update-pet", { error: error.message });
   }
 });
 

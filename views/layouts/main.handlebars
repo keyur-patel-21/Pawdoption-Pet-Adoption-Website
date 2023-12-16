@@ -1,12 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/public/img/favicon/site.webmanifest">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
 </head>
+
 <body>
-  
-  {{{body}}}
+    <header class="main-nav">
+        <nav>
+            <div class="logo">
+                <a href="/pets">
+                    <img src="/public/img/logo/pawdoption_logo.png"
+                        alt="Pawdoption logo with website title, a dog and cat underneath and slogan.">
+                </a>
+            </div>
+            <ul class="menu-list">
+                <li class="list-item">
+                    <a href="/pets">Home</a>
+                </li>
+                <li class="list-item">
+                    <a href="/about">About</a>
+                </li>
+                {{#if isUser}}
+                <li class="list-item">
+                    <a href="/profile">Profile</a>
+                </li>
+                <li class="list-item">
+                    <a href="/logout">Log Out</a>
+                </li>
+                {{else}}
+                <li class="list-item">
+                    <a href="/login">Sign In</a>
+                </li>
+                <li class="list-item">
+                    <a href="/register">Sign Up</a>
+                </li>
+                {{/if}}
+            </ul>
+        </nav>
+    </header>
+
+    {{{body}}}
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="/public/js/pet_search.js"></script>
+    <script src="/public/js/form_validation.js"></script>
 </body>
+
 </html>

@@ -1,66 +1,90 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <main>
-      <article>
-        {{#if pet.name}}
-          <h1>{{pet.name}}</h1>
-        {{/if}}
-        {{#if pet.picture}}
-          <img src={{pet.picture}}>
-        {{/if}}
-        {{#if pet.age}}
-          <p>{{pet.age}}</p>
-        {{/if}}
-        {{#if pet.gender}}
-          <p>{{pet.gender}}</p>
-        {{/if}}
-        {{#if pet.breed}}
-          <p>{{pet.breed}}</p>
-        {{/if}}
-        {{#if pet.description}}
-          <p>{{pet.description}}</p>
-        {{/if}}
-        {{#if pet.typeOfAnimal}}
-          <p>{{pet.typeOfAnimal}}</p>
-        {{/if}}
-        {{#if pet.zip}}
-          <p>{{pet.zip}}</p>
-        {{/if}}
-        {{#if pet.adoptionStatus}}
-          <p>{{pet.adoptionStatus}}</p>
-        {{/if}}
-        <form id="comment_form" name="comment_form" method="POST", action="/pets/addComment/{{pet._id}}">
-          <textarea name="comment_input" id="comment_input" type="text"></textarea>
-          <br/>
-          <button type="submit" id="commentButton" name="commentButton">Post</button>
-        </form>
-        <div id="commentDiv">
-          {{#if pet.comments}}
-            {{#each pet.comments}}
-              <p>{{commentContent}}</p>
-              <p>- {{userName}}</p>
-            {{/each}}
-          {{/if}}
-        </div>
-        {{#if isFavorite}}
-          <a href="/removeFromFavourites/{{pet._id}}">Remove from Favourites</a>  
-        {{else}}
-          <a href="/addToFavourites/{{pet._id}}">Add to Favourites</a>  
-        {{/if}}
+{{!-- Pet page --}}
+
+<main class="pet">
+    <div class="pet-profile">
+        <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 200px;">
         {{#if isCreator}}
-          <a href="/pets/edit/{{pet._id}}" id="update_link" >update</a> 
-          <a href="/pets/delete/{{pet._id}}" id="delete_link">delete</a>
+        <div class="update-pet">
+            <a href="/pets/edit/{{pet._id}}">Update <span class="material-icons-outlined">edit</span></a>
+        </div>
+        <div class="delete-pet">
+            <a href="/pets/delete/{{pet._id}}">Delete <span class="material-icons-outlined">delete</span></a>
+        </div>
         {{/if}}
-         <a href="/pets" id="rootLink">Back to All Pets</a> 
-      </article>
-    </main>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
-      integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-  </body>
-</html>
+        {{#if isFavorite}}
+        <div class="dislike-pet">
+            <a href="/removeFromFavourites/{{pet._id}}">Unlike <span class="material-icons-outlined">favorite_border</span></a>
+        </div>
+        {{else}}
+        <div class="like-pet">
+            <a href="/addToFavourites/{{pet._id}}">Like <span class="material-icons-outlined">favorite</span></a>
+        </div>
+        {{/if}}
+    </div>
+    <div class="pet-details">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">{{pet.name}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Name</td>
+                    <td>{{pet.name}}</td>
+                </tr>
+                <tr>
+                    <td>Age</td>
+                    <td>{{pet.age}}</td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td>{{pet.gender}}</td>
+                </tr>
+                <tr>
+                    <td>Type of Animal</td>
+                    <td>{{pet.typeOfAnimal}}</td>
+                </tr>
+                <tr>
+                    <td>Breed</td>
+                    <td>{{pet.breed}}</td>
+                </tr>
+                <tr>
+                    <td>Zip Code</td>
+                    <td>{{pet.zip}}</td>
+                </tr>
+                <tr>
+                    <td>Adoption Status</td>
+                    <td>{{pet.adoptionStatus}}</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>{{pet.description}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="pet-comments">
+        <p class="comment-title">Comments</p>
+        <div class="comments-container">
+            {{#if pet.comments}}
+            {{#each pet.comments}}
+            <div class="comment-box">
+                <img src="/public/img/user/user.png" alt="User profile." style="width: 40px;">
+                <p class="user-name">{{userName}}</p>
+                <p class="user-comment">{{commentContent}}</p>
+            </div>
+            {{/each}}
+            {{else}}
+            <p class="no-comments">No comments</p>
+            {{/if}}
+        </div>
+        <div class="make-comment">
+            <form action="/pets/addComment{{pet._id}}" method="post" id="comment_form">
+                <textarea name="comment_input" id="comment_input" class="commentArea" cols="30" rows="1"
+                    placeholder="Your comment ..."></textarea>
+                <button type="submit" class="btn-comment">Comment</button>
+            </form>
+        </div>
+    </div>
+</main>
