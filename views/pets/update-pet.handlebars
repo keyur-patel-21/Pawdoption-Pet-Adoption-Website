@@ -18,7 +18,7 @@
                 <div class="new-pet-input">
                     <label for="genderInput">Gender</label>
                     <select name="genderInput" id="genderInput" required>
-                        <option value="" selected disabled>-- Please choose a gender --</option>
+                        <option value="{{pet.gender}}">{{pet.gender}}</option>
                         <option value="female">Female</option>
                         <option value="male">Male</option>
                     </select>
@@ -27,7 +27,7 @@
                 <div class="new-pet-input">
                     <label for="typeInput">Type of Animal</label>
                     <select name="typeInput" id="typeInput" required>
-                        <option value="" selected disabled>-- Please select type --</option>
+                        <option value="{{pet.typeOfAnimal}}">{{pet.typeOfAnimal}}</option>
                         <option value="dog">Dog</option>
                         <option value="cat">Cat</option>
                         <option value="bird">Bird</option>
@@ -50,7 +50,7 @@
                 <div class="new-pet-input">
                     <label for="adoptionStatusInput">Adoption Status</label>
                     <select name="adoptionStatusInput" id="adoptionStatusInput" required>
-                        <option value="" selected disabled>-- Please choose adoption status --</option>
+                        <option value="{{pet.adoptionStatus}}">{{pet.adoptionStatus}}</option>
                         <option value="true">Adopted</option>
                         <option value="false">Not Adopted</option>
                     </select>
