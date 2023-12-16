@@ -90,7 +90,7 @@ router
           firstName: xss(user.firstName),
           lastName: xss(user.lastName),
           emailAddress: xss(user.emailAddress),
-          favoritePets: (user.favoritePets),
+          favoritePets: (user.favoritePets)
         };
         //console.log("user id: " + req.session.user.userId)
 

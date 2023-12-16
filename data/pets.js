@@ -150,17 +150,29 @@ const exportedMethods = {
   },
 
   // method to delete pet need to make changes
-  async removePet(petId) {
+  async removePet(petId, userInfo) {
     try{
       petId = helpers.checkId(petId, "pet id");
       const petCollection = await pets();
+
+      let delFav = await userFn.removeFavoritePet(petId, userInfo.id)
+      
       const deletionInfo = await petCollection.deleteOne({
         _id: new ObjectId(petId),
       });
 
       if (!deletionInfo) {
-        throw `Could not delete event with id of ${petId}`;
+        throw `Could not delete pet with id of ${petId}`;
       }
+
+      console.log("user ", userInfo.id)
+      
+
+      
+      
+      console.log(delFav)
+      //const userCollection = await users();
+      //let user = await userFn.getUserById(userId)
 
       // return {
       //   eventName: deletionInfo.eventName,
@@ -174,8 +186,6 @@ const exportedMethods = {
   async removeComment(commentId) {
     commentId = helpers.checkId(commentId, "comment id");
     const petsCollection = await pets();
-
-    // TODO: check if req.session.user.userId is equal to userId of comment
 
     const deletionInfo = await petsCollection.findOneAndUpdate(
       { "comments._id": commentId },
