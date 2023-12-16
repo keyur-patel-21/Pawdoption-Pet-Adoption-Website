@@ -27,7 +27,15 @@
                 </div>
                 <div class="new-pet-input">
                     <label for="typeInput">Type of Animal</label>
-                    <input type="text" name="typeInput" id="typeInput" placeholder="e.g. Dog, Cat" required>
+                    <select name="typeInput" id="typeInput" required>
+                        <option value="" selected disabled>-- Please select type --</option>
+                        <option value="dog">Dog</option>
+                        <option value="cat">Cat</option>
+                        <option value="bird">Bird</option>
+                        <option value="rabbit">Rabbit</option>
+                        <option value="fish">Fish</option>
+                        <option value="reptile">Reptile</option>
+                    </select>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
@@ -56,10 +64,13 @@
                     <p></p>
                 </div>
                 <div class="new-pet-input">
-                    <label for="petPicture">Choose a picture</label>
-                    <input type="file" name="petPicture" id="petPicture" required>
+                    <label for="image">Choose a picture</label>
+                    <input type="file" name="image" id="image" required>
                     <p></p>
                 </div>
+                {{#if error}}
+                <p class="error">{{error}}</p>
+                {{/if}}
                 <div class="new-pet-submit">
                     <button type="submit" class="btn-new-pet">Add Pet</button>
                 </div>
