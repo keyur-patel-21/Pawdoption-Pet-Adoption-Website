@@ -5,7 +5,7 @@
         <div class="new-pet-container">
             <h1><span class="material-icons-outlined">pets</span> Add a Paw to the Family <span
                     class="material-icons-outlined">pets</span></h1>
-            <form action="/pets" method="post" id="newPetForm" autocomplete="off">
+  <form id="pet-form" action="/pets" method="POST" enctype="multipart/form-data">
                 <div class="new-pet-input">
                     <label for="nameInput">Name</label>
                     <input type="text" name="nameInput" id="nameInput" required>
@@ -67,13 +67,14 @@
                     <input type="file" name="image" id="image" required>
                     <p></p>
                 </div>
-                {{#if error}}
-                <p class="error">{{error}}</p>
-                {{/if}}
+
                 <div class="new-pet-submit">
                     <button type="submit" class="btn-new-pet">Add Pet</button>
                 </div>
             </form>
+            {{#if error}}
+                <p class="error">{{error}}</p>
+            {{/if}}
         </div>
     </div>
 </main>

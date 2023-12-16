@@ -4,7 +4,7 @@
     <div class="card-layout">
         <div class="new-pet-container">
             <h1>Update {{pet.name}} Information</h1>
-            <form action="/pets/{{pet._id}}" method="post" id="newPetForm" autocomplete="off">
+              <form id="pet-edit-form" action="/pets/{{pet._id}}" method="POST" enctype="multipart/form-data" autocomplete="off">
                 <div class="new-pet-input">
                     <label for="nameInput">Name</label>
                     <input type="text" name="nameInput" id="nameInput" value="{{pet.name}}" required>
