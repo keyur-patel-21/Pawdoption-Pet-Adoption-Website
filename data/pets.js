@@ -192,6 +192,7 @@ const exportedMethods = {
 
   async getPetsBySearch(zip, typeOfAnimal) {
     zip = helpers.checkZip(zip);
+    typeOfAnimal = typeOfAnimal.toLowerCase();
     const petsCollection = await pets();
 		let petList = [];
 
