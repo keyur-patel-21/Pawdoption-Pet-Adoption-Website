@@ -2,7 +2,11 @@
 
 <main class="pet">
     <div class="pet-profile">
-        <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 200px;">
+        {{#if pet.picture}}
+        <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 200px; border-radius: 5px;">
+        {{else}}
+        <img src="/public/img/user/no_image.png" alt="{{pet.name}}" style="width: 200px; border-radius: 5px;">
+        {{/if}}
         {{#if isCreator}}
         <div class="update-pet">
             <a href="/pets/edit/{{pet._id}}">Update <span class="material-icons-outlined">edit</span></a>
