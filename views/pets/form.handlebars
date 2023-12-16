@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/public/css/styles.css">
 </head>
 <body>
-  <form id="pet-form" action="/pets" method="POST">
+  <form id="pet-form" action="/pets" method="POST" enctype="multipart/form-data">
     <div>
       <label for="nameInput"> Name:</label>
       <input type="text" id="nameInput" name="nameInput" required>
@@ -17,9 +17,9 @@
       <input type="text" id="ageInput" name="ageInput" required>
     </div>
     <div>
-      <label for="genderInput">Role:</label>
+      <label for="genderInput">Gender:</label>
       <select id="genderInput" name="genderInput" required>
-        <option value="" disabled selected>Select Role</option>
+        <option value="" disabled selected>Select Gender</option>
         <option value="male">Male</option>
         <option value="female">Female</option>
       </select>
@@ -35,9 +35,13 @@
     <div>
       <label for="typeInput">Type:</label>
       <select id="typeInput" name="typeInput" required>
-        <option value="" disabled selected>Select Role</option>
+        <option value="" disabled selected>Select Type</option>
         <option value="dog">Dog</option>
         <option value="cat">Cat</option>
+        <option value="cat">Bird</option>
+        <option value="cat">Rabbit</option>
+        <option value="cat">Fish</option>
+        <option value="cat">Reptile</option>
       </select>
     </div>
     <div>
@@ -45,12 +49,15 @@
       <input type="text" id="zipInput" name="zipInput" required>
     </div>
     <div>
-      <label for="adoptionStatusInput">Type:</label>
+      <label for="adoptionStatusInput">Adoption Status:</label>
       <select id="adoptionStatusInput" name="adoptionStatusInput" required>
-        <option value="" disabled selected>Select Role</option>
+        <option value="" disabled selected>Select Status</option>
         <option value="true">Adopted</option>
         <option value="false">Not Adopted</option>
       </select>
+    </div>
+    <div>
+      <input type="file" id="image" name="image" required/>
     </div>
     <button type="submit">Submit</button>
   </form>

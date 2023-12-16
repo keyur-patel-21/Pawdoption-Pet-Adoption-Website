@@ -1,32 +1,72 @@
-import {users} from '../config/mongoCollections.js';
-import {ObjectId} from 'mongodb';
-import helpers from '../helpers.js';
-import bcrypt from 'bcryptjs';
+import { users } from "../config/mongoCollections.js";
+import { ObjectId } from "mongodb";
+import helpers from "../helpers.js";
+import bcrypt from "bcryptjs";
+
+const checkDuplicateEmail = async (email) => {
+  const userCollection = await users();
+  const existingUser = await userCollection.findOne({ emailAddress: email });
+  return !!existingUser;
+};
 
 const exportedMethods = {
   async createUser(firstName, lastName, emailAddress, password) {
     firstName = helpers.checkString(firstName, "first name");
     lastName = helpers.checkString(lastName, "last name");
     emailAddress = helpers.checkEmail(emailAddress);
+    const passwordReg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[~`!@#$%^&*()\-_=+{}[\]:;"'<>,.?/|\\]).{8,}$/;
+
+    if (password.length === 0 || /\s/.test(password) || !passwordReg.test(password)) {
+      throw "Please provide valid password"
+    }
+    const isDuplicateEmail = await checkDuplicateEmail(emailAddress);
+    if (isDuplicateEmail) {
+      throw "Email address already exists.";
+    }
 
     var salt = bcrypt.genSaltSync(10);
 
     const userCollection = await users();
 
     let newUser = {
-        _id : new ObjectId(),
-        firstName : firstName,
-        lastName : lastName,
-        emailAddress : emailAddress,
-        hashedPassword : bcrypt.hashSync(password, salt),
-        favoritePets : []
+      _id: new ObjectId(),
+      firstName: firstName,
+      lastName: lastName,
+      emailAddress: emailAddress,
+      hashedPassword: bcrypt.hashSync(password, salt),
+      favoritePets: [],
     };
 
     let insertInfo = await userCollection.insertOne(newUser);
-    if (!insertInfo.acknowledged || !insertInfo.insertedId)
+    if (!insertInfo.acknowledged || !insertInfo.insertedId) {
       throw "Error: could not add user to database";
+    } else {
+      return { insertedUser: true, insertedUserId: newUser._id };
+    }
+    // return newUser;
+  },
 
-    return newUser;
+  async loginUser(emailAddress, password) {
+    emailAddress = helpers.checkEmail(emailAddress);
+    password = password.trim();
+
+    const lowerCaseEmail = emailAddress.toLowerCase();
+
+    const userCollection = await users();
+    const user = await userCollection.findOne({ emailAddress: lowerCaseEmail });
+
+    if (!user) {
+      throw "Either the email address or password is invalid.";
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.hashedPassword);
+
+    if (passwordMatch) {
+      const { _id, firstName, lastName, emailAddress, favoritePets } = user;
+      return { _id, firstName, lastName, emailAddress, favoritePets };
+    } else {
+      throw "Either the email address or password is invalid.";
+    }
   },
 
   async getAllUsers() {
@@ -40,12 +80,13 @@ const exportedMethods = {
   async getUserById(id) {
     id = helpers.checkId(id, "user id");
     const usersCollection = await users();
-    const user = await usersCollection.findOne({ _id: id });
+    const user = await usersCollection.findOne({ _id: new ObjectId(id) });
     if (!user) throw "Error: no user with that id exist";
 
     return user;
   },
 
+  // not implemented in website yet
   async updateUser(id, firstName, lastName, emailAddress) {
     id = helpers.checkId(id, "user id");
     firstName = helpers.checkString(firstName, "first name");
@@ -54,10 +95,12 @@ const exportedMethods = {
 
     const usersCollection = await users();
 
+    // ! add user id too
     let setUser = {
       firstName: firstName,
       lastName: lastName,
       emailAddress: emailAddress,
+      //userId: id
     };
 
     const updatedInfo = await usersCollection.updateOne(
@@ -76,18 +119,19 @@ const exportedMethods = {
     petId = helpers.checkId(petId, "pet id");
     userId = helpers.checkId(userId, "user id");
 
-    let newFavoritePet = {
-      petId: petId,
-    };
+    try {
+      const usersCollection = await users();
 
-    const usersCollection = await users();
+      const updatedInfo = await usersCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $push: { favoritePets: petId } },
+        { upsert: true }
+      );
 
-    const updatedInfo = await usersCollection.updateOne(
-      { _id: userId },
-      { $push: { favoritePets: newFavoritePet } }
-    );
-
-    return { favoritePetId: petId, userId: userId };
+      return { favoritePetId: petId, userId: userId };
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   async removeUser(userId) {
@@ -103,23 +147,23 @@ const exportedMethods = {
     return result;
   },
 
-  async removeFavoritePet(userId, petId) {
-    userId = helpers.checkId(userId, "user id");
+  async removeFavoritePet(petId, userId) {
+    console.log("n remove fav method");
     petId = helpers.checkId(petId, "pet id");
+    userId = helpers.checkId(userId, "user id");
 
-    const usersCollection = await users();
+    try {
+      const usersCollection = await users();
 
-    const deletionInfo = await usersCollection.findOneAndUpdate(
-      { _id: userId },
-      { $pull: { favoritePets: { petId: petId } } },
-      { returnDocument: "after" }
-    );
+      const updatedInfo = await usersCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $pull: { favoritePets: petId } }
+      );
 
-    if (!deletionInfo) {
-      throw `Error: Could not delete favorite pet of ${petId}`;
+      return { favoritePetId: petId, userId: userId };
+    } catch (error) {
+      console.log(error);
     }
-
-    return deletionInfo;
   },
 };
 

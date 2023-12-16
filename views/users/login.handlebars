@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{title}}</title>
+  {{!-- <link rel="stylesheet" href="/public/css/styles.css"> --}}
+</head>
+<body>
+  <form id="login-form" action="/login" method="POST">
+    <div>
+      <label for="emailAddressInput">Email Address:</label>
+      <input type="email" id="emailAddressInput" name="emailAddressInput" required>
+    </div>
+    <div>
+      <label for="passwordInput">Password:</label>
+      <input type="password" id="passwordInput" name="passwordInput" required>
+    </div>
+    <button type="submit">Login</button>
+  </form>
+  <p class="error-message"></p>
+  {{#if error}}
+    <p class="error">{{error}}</p>
+  {{/if}}
+  <p>Click <a href="/register">here</a> to register!</p>
+  {{!-- <script src="/public/js/client_side_validation.js"></script> --}}
+</body>
+</html>

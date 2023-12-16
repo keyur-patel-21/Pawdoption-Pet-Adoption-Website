@@ -1,6 +1,7 @@
 import { pets } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import helpers from "../helpers.js";
+import userFn from "./users.js";
 
 const exportedMethods = {
   async createPet(
@@ -15,21 +16,23 @@ const exportedMethods = {
     picture,
     adoptionStatus
   ) {
+    creatorId = helpers.checkId(creatorId, "creator id");
     name = helpers.checkString(name, "pet name");
     age = helpers.checkStringisNumber(age);
-    gender = helpers.checkString(gender, "gender"); //implement as drop down menu
-    breed = helpers.checkString(breed, "breed"); //implement as drop down menu
+    gender = helpers.checkString(gender, "gender"); 
+    breed = helpers.checkString(breed, "breed");
     description = helpers.checkString(description, "description");
-    typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal"); //implement as drop down menu
+    typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal");
     zip = helpers.checkZip(zip);
     // TODO: picture file validation
     adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
+    //picture = '\\' + picture;
 
     const petCollection = await pets();
 
     let newPet = {
       _id: new ObjectId(),
-      creatorId: creatorId,
+      creatorId: new ObjectId(creatorId),
       name: name,
       age: age,
       gender: gender,
@@ -61,7 +64,7 @@ const exportedMethods = {
   async getPetById(id) {
     id = helpers.checkId(id, "pet id");
     const petsCollection = await pets();
-    const user = await petsCollection.findOne({ _id: id });
+    const user = await petsCollection.findOne({ _id: new ObjectId(id) });
     if (!user) throw "Error: no pet with that id exist";
 
     return user;
@@ -70,7 +73,7 @@ const exportedMethods = {
   async getPetByCreator(id) {
     id = helpers.checkId(id, "creator id");
     const petsCollection = await pets();
-    const pet = await petsCollection.findOne({ creatorId: id });
+    const pet = await petsCollection.findOne({ creatorId: new ObjectId(id) });
     if (!pet) throw "Error: no pet with that id exist";
 
     return pet;
@@ -81,16 +84,19 @@ const exportedMethods = {
     userId = helpers.checkId(userId, "user id");
     comment = helpers.checkString(comment, "comment");
 
+    let userName = await userFn.getUserById(userId)
+
     let newComment = {
       _id: new ObjectId(),
       userId: userId,
+      userName: userName.firstName + " " + userName.lastName,
       commentContent: comment,
     };
 
     const petsCollection = await pets();
 
     const updatedInfo = await petsCollection.updateOne(
-      { _id: petId },
+      { _id: new ObjectId(petId) },
       { $push: { comments: newComment } }
     );
 
@@ -103,25 +109,18 @@ const exportedMethods = {
 
   async updatePet(
     id,
-    name,
-    age,
-    gender,
-    breed,
-    description,
-    typeOfAnimal,
-    zip,
-    picture,
-    adoptionStatus
+    updatedData
   ) {
-    name = helpers.checkString(name, "pet name");
-    age = helpers.checkStringisNumber(age);
-    gender = helpers.checkString(gender, "gender");
-    breed = helpers.checkString(breed, "breed");
-    description = helpers.checkString(description, "description");
-    typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal");
-    zip = helpers.checkZip(zip);
+    const name = helpers.checkString(updatedData.nameInput, "pet name");
+    const age = helpers.checkStringisNumber(updatedData.ageInput);
+    const gender = helpers.checkString(updatedData.genderInput, "gender");
+    const breed = helpers.checkString(updatedData.breedInput, "breed");
+    const description = helpers.checkString(updatedData.descriptionInput, "description");
+    const typeOfAnimal = helpers.checkString(updatedData.typeInput, "typeOfAnimal");
+    const zip = helpers.checkZip(updatedData.zipInput);
     // TODO: picture file validation
-    adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
+    const adoptionStatus = helpers.checkAdoptedStatus(updatedData.adoptionStatusInput);
+    updatedData.picture = '\\' + updatedData.picture ;
 
     const petsCollection = await pets();
 
@@ -133,13 +132,13 @@ const exportedMethods = {
       description: description,
       typeOfAnimal: typeOfAnimal,
       zip: zip,
-      picture: picture,
+      picture: updatedData.picture,
       adoptionStatus: adoptionStatus,
       lastUpdated: new Date().toLocaleDateString(),
     };
 
     const updatedInfo = await petsCollection.updateOne(
-      { _id: id },
+      { _id: new ObjectId(id) },
       { $set: setPet }
     );
 
@@ -147,7 +146,7 @@ const exportedMethods = {
       throw "Error: could not update pet successfully";
     }
 
-    return getPetById(id);
+    // return getPetById(id);
   },
 
   // method to delete pet need to make changes
@@ -176,6 +175,8 @@ const exportedMethods = {
     commentId = helpers.checkId(commentId, "comment id");
     const petsCollection = await pets();
 
+    // TODO: check if req.session.user.userId is equal to userId of comment
+
     const deletionInfo = await petsCollection.findOneAndUpdate(
       { "comments._id": commentId },
       { $pull: { comments: { _id: commentId } } },
@@ -188,6 +189,22 @@ const exportedMethods = {
 
     return deletionInfo;
   },
+
+  async getPetsBySearch(zip, typeOfAnimal) {
+    zip = helpers.checkZip(zip);
+    const petsCollection = await pets();
+		let petList = [];
+
+    if (zip && typeOfAnimal.length === 0) {
+      petList = await petsCollection.find({ zip: zip }).toArray();
+    } else {
+      petList = await petsCollection.find({ typeOfAnimal: typeOfAnimal, zip: zip }).toArray();
+    }
+
+    if(!petList) throw "Error: no pets with that type and zip exist";
+
+    return petList;
+  }
 };
 
 export default exportedMethods;

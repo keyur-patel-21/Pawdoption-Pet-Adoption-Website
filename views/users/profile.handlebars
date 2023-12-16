@@ -1,0 +1,45 @@
+{{!-- Profile page --}}
+
+<main class="profile">
+    <div class="user-details">
+        <div class="profile-img">
+            <img src="/public/img/user/user.png" alt="User profile" style="width: 100px;">
+            <p>{{user.firstName}} {{user.lastName}}</p>
+            <p>{{user.email}}</p>
+        </div>
+        <div class="user-info">
+            <h1>Personal Information</h1>
+            <p>First Name: {{user.firstName}}</p>
+            <p>Last Name: {{user.lastName}}</p>
+            <p>Email: {{user.emailAddress}}</p>
+        </div>
+    </div>
+
+    <div class="favorite-pets">
+        <h2>Favorite Pets</h2>
+        {{#if favoritePets}}
+        <ul class="fav-pets-list">
+            {{#each pets as |pet key|}}
+            <li class="fav-pet">
+                <a href="/pets/{{pet._id}}">
+                    <div class="fav-pet-details">
+                        {{#if pet.picture}}
+                        <img src="{{pet.picture}}" alt="{{pet.name}}" style="width: 110px; height: 110px; border-radius: 5px;">
+                        {{else}}
+                        <img src="/public/img/user/no_image.png" alt="{{pet.name}}" style="width: 110px; height: 110px; border-radius: 5px;">
+                        {{/if}}
+                        <p>Name: {{pet.name}}</p>
+                        <p>Age: {{pet.age}}</p>
+                        <p>Gender: {{pet.gender}}</p>
+                        <p>Breed: {{pet.breed}}</p>
+                    </div>
+                </a>
+            </li>
+            {{/each}}
+        </ul>
+        {{else}}
+        <p class="pet-not-found"><span class="material-icons-outlined">sentiment_dissatisfied</span></p>
+        <p class="no-favorite-pets">No pets added to favorite</p>
+        {{/if}}
+    </div>
+</main>

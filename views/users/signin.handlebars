@@ -1,0 +1,28 @@
+{{!-- Sign in page --}}
+
+<main class="signin">
+    <div class="card-layout">
+        <div class="signin-container">
+            <h1>Welcome to Pawdoption&#33;</h1>
+            <p class="signin-msg">Sign into your account</p>
+            <form action="/login" method="post" id="signinForm" autocomplete="off">
+                <div class="signin-input">
+                    <label for="emailAddressInput">Email</label>
+                    <input type="email" name="emailAddressInput" id="emailAddressInput" required>
+                    <p></p>
+                </div>
+                <div class="signin-input">
+                    <label for="passwordInput">Password</label>
+                    <input type="password" name="passwordInput" id="passwordInput" required>
+                    <p></p>
+                </div>
+                <div class="signin-submit">
+                    <button type="submit" class="btn-signin">Sign In</button>
+                </div>
+                <div class="new-user" id="newUser">
+                    <p>New to Pawdoption&#63; <a href="/register">Join Now</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
