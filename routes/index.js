@@ -7,7 +7,7 @@ const constructorMethod = (app) => {
   app.use('/', userRoutes);
 
   app.use('*', (req, res) => {
-    res.render("errors/no_route");
+    res.render("errors/no_route", {layout:"account"});
   });
 };
 
