@@ -87,13 +87,14 @@ router
 			newPetData.adoptionStatusInput = helpers.checkAdoptedStatus(
 				xss(newPetData.adoptionStatusInput)
 			);
+      newPetData.picture = helpers.checkPicture(req.file)
 		} catch (error) {
 			console.log(error);
 			res
 				.status(400)
 				.render("pets/new-pet", { error: error });
 		}
-
+   
 		// here we are creating new pet
 		try {
 			const {
@@ -115,7 +116,7 @@ router
 				xss(descriptionInput),
 				xss(typeInput),
 				xss(zipInput),
-				xss(req.file.path),
+				newPetData.picture,
 				xss(adoptionStatusInput)
 			);
 
@@ -229,7 +230,8 @@ router
 			newPetData.adoptionStatusInput = helpers.checkAdoptedStatus(
 				xss(newPetData.adoptionStatusInput)
 			);
-			newPetData.picture = req.file.path;
+      newPetData.picture = helpers.checkPicture(req.file)
+
 		} catch (error) {
 			console.log(error);
 			return res.status(400).json({ error: error });
