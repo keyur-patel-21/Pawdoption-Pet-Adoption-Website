@@ -127,7 +127,6 @@ const exportedMethods = {
 				{ _id: new ObjectId(userId) },
 				{ $addToSet: { favoritePets: favPet } }
 			);
-			console.log((updatedInfo))
 
 			return { favoritePetId: petId, userId: userId };
 		} catch (error) {

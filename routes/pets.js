@@ -245,9 +245,7 @@ router
 
 // route to delete
 router.route("/delete/:petId").get(async (req, res) => {
-	//code here for DELETE
-	// here we are validating petId
-	//console.log("inside pet delete route");
+	
 	try {
 		req.params.petId = helpers.checkId(xss(req.params.petId), "Id URL Param");
 	} catch (error) {

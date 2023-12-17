@@ -100,7 +100,6 @@ router
           emailAddress: xss(user.emailAddress),
           favoritePets: user.favoritePets,
         };
-        //console.log("user id: " + req.session.user.userId)
 
         res.redirect("/pets");
       } else {
