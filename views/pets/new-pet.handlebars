@@ -5,7 +5,7 @@
         <div class="new-pet-container">
             <h1><span class="material-icons-outlined">pets</span> Add a Paw to the Family <span
                     class="material-icons-outlined">pets</span></h1>
-  <form id="pet-form" action="/pets" method="POST" enctype="multipart/form-data">
+            <form action="/pets" method="post" id="newPetForm" enctype="multipart/form-data" autocomplete="off">
                 <div class="new-pet-input">
                     <label for="nameInput">Name</label>
                     <input type="text" name="nameInput" id="nameInput" required>
@@ -27,14 +27,14 @@
                 </div>
                 <div class="new-pet-input">
                     <label for="typeInput">Type of Animal</label>
-                    <select id="typeInput" name="typeInput" required>
-                        <option value="" disabled selected>-- Please Select Type --</option>
-                        <option value="Dog">Dog</option>
-                        <option value="Cat">Cat</option>
-                        <option value="Bird">Bird</option>
-                        <option value="Rabbit">Rabbit</option>
-                        <option value="Fish">Fish</option>
-                        <option value="Reptile">Reptile</option>
+                    <select name="typeInput" id="typeInput" required>
+                        <option value="" selected disabled>-- Please choose type of animal --</option>
+                        <option value="dog">Dog</option>
+                        <option value="cat">Cat</option>
+                        <option value="bird">Bird</option>
+                        <option value="rabbit">Rabbit</option>
+                        <option value="fish">Fish</option>
+                        <option value="reptile">Reptile</option>
                     </select>
                 </div>
                 <div class="new-pet-input">
