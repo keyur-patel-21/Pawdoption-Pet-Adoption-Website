@@ -154,8 +154,6 @@ const exportedMethods = {
     try{
       petId = helpers.checkId(petId, "pet id");
       const petCollection = await pets();
-
-      let delFav = await userFn.removeFavoritePet(petId, userInfo.id)
       
       const deletionInfo = await petCollection.deleteOne({
         _id: new ObjectId(petId),
@@ -164,20 +162,6 @@ const exportedMethods = {
       if (!deletionInfo) {
         throw `Could not delete pet with id of ${petId}`;
       }
-
-      console.log("user ", userInfo.id)
-      
-
-      
-      
-      console.log(delFav)
-      //const userCollection = await users();
-      //let user = await userFn.getUserById(userId)
-
-      // return {
-      //   eventName: deletionInfo.eventName,
-      //   deleted: true,
-      // };
     }catch(error){
       console.log(error.message)
     }

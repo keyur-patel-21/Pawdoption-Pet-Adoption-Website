@@ -138,7 +138,9 @@ router.route("/removeFromFavourites/:petId").get(async (req, res) => {
   const userId = helpers.checkId(req.session.user.id, "user id");
 
   try {
-    const result = await userData.removeFavoritePet(petId, userId);
+    await userData.removeFavoritePet(petId, userId);
+    //req.session.user = delFav.updatedInfo;
+    //console.log("req session", req.session.user)
 
     if (result) {
       res.redirect("/pets/"+req.params.petId);
@@ -156,7 +158,6 @@ router.route("/about").get(async (req, res) => {
 });
 
 router.route("/profile").get(async (req, res) => {
-  console.log(req.session.user.favoritePets)
   res.render("users/profile", { user: req.session.user});
 });
 

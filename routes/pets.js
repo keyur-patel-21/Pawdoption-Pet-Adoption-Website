@@ -193,7 +193,6 @@ router
 
   .post(upload.single('image'), async (req, res) => {
     //code here for PUT
-console.log("in post petid edit")
     const newPetData = req.body;
     //make sure there is something present in the req.body
     if (!newPetData || Object.keys(newPetData).length === 0) {
@@ -253,7 +252,7 @@ console.log("in post petid edit")
 router.route("/delete/:petId").get(async (req, res) => {
   //code here for DELETE
   // here we are validating petId
-  console.log("inside pet delete route");
+  //console.log("inside pet delete route");
   try {
     req.params.petId = helpers.checkId(xss(req.params.petId), "Id URL Param");
   } catch (error) {
@@ -263,7 +262,9 @@ router.route("/delete/:petId").get(async (req, res) => {
   //
   //try to delete Event
   try {
-    await petData.removePet(req.params.petId, req.session.user);
+    let remPet = await petData.removePet(req.params.petId, req.session.user);
+    let delFav = await userData.removeFavoritePet(req.params.petId, req.session.user);
+    req.session.user = delFav.updatedInfo;
     return res.redirect("/pets");
   } catch (error) {
     console.log(error);

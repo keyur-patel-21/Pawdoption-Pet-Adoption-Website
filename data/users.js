@@ -148,21 +148,18 @@ const exportedMethods = {
     return result;
   },
 
-  async removeFavoritePet(petId, userId) {
+  async removeFavoritePet(petId, userSession) {
     petId = helpers.checkId(petId, "pet id");
-    userId = helpers.checkId(userId, "user id");
+    let userId = helpers.checkId(userSession.id, "user id");
 
     try {
       const usersCollection = await users();
 
-      const favPet = await petsFn.getPetById(petId)
-      console.log(favPet._id)
-
-      const updatedInfo = await usersCollection.updateOne(
+      const updatedInfo = await usersCollection.findOneAndUpdate(
         { _id: new ObjectId(userId)},
-        { $pull: { favoritePets: {_id: new ObjectId(petId)}} }
+        { $pull: { favoritePets: {_id: new ObjectId(petId)}} },
+        {returnDocument: "after"}
       );
-
       return { favoritePetId: petId, userId: userId, updatedInfo: updatedInfo };
     } catch (error) {
       console.log(error);
