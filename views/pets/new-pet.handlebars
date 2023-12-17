@@ -13,7 +13,7 @@
                 </div>
                 <div class="new-pet-input">
                     <label for="ageInput">Age</label>
-                    <input type="number" name="ageInput" id="ageInput" min="0" max="150" required>
+                    <input type="text" name="ageInput" id="ageInput" required>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
@@ -36,6 +36,7 @@
                         <option value="fish">Fish</option>
                         <option value="reptile">Reptile</option>
                     </select>
+                    <p></p>
                 </div>
                 <div class="new-pet-input">
                     <label for="breedInput">Breed</label>
@@ -44,7 +45,7 @@
                 </div>
                 <div class="new-pet-input">
                     <label for="zipInput">Zip Code</label>
-                    <input type="text" name="zipInput" id="zipInput" pattern="[0-9]{5}" required>
+                    <input type="text" name="zipInput" id="zipInput" required>
                     <p></p>
                 </div>
                 <div class="new-pet-input">
@@ -67,14 +68,13 @@
                     <input type="file" name="image" id="image" required>
                     <p></p>
                 </div>
-
+                {{#if error}}
+                <p class="error">{{error}}</p>
+                {{/if}}
                 <div class="new-pet-submit">
                     <button type="submit" class="btn-new-pet">Add Pet</button>
                 </div>
             </form>
-            {{#if error}}
-                <p class="error">{{error}}</p>
-            {{/if}}
         </div>
     </div>
 </main>
