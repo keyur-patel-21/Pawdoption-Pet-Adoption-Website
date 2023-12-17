@@ -245,7 +245,7 @@ router
 
 // route to delete
 router.route("/delete/:petId").get(async (req, res) => {
-	
+
 	try {
 		req.params.petId = helpers.checkId(xss(req.params.petId), "Id URL Param");
 	} catch (error) {
