@@ -24,9 +24,11 @@ const exportedMethods = {
     description = helpers.checkString(description, "description");
     typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal");
     zip = helpers.checkZip(zip);
-    // TODO: picture file validation
     adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
-    //picture = '\\' + picture;
+
+    picture = picture.replaceAll("\\", "/")
+    picture = "/" + picture
+
     if (adoptionStatus === "true"){
       adoptionStatus = true;
     }else{
