@@ -12,7 +12,7 @@ router.get("/", isAuthenticated, (req, res) => {
 router
   .route("/register")
   .get(async (req, res) => {
-    res.render("users/signup", { title: "Sign up" ,  layout: "account" });
+    res.render("users/signup", { title: "Sign Up" ,  layout: "account" });
   })
   .post(async (req, res) => {
     const {
@@ -56,14 +56,14 @@ router
         res.status(500).send("Internal Server Error");
       }
     } catch (error) {
-      res.status(400).render("users/signup", { error: error.message, layout: "account" });
+      res.status(400).render("users/signup", { error: error, layout: "account" });
     }
   });
 
 router
   .route("/login")
   .get(async (req, res) => {
-    res.render("users/signin", { title: "Login Page" ,  layout: "account" });
+    res.render("users/signin", { title: "Sign In" ,  layout: "account" });
   })
   .post(async (req, res) => {
     const { emailAddressInput, passwordInput } = req.body;
@@ -103,14 +103,16 @@ router
       }
     } catch (error) {
       console.log(error);
-      res.status(400).render("users/signin", { error: error.message ,  layout: "account" });
+      res.status(400).render("users/signin", { error: error ,  layout: "account" });
     }
   });
 
 router.route("/logout").get(async (req, res) => {
   if (req.session.user) {
     req.session.destroy();
-    res.status(200).render("users/signin", { title: "Logout" ,  layout: "account" });
+    res.status(200).render("users/signin", { title: "Sign In" ,  layout: "account" });
+  } else {
+    res.redirect("/login");
   }
 });
 
@@ -154,11 +156,16 @@ router.route("/removeFromFavourites/:petId").get(async (req, res) => {
 });
 
 router.route("/about").get(async (req, res) => {
-  res.render("pages/about", { user:req.session.user});
+  res.render("pages/about", { title: "About | Pawdoption", user:req.session.user});
 });
 
 router.route("/profile").get(async (req, res) => {
-  res.render("users/profile", { user: req.session.user});
+  if (req.session.user) {
+    const name = `${req.session.user.firstName} ${req.session.user.lastName}`;
+    res.render("users/profile", { title: `${name} | Pawdoption`, user: req.session.user});
+  } else {
+    res.redirect("/pets")
+  }
 });
 
 export default router;
