@@ -114,21 +114,25 @@ const exportedMethods = {
 		return { commentId: newComment._id };
 	},
 
-	async updatePet(
-		id,
-		updatedData
-	) {
-		const name = helpers.checkString(updatedData.nameInput, "pet name");
-		const age = helpers.checkStringisNumber(updatedData.ageInput);
-		const gender = helpers.checkString(updatedData.genderInput, "gender");
-		const breed = helpers.checkString(updatedData.breedInput, "breed");
-		const description = helpers.checkString(updatedData.descriptionInput, "description");
-		const typeOfAnimal = helpers.checkString(updatedData.typeInput, "typeOfAnimal");
-		const zip = helpers.checkZip(updatedData.zipInput);
-		const adoptionStatus = helpers.checkAdoptedStatus(updatedData.adoptionStatusInput);
+  async updatePet(
+    id,
+    updatedData
+  ) {
+    const name = helpers.checkString(updatedData.nameInput, "pet name");
+    const age = helpers.checkStringisNumber(updatedData.ageInput);
+    const gender = helpers.checkString(updatedData.genderInput, "gender");
+    const breed = helpers.checkString(updatedData.breedInput, "breed");
+    const description = helpers.checkString(updatedData.descriptionInput, "description");
+    const typeOfAnimal = helpers.checkString(updatedData.typeInput, "typeOfAnimal");
+    const zip = helpers.checkZip(updatedData.zipInput);
+    let adoptionStatus = helpers.checkAdoptedStatus(updatedData.adoptionStatusInput);
+    if (adoptionStatus === "true"){
+      adoptionStatus = true;
+    }else{
+      adoptionStatus = false;
+    }
     updatedData.picture = updatedData.picture.replaceAll("\\", "/")
-		updatedData.picture = "/" + updatedData.picture
-
+    updatedData.picture = "/" + updatedData.picture
 		const petsCollection = await pets();
 
 		let setPet = {
