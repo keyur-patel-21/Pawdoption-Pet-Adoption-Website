@@ -38,7 +38,7 @@ let exportedMethods = {
     if (string.trim().length === 0) throw ("Error: input can't be empty");
     let regex = /^[0-9]*$/;
     if(!regex.test(string)){
-      throw ("Invalid input");
+      throw ("Invalid input for age");
     }
     return string;
   },

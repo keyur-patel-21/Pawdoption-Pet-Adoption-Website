@@ -57,7 +57,7 @@ const exportedMethods = {
     const user = await userCollection.findOne({ emailAddress: lowerCaseEmail });
 
     if (!user) {
-      throw "Either the email address or password is invalid.";
+      throw "Please provide a valid email and password.";
     }
 
     const passwordMatch = await bcrypt.compare(password, user.hashedPassword);
@@ -66,7 +66,7 @@ const exportedMethods = {
       const { _id, firstName, lastName, emailAddress, favoritePets } = user;
       return { _id, firstName, lastName, emailAddress, favoritePets };
     } else {
-      throw "Either the email address or password is invalid.";
+      throw "Please provide a valid email and password.";
     }
   },
 
