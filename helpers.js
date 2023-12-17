@@ -45,9 +45,7 @@ let exportedMethods = {
 
   checkEmail(email) {
     if (!email) throw ("Error: must provide an email");
-    email = email.trim();
-    //https://www.w3docs.com/snippets/javascript/how-to-validate-an-e-mail-using-javascript.html
-    email = email.trim();  
+    email = email.trim().toLowerCase();
     let regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     if (regex.test(String(email).toLowerCase()))
         return email;
