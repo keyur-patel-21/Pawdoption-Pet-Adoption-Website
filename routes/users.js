@@ -151,9 +151,10 @@ router.route("/removeFromFavourites/:petId").get(async (req, res) => {
 
   try {
     await userData.removeFavoritePet(petId, userId);
+    return res.redirect("/pets/" + req.params.petId);
   } catch (error) {
     console.log(error);
-    res.redirect("/pets/" + req.params.petId);
+    return res.redirect("/pets/" + req.params.petId);
   }
 });
 
