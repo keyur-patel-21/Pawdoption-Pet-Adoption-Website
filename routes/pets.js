@@ -202,8 +202,6 @@ router
     }
     // Change here for validating input params
     try {
-      console.log("in try 1")
-
       newPetData.nameInput = helpers.checkString(
         xss(newPetData.nameInput),
         "pet name"
@@ -264,7 +262,7 @@ router.route("/delete/:petId").get(async (req, res) => {
   try {
     let remPet = await petData.removePet(req.params.petId, req.session.user);
     let delFav = await userData.removeFavoritePet(req.params.petId, req.session.user);
-    req.session.user = delFav.updatedInfo;
+    req.session.user.favoritePets = delFav.updatedInfo.favoritePets;
     return res.redirect("/pets");
   } catch (error) {
     console.log(error);
