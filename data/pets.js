@@ -125,14 +125,14 @@ const exportedMethods = {
 		const description = helpers.checkString(updatedData.descriptionInput, "description");
 		const typeOfAnimal = helpers.checkString(updatedData.typeInput, "typeOfAnimal");
 		const zip = helpers.checkZip(updatedData.zipInput);
-    let adoptionStatus = helpers.checkAdoptedStatus(updatedData.adoptionStatusInput);
-    if (adoptionStatus === "true"){
-      adoptionStatus = true;
-    }else{
-      adoptionStatus = false;
-    }
-    updatedData.picture = updatedData.picture.replaceAll("\\", "/")
-    updatedData.picture = "/" + updatedData.picture
+		let adoptionStatus = helpers.checkAdoptedStatus(updatedData.adoptionStatusInput);
+		if (adoptionStatus === "true") {
+			adoptionStatus = true;
+		} else {
+			adoptionStatus = false;
+		}
+		updatedData.picture = updatedData.picture.replaceAll("\\", "/")
+		updatedData.picture = "/" + updatedData.picture
 		const petsCollection = await pets();
 
 		let setPet = {
