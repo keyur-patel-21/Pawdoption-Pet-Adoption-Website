@@ -59,7 +59,11 @@
                 </tr>
                 <tr>
                     <td>Adoption Status</td>
-                    <td>{{pet.adoptionStatus}}</td>
+                    {{#if pet.adoptionStatus}}
+                    <td>Adopted</td>
+                    {{else}}
+                    <td>Not Adopted</td>
+                    {{/if}}
                 </tr>
                 <tr>
                     <td>Description</td>
@@ -75,7 +79,7 @@
             {{#each pet.comments}}
             <div class="comment-box">
                 <img src="/public/img/user/user.png" alt="User profile." style="width: 40px;">
-                <p class="user-name">{{userName}}</p> 
+                <p class="user-name">{{userName}}</p>
                 <p class="user-comment">{{commentContent}}</p>
             </div>
             {{/each}}
