@@ -32,7 +32,7 @@ router.route("/api").get(async (req, res) => {
   }
 
   try {
-    const petList = await petData.getPetsBySearch(petSearch.searchPetZip, petSearch.searchPetType);
+    const petList = await petData.getPetsBySearch(xss(petSearch.searchPetZip), xss(petSearch.searchPetType));
     res.json(petList);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -127,7 +127,7 @@ router
 // route to open form for creating new pet
 router.route("/new").get(async (req, res) => {
   try {
-    res.render("pets/new-pet",{ user:req.session.user });
+    res.render("pets/new-pet",{ user:req.session.user});
   } catch (error) {
     console.log(error);
     res.status(400).render("pets/new-pet", { error: error.message , user:req.session.user });
@@ -142,7 +142,6 @@ router.route("/edit/:petId").get(async (req, res) => {
     console.log(error);
     return res.status(400).json({ error: error.message });
   }
-
   try {
     let pet = await petData.getPetById(xss(req.params.petId));
     res.render("pets/update-pet", { pet: pet, user:req.session.user });
@@ -166,15 +165,15 @@ router
     }
     //try getting the event by ID
     try {
-      const pet = await petData.getPetById(xss(req.params.petId));
-      const updatedUser = await userData.getUserById(xss(req.session.user.id))
+      const pet = await petData.getPetById((req.params.petId));
+      const updatedUser = await userData.getUserById((req.session.user.id))
       if (updatedUser){
         req.session.user = {
           id: xss(updatedUser._id),
           firstName: xss(updatedUser.firstName),
           lastName: xss(updatedUser.lastName),
           emailAddress: xss(updatedUser.emailAddress),
-          favoritePets: xss(updatedUser.favoritePets),
+          favoritePets: (updatedUser.favoritePets),
         };
       }
 
@@ -194,7 +193,6 @@ router
 
   .post(upload.single('image'), async (req, res) => {
     //code here for PUT
-
     const newPetData = req.body;
     //make sure there is something present in the req.body
     if (!newPetData || Object.keys(newPetData).length === 0) {
@@ -204,6 +202,8 @@ router
     }
     // Change here for validating input params
     try {
+      console.log("in try 1")
+
       newPetData.nameInput = helpers.checkString(
         xss(newPetData.nameInput),
         "pet name"
@@ -229,16 +229,19 @@ router
       newPetData.adoptionStatusInput = helpers.checkAdoptedStatus(
         xss(newPetData.adoptionStatusInput)
       );
-      newPetData.picture = xss(req.file.path);
+      newPetData.picture = req.file.path;
+      console.log(newPetData)
     } catch (error) {
-      // console.log(error);
-      return res.status(400).json({ error: error.message });
+      console.log(error);
+      return res.status(400).json({ error: error });
     }
     //console.log(newPetData)
     try {
       console.log("trying to update");
-      const updatedPet = await petData.updatePet(xss(req.params.petId), newPetData);
-      return res.redirect("/pets/" + xss(req.params.petId));
+      const updatedPet = await petData.updatePet(req.params.petId, newPetData);
+      console.log("in try updated pet")
+      return res.redirect("/pets/"+req.params.petId);
+      //return res.redirect("/pets/" + req.params.petId, {pet: newPetData, user: req.session.user});
     } catch (error) {
       console.log(error);
       res.status(404).json({ error: error.message });
@@ -249,7 +252,7 @@ router
 router.route("/delete/:petId").get(async (req, res) => {
   //code here for DELETE
   // here we are validating petId
-  console.log("inside pet delete route");
+  //console.log("inside pet delete route");
   try {
     req.params.petId = helpers.checkId(xss(req.params.petId), "Id URL Param");
   } catch (error) {
@@ -259,7 +262,9 @@ router.route("/delete/:petId").get(async (req, res) => {
   //
   //try to delete Event
   try {
-    await petData.removePet(xss(req.params.petId));
+    let remPet = await petData.removePet(req.params.petId, req.session.user);
+    let delFav = await userData.removeFavoritePet(req.params.petId, req.session.user);
+    req.session.user = delFav.updatedInfo;
     return res.redirect("/pets");
   } catch (error) {
     console.log(error);

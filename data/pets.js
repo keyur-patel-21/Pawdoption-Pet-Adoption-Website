@@ -150,22 +150,18 @@ const exportedMethods = {
   },
 
   // method to delete pet need to make changes
-  async removePet(petId) {
+  async removePet(petId, userInfo) {
     try{
       petId = helpers.checkId(petId, "pet id");
       const petCollection = await pets();
+      
       const deletionInfo = await petCollection.deleteOne({
         _id: new ObjectId(petId),
       });
 
       if (!deletionInfo) {
-        throw `Could not delete event with id of ${petId}`;
+        throw `Could not delete pet with id of ${petId}`;
       }
-
-      // return {
-      //   eventName: deletionInfo.eventName,
-      //   deleted: true,
-      // };
     }catch(error){
       console.log(error.message)
     }
@@ -174,8 +170,6 @@ const exportedMethods = {
   async removeComment(commentId) {
     commentId = helpers.checkId(commentId, "comment id");
     const petsCollection = await pets();
-
-    // TODO: check if req.session.user.userId is equal to userId of comment
 
     const deletionInfo = await petsCollection.findOneAndUpdate(
       { "comments._id": commentId },
@@ -192,6 +186,7 @@ const exportedMethods = {
 
   async getPetsBySearch(zip, typeOfAnimal) {
     zip = helpers.checkZip(zip);
+    typeOfAnimal = typeOfAnimal.toLowerCase();
     const petsCollection = await pets();
 		let petList = [];
 

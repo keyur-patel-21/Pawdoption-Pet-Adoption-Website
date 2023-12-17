@@ -2,6 +2,7 @@ import { users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import helpers from "../helpers.js";
 import bcrypt from "bcryptjs";
+import petsFn from "./pets.js";
 
 const checkDuplicateEmail = async (email) => {
   const userCollection = await users();
@@ -34,7 +35,7 @@ const exportedMethods = {
       lastName: lastName,
       emailAddress: emailAddress,
       hashedPassword: bcrypt.hashSync(password, salt),
-      favoritePets: [],
+      favoritePets: []
     };
 
     let insertInfo = await userCollection.insertOne(newUser);
@@ -95,12 +96,10 @@ const exportedMethods = {
 
     const usersCollection = await users();
 
-    // ! add user id too
     let setUser = {
       firstName: firstName,
       lastName: lastName,
-      emailAddress: emailAddress,
-      //userId: id
+      emailAddress: emailAddress
     };
 
     const updatedInfo = await usersCollection.updateOne(
@@ -121,12 +120,14 @@ const exportedMethods = {
 
     try {
       const usersCollection = await users();
+      
+      const favPet = await petsFn.getPetById(petId)
 
       const updatedInfo = await usersCollection.updateOne(
         { _id: new ObjectId(userId) },
-        { $push: { favoritePets: petId } },
-        { upsert: true }
+        { $addToSet: { favoritePets: favPet } }
       );
+      console.log((updatedInfo))
 
       return { favoritePetId: petId, userId: userId };
     } catch (error) {
@@ -147,20 +148,19 @@ const exportedMethods = {
     return result;
   },
 
-  async removeFavoritePet(petId, userId) {
-    console.log("n remove fav method");
+  async removeFavoritePet(petId, userSession) {
     petId = helpers.checkId(petId, "pet id");
-    userId = helpers.checkId(userId, "user id");
+    let userId = helpers.checkId(userSession.id, "user id");
 
     try {
       const usersCollection = await users();
 
-      const updatedInfo = await usersCollection.updateOne(
-        { _id: new ObjectId(userId) },
-        { $pull: { favoritePets: petId } }
+      const updatedInfo = await usersCollection.findOneAndUpdate(
+        { _id: new ObjectId(userId)},
+        { $pull: { favoritePets: {_id: new ObjectId(petId)}} },
+        {returnDocument: "after"}
       );
-
-      return { favoritePetId: petId, userId: userId };
+      return { favoritePetId: petId, userId: userId, updatedInfo: updatedInfo };
     } catch (error) {
       console.log(error);
     }

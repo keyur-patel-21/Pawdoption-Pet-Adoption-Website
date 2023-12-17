@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 import isAuthenticated from "../middleware.js";
-import { userData } from "../data/index.js";
+import { petData, userData } from "../data/index.js";
 import helpers from "../helpers.js";
 import xss from 'xss';
 
@@ -90,7 +90,7 @@ router
           firstName: xss(user.firstName),
           lastName: xss(user.lastName),
           emailAddress: xss(user.emailAddress),
-          favoritePets: xss(user.favoritePets),
+          favoritePets: (user.favoritePets)
         };
         //console.log("user id: " + req.session.user.userId)
 
@@ -138,7 +138,9 @@ router.route("/removeFromFavourites/:petId").get(async (req, res) => {
   const userId = helpers.checkId(req.session.user.id, "user id");
 
   try {
-    const result = await userData.removeFavoritePet(petId, userId);
+    await userData.removeFavoritePet(petId, userId);
+    //req.session.user = delFav.updatedInfo;
+    //console.log("req session", req.session.user)
 
     if (result) {
       res.redirect("/pets/"+req.params.petId);
