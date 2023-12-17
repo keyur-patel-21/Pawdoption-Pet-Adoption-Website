@@ -69,7 +69,9 @@
                     <p></p>
                 </div>
                 {{#if error}}
-                <p class="error">{{error}}</p>
+                <div class="new-pet-input" id="srvError">
+                    <p class="error">{{error}}</p>
+                </div>
                 {{/if}}
                 <div class="new-pet-submit">
                     <button type="submit" class="btn-new-pet">Add Pet</button>
