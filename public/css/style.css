@@ -115,13 +115,15 @@ a {
 
 .signup-input,
 .signin-input,
-.new-pet-input {
+.new-pet-input,
+.update-pet-input {
     margin-bottom: 0.8rem;
 }
 
 .signup-input label,
 .signin-input label,
-.new-pet-input label {
+.new-pet-input label,
+.update-pet-input label {
     display: block;
     margin-bottom: 0.5rem;
     font-size: 1rem;
@@ -130,7 +132,9 @@ a {
 .signup-input input,
 .signin-input input,
 .new-pet-input input,
-.new-pet-input select {
+.new-pet-input select,
+.update-pet-input input,
+.update-pet-input select {
     width: 100%;
     margin-bottom: 0.2rem;
     padding: 0.8rem 0.6rem;
@@ -140,7 +144,8 @@ a {
 
 .signup-input input:focus,
 .signin-input input:focus,
-.new-pet-input input:focus {
+.new-pet-input input:focus,
+.update-pet-input input:focus {
     outline: none;
     border: 1.5px solid var(--main-color);
 }
@@ -159,13 +164,15 @@ a {
 
 .signup-submit,
 .signin-submit,
-.new-pet-submit {
+.new-pet-submit,
+.update-pet-submit {
     text-align: center;
 }
 
 .btn-signup,
 .btn-signin,
-.btn-new-pet {
+.btn-new-pet,
+.btn-update-pet {
     width: 50%;
     height: 3rem;
     font-size: 1rem;
@@ -183,7 +190,9 @@ a {
 .btn-signin:hover,
 .btn-signin:focus,
 .btn-new-pet:hover,
-.btn-new-pet:focus {
+.btn-new-pet:focus,
+.btn-update-pet:hover,
+.btn-update-pet:focus {
     color: var(--white-text-color);
     background-color: var(--dark-backround-color);
 }
@@ -195,14 +204,15 @@ a {
 
 .signup-error,
 .signin-error,
-.new-pet-error {
+.pet-form-error {
     font-size: small;
     margin-bottom: 0.5rem;
 }
 
 .signup-input.invalid input,
 .signin-input.invalid input,
-.new-pet-input.invalid input {
+.new-pet-input.invalid input,
+.update-pet-input.invalid input {
     border-color: #ff0000;
 }
 
@@ -475,12 +485,14 @@ a {
 }
 
 /* New pet form */
-.add-new-pet {
+.add-new-pet,
+.update--pet {
     margin-top: 150px;
     padding-bottom: 2rem;
 }
 
-.add-new-pet .card-layout {
+.add-new-pet .card-layout,
+.update--pet .card-layout {
     width: 460px;
 }
 
@@ -488,22 +500,26 @@ a {
     transform: rotate(45deg);
 }
 
-.new-pet-container h1 {
+.new-pet-container h1,
+.update-pet-container h1 {
     font-size: x-large;
     margin-bottom: 2rem;
     text-align: center;
 }
 
-.new-pet-input select {
+.new-pet-input select,
+.update-pet-input select {
     background-color: #ffffff;
 }
 
-.new-pet-input select:focus {
+.new-pet-input select:focus,
+.update-pet-input select:focus {
     outline: none;
     border: 1.5px solid var(--main-color);
 }
 
-.new-pet-input input[type=file] {
+.new-pet-input input[type=file],
+.update-pet-input input[type=file] {
     border: none;
 }
 
