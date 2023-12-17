@@ -264,8 +264,7 @@ router.route("/delete/:petId").get(async (req, res) => {
   try {
     let remPet = await petData.removePet(req.params.petId, req.session.user);
     let delFav = await userData.removeFavoritePet(req.params.petId, req.session.user);
-    req.session.user = delFav.updatedInfo;
-    return res.redirect("/pets");
+    req.session.user.favoritePets = delFav.updatedInfo.favoritePets;    return res.redirect("/pets");
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: error.message });
