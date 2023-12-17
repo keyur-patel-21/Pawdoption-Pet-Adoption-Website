@@ -47,7 +47,7 @@ try {
         "Female", 
         "Labrador", 
         "Pella is a sweet dog who loves going on hikes and chasing squirrels.",
-        "Dog",
+        "dog",
         "06812",
         "/public/img/pet/pellaPicture.jpeg",
         "false");
@@ -61,7 +61,7 @@ try {
         "Female", 
         "German Shepard", 
         "Coco is looking for a new home. She loves other dogs and playing fetch!",
-        "Dog",
+        "dog",
         "07020",
         "/public/img/pet/cocoPicture.jpeg",
         "false");
@@ -78,7 +78,7 @@ try {
         "Female", 
         "Domestic Shorthair", 
         "Polly loves bird watching. She can't wait to find a loving home.",
-        "Cat",
+        "cat",
         "07020",
         "/public/img/pet/pollyPicture.jpg",
         "false");
@@ -93,7 +93,7 @@ try {
         "Male", 
         "Domestic Shorthair", 
         "Murphy is a lazy cat who loves cat treats and cuddling!",
-        "Cat",
+        "cat",
         "07020",
         "/public/img/pet/murphyPicture.jpg",
         "false");
@@ -110,7 +110,7 @@ try {
         "Male", 
         "Goldfish", 
         "Fin is a quiet fish who needs a new home.",
-        "Fish",
+        "fish",
         "07020",
         "/public/img/pet/finPicture.jpg",
         "false");
@@ -127,7 +127,7 @@ try {
         "Male", 
         "English Spot", 
         "Bunny's favrotie food is hay and he loves playing hide and seek.",
-        "Rabbit",
+        "rabbit",
         "07020",
         "/public/img/pet/bunnyPicture.jpg",
         "false");
@@ -144,7 +144,7 @@ try {
         "Male", 
         "Chameleon", 
         "Rex loves his sun lamp. He's looking for a new owner that loves chameleons!",
-        "Reptile",
+        "reptile",
         "07020",
         "/public/img/pet/diegoPicture.jpg",
         "false");
@@ -161,7 +161,7 @@ try {
         "Male", 
         "Parrot", 
         "Rex is looking for a new home, preferably with another bird",
-        "Bird",
+        "bird",
         "07020",
         "/public/img/pet/diegoPicture.jpg",
         "false");
