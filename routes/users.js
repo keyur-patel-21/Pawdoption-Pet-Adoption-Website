@@ -136,7 +136,7 @@ router.route("/addToFavourites/:petId").get(async (req, res) => {
     const result = await userData.addFavoritePet(petId, userId);
 
     if (result) {
-      res.redirect("/pets/" + req.params.petId);
+      return res.redirect("/pets/" + req.params.petId);
     } else {
       res.status(500).send("Internal Server Error");
     }
@@ -156,7 +156,7 @@ router.route("/removeFromFavourites/:petId").get(async (req, res) => {
     //console.log("req session", req.session.user)
 
     if (result) {
-      res.redirect("/pets/" + req.params.petId);
+      return res.rendirect("/pets/" + req.params.petId);
     } else {
       res.status(500).send("Internal Server Error");
     }
