@@ -72,10 +72,10 @@ $(function () {
 							} else {
 								$(`#pet-det${i}`).append(`<img src="/public/img/user/no_image.png" alt="${pet.name}" style="width: 110px; height: 110px; border-radius: 5px;">`);
 							}
-							$(`#pet-det${i}`).append(`<p>Name: ${pet.name}</p>`);
-							$(`#pet-det${i}`).append(`<p>Age: ${pet.age}</p>`);
-							$(`#pet-det${i}`).append(`<p>Gender: ${pet.gender}</p>`);
-							$(`#pet-det${i}`).append(`<p>Breed: ${pet.breed}</p>`);
+							$(`#pet-det${i}`).append(`<p class="capitalized">Name: ${pet.name}</p>`);
+							$(`#pet-det${i}`).append(`<p class="capitalized">Age: ${pet.age}</p>`);
+							$(`#pet-det${i}`).append(`<p class="capitalized">Gender: ${pet.gender}</p>`);
+							$(`#pet-det${i}`).append(`<p class="capitalized">Breed: ${pet.breed}</p>`);
 						});
 					} else {
 						searchPetsList.hide();

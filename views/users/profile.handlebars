@@ -9,9 +9,9 @@
         </div>
         <div class="user-info">
             <h1>Personal Information</h1>
-            <p>First Name: {{user.firstName}}</p>
-            <p>Last Name: {{user.lastName}}</p>
-            <p>Email: {{user.emailAddress}}</p>
+            <p class="capitalized">First Name: {{user.firstName}}</p>
+            <p class="capitalized">Last Name: {{user.lastName}}</p>
+            <p class="capitalized">Email: {{user.emailAddress}}</p>
         </div>
     </div>
 
@@ -28,10 +28,10 @@
                         {{else}}
                         <img src="/public/img/user/no_image.png" alt="{{this.name}}" style="width: 110px; height: 110px; border-radius: 5px;">
                         {{/if}}
-                        <p>Name: {{this.name}}</p>
-                        <p>Age: {{this.age}}</p>
-                        <p>Gender: {{this.gender}}</p>
-                        <p>Breed: {{this.breed}}</p>
+                        <p class="capitalized">Name: {{this.name}}</p>
+                        <p class="capitalized">Age: {{this.age}}</p>
+                        <p class="capitalized">Gender: {{this.gender}}</p>
+                        <p class="capitalized">Breed: {{this.breed}}</p>
                     </div>
                 </a>
             </li>
