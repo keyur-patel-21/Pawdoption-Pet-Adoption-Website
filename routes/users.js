@@ -15,31 +15,35 @@ router
     res.render("users/signup", { title: "Sign Up" ,  layout: "account" });
   })
   .post(async (req, res) => {
-    const {
-      firstNameInput,
-      lastNameInput,
-      emailAddressInput,
-      passwordInput,
-      confirmPasswordInput,
-    } = req.body;
+    try{
+      const {
+        firstNameInput,
+        lastNameInput,
+        emailAddressInput,
+        passwordInput,
+        confirmPasswordInput,
+      } = req.body;
 
-    const firstName = helpers.checkString(xss(firstNameInput), "first name");
-    const lastName = helpers.checkString(xss(lastNameInput), "last name");
-    const emailAddress = helpers.checkEmail(xss(emailAddressInput));
-    const passwordReg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[~`!@#$%^&*()\-_=+{}[\]:;"'<>,.?/|\\]).{8,}$/;
+      const firstName = helpers.checkString(xss(firstNameInput), "first name");
+      const lastName = helpers.checkString(xss(lastNameInput), "last name");
+      const emailAddress = helpers.checkEmail(xss(emailAddressInput));
+      const passwordReg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[~`!@#$%^&*()\-_=+{}[\]:;"'<>,.?/|\\]).{8,}$/;
 
-    if (passwordInput.length === 0 || /\s/.test(passwordInput) || !passwordReg.test(passwordInput)) {
-      return res.status(400).render("users/signup", {
-        error: "Please provide valid password",
-        layout: "account" 
-      });
-    }
+      if (passwordInput.length === 0 || /\s/.test(passwordInput) || !passwordReg.test(passwordInput)) {
+        return res.status(400).render("users/signup", {
+          error: "Please provide valid password",
+          layout: "account" 
+        });
+      }
 
-    if (passwordInput !== confirmPasswordInput) {
-      return res.status(400).render("users/signup", {
-        error: "Password and confirmPassword do not match",
-        layout: "account" 
-      });
+      if (passwordInput !== confirmPasswordInput) {
+        return res.status(400).render("users/signup", {
+          error: "Password and confirmPassword do not match",
+          layout: "account" 
+        });
+      }
+    }catch(error){
+      res.status(400).render("users/signup", { error: error, layout: "account" });
     }
 
     try {
@@ -66,15 +70,19 @@ router
     res.render("users/signin", { title: "Sign In" ,  layout: "account" });
   })
   .post(async (req, res) => {
-    const { emailAddressInput, passwordInput } = req.body;
+    try{
+      const { emailAddressInput, passwordInput } = req.body;
 
-    const emailAddress = helpers.checkEmail(xss(emailAddressInput));
-    const trimmedPassword = xss(passwordInput.trim());
+      const emailAddress = helpers.checkEmail(xss(emailAddressInput));
+      const trimmedPassword = xss(passwordInput.trim());
 
-    if (!emailAddress || !trimmedPassword) {
-      return res
-        .status(400)
-        .render("signin", { error: "Email address and password are required",  layout: "account"  });
+      if (!emailAddress || !trimmedPassword) {
+        return res
+          .status(400)
+          .render("signin", { error: "Email address and password are required",  layout: "account"  });
+      }
+    } catch(error) {
+      res.status(400).render("users/signin", { error: error ,  layout: "account" });
     }
 
     try {
