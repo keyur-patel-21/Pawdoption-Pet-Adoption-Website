@@ -13,11 +13,9 @@ $(function () {
 
             const geoApiUrl = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`;
 
-            fetch(geoApiUrl)
-                .then(res => res.json())
-                .then(data => {
-                    searchPetZip.val(data.postcode);
-                });
+            fetch(geoApiUrl).then(res => res.json()).then(data => {
+                searchPetZip.val(data.postcode);
+            });
         }
 
         const error = () => {
@@ -47,10 +45,10 @@ $(function () {
 
         if (petType) {
             petType = petType.trim();
-            if (petZip.length !== 0 && petType.length === 0) {
+            if (petZip.length !== 0 && (petType.length === 0 || petType.match(/\d+/))) {
                 searchPetType.trigger("focus");
                 searchPetType.val("");
-                searchPetType.attr("placeholder", "Find a pet");
+                searchPetType.attr("placeholder", "Find a pet (e.g. Dog, Cat)");
                 isSubmitValid = false;
             }
         }
