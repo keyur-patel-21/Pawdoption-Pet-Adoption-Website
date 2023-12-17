@@ -126,7 +126,12 @@ const exportedMethods = {
     const typeOfAnimal = helpers.checkString(updatedData.typeInput, "typeOfAnimal");
     const zip = helpers.checkZip(updatedData.zipInput);
     // TODO: picture file validation
-    const adoptionStatus = helpers.checkAdoptedStatus(updatedData.adoptionStatusInput);
+    let adoptionStatus = helpers.checkAdoptedStatus(updatedData.adoptionStatusInput);
+    if (adoptionStatus === "true"){
+      adoptionStatus = true;
+    }else{
+      adoptionStatus = false;
+    }
     updatedData.picture = '\\' + updatedData.picture ;
 
     const petsCollection = await pets();
