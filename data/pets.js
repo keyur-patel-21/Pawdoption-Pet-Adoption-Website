@@ -32,8 +32,6 @@ const exportedMethods = {
     }else{
       adoptionStatus = false;
     }
-    console.log(adoptionStatus)
-    console.log(typeof adoptionStatus)
 
     const petCollection = await pets();
 
