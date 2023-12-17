@@ -4,7 +4,7 @@ const isAuthenticated = (req, res, next) => {
 		return next(); // User is authenticated, proceed to the next middleware/route
 	}
 
-	res.redirect('/login'); // Redirect to login page if not authenticated
+  res.redirect('/about'); // Redirect to login page if not authenticated
 };
 
 export default isAuthenticated;
