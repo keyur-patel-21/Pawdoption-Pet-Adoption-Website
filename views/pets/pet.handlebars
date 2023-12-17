@@ -59,7 +59,11 @@
                 </tr>
                 <tr>
                     <td>Adoption Status</td>
-                    <td>{{pet.adoptionStatus}}</td>
+                    {{#if pet.adoptionStatus}}
+                    <td>Adopted</td>
+                    {{else}}
+                    <td>Not Adopted</td>
+                    {{/if}}
                 </tr>
                 <tr>
                     <td>Description</td>
