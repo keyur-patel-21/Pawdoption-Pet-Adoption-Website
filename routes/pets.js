@@ -89,7 +89,9 @@ router
       );
     } catch (error) {
       console.log(error);
-      return res.status(400).json({ error: error.message });
+      res
+        .status(400)
+        .render("pets/new-pet", { error: error });
     }
 
     // here we are creating new pet
@@ -120,7 +122,9 @@ router
       res.redirect("/pets");
     } catch (error) {
       console.log(error);
-      res.status(500).json({ error: error });
+      res
+        .status(500)
+        .render("pets/new-pet", { error: error });
     }
   });
 
@@ -196,9 +200,7 @@ router
     const newPetData = req.body;
     //make sure there is something present in the req.body
     if (!newPetData || Object.keys(newPetData).length === 0) {
-      return res
-        .status(400)
-        .json({ error: "There are no fields in the request body" });
+      return res.status(400).render("pets/update-pet", { error: error , user:req.session.user});
     }
     // Change here for validating input params
     try {
@@ -244,7 +246,7 @@ router
       //return res.redirect("/pets/" + req.params.petId, {pet: newPetData, user: req.session.user});
     } catch (error) {
       console.log(error);
-      res.status(404).json({ error: error.message });
+      res.status(500).render("pets/update-pet", { error: error , user:req.session.user});
     }
   });
 
