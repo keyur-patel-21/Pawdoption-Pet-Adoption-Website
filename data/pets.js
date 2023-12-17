@@ -27,6 +27,13 @@ const exportedMethods = {
     // TODO: picture file validation
     adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
     //picture = '\\' + picture;
+    if (adoptionStatus === "true"){
+      adoptionStatus = true;
+    }else{
+      adoptionStatus = false;
+    }
+    console.log(adoptionStatus)
+    console.log(typeof adoptionStatus)
 
     const petCollection = await pets();
 

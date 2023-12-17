@@ -186,7 +186,6 @@ router
       if (JSON.stringify(req.session.user.favoritePets).includes(JSON.stringify(pet._id))) {
         res.render("pets/pet", { title: `${pet.name} | Pawdoption`, pet: pet, isFavorite: true, isCreator: isCreator, user: req.session.user });
       } else {
-        console.log(req.session.user)
         res.render("pets/pet", {title: `${pet.name} | Pawdoption`, pet: pet, isFavorite: false, isCreator: isCreator, user: req.session.user });
       }
     } catch (error) {
@@ -204,7 +203,6 @@ router
     }
     // Change here for validating input params
     try {
-      console.log("in try 1")
 
       newPetData.nameInput = helpers.checkString(
         xss(newPetData.nameInput),
@@ -232,18 +230,13 @@ router
         xss(newPetData.adoptionStatusInput)
       );
       newPetData.picture = req.file.path;
-      console.log(newPetData)
     } catch (error) {
       console.log(error);
       return res.status(400).json({ error: error });
     }
-    //console.log(newPetData)
     try {
-      console.log("trying to update");
       const updatedPet = await petData.updatePet(req.params.petId, newPetData);
-      console.log("in try updated pet")
       return res.redirect("/pets/"+req.params.petId);
-      //return res.redirect("/pets/" + req.params.petId, {pet: newPetData, user: req.session.user});
     } catch (error) {
       console.log(error);
       res.status(500).render("pets/update-pet", { error: error , user:req.session.user});

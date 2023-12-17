@@ -5,13 +5,9 @@
       url: 'http://localhost:3000/pets'
     };
 
-    console.log("in ajax")
 
 // page load
     $.ajax(requestConfig).then(function (responseMessage) {
-        console.log(" requestConfig: " ,requestConfig)
-        //console.log("#")
-        console.log(req.session.user)
         $("#delete_link").attr("hidden",false);
         // $("#showDetails").attr("hidden",true);
 
