@@ -1,32 +1,48 @@
 // Set error if signin form input is invalid
 function setSigninInputError(element, errorMessage) {
-    const signupInput = element.parentElement;
-    const error = signupInput.querySelector("p");
+    const srvError = document.getElementById("srvError");
+    const parentElement = element.parentElement;
+    const error = parentElement.querySelector("p");
 
     error.innerText = errorMessage;
     error.className = "error signin-error";
     parentElement.classList.add("invalid");
+
+    if (srvError) {
+        srvError.style.display = "none";
+    }
 }
 
 // Set error if signup form input is invalid
 function setSignupFormError(element, errorMessage) {
+    const srvError = document.getElementById("srvError");
     const parentElement = element.parentElement;
     const error = parentElement.querySelector("p");
 
     error.innerText = errorMessage;
     error.className = "error signup-error";
     parentElement.classList.add("invalid");
+    parentElement.children[1].focus();
 
+    if (srvError) {
+        srvError.style.display = "none";
+    }
 }
 
 // Set error if new pet form input is invalid
 function setPetFormError(element, errorMessage) {
+    const srvError = document.getElementById("srvError");
     const parentElement = element.parentElement;
     const error = parentElement.querySelector("p");
 
     error.innerText = errorMessage;
     error.className = "error pet-form-error";
     parentElement.classList.add("invalid");
+    parentElement.children[1].focus();
+
+    if (srvError) {
+        srvError.style.display = "none";
+    }
 }
 
 // Remove error if input is valid
@@ -151,7 +167,7 @@ function validateZipCode(zipCode) {
 function validateDescription(description) {
     let isDescriptionValid = true;
 
-    if (description.length === 0 || description.length < 5) {
+    if (description.length === 0 || description.length < 5 || !isNaN(description)) {
         isDescriptionValid = false;
     }
 
@@ -190,34 +206,29 @@ if (signupForm) {
         const isConfirmPasswordValid = validatePassword(confirmPassword);
         const isPasswordMatch = matchPassword(password, confirmPassword);
 
-        if (isFirstNameValid) {
-            setInputSuccess(signupFirstName, "signup-error");
+        if (isConfirmPasswordValid) {
+            setInputSuccess(signupConfirmPassword, "signup-error");
         } else {
-            setSignupFormError(signupFirstName, "Please provide a valid first name.");
-        }
-
-        if (isLastNameValid) {
-            setInputSuccess(signupLastName, "signup-error");
-        } else {
-            setSignupFormError(signupLastName, "Please provide a valid last name.");
-        }
-
-        if (isEmailValid) {
-            setInputSuccess(signupEmailAddress, "signup-error");
-        } else {
-            setSignupFormError(signupEmailAddress, "Please provide a valid email.");
+            // setSignupFormError(signupConfirmPassword, "Please provide a valid password.");
+            setSignupFormError(signupConfirmPassword, 
+                "Password Requirements:\n" + 
+                "MUST contain at least 8 characters\n" + 
+                "MUST contain at least one uppercase letter\n" + 
+                "MUST contain at least one lowercase  letter\n" + 
+                "MUST contain at least one number\n" + 
+                "MUST contain at least one special character");
         }
 
         if (isPasswordValid) {
             setInputSuccess(signupPassword, "signup-error");
         } else {
-            setSignupFormError(signupPassword, "Please provide a valid password.");
-        }
-
-        if (isConfirmPasswordValid) {
-            setInputSuccess(signupConfirmPassword, "signup-error");
-        } else {
-            setSignupFormError(signupConfirmPassword, "Please provide a valid password.");
+            setSignupFormError(signupPassword, 
+                "Password Requirements:\n" + 
+                "MUST contain at least 8 characters\n" + 
+                "MUST contain at least one uppercase letter\n" + 
+                "MUST contain at least one lowercase  letter\n" + 
+                "MUST contain at least one number\n" + 
+                "MUST contain at least one special character");
         }
 
         if (isPasswordValid && isConfirmPasswordValid) {
@@ -226,6 +237,24 @@ if (signupForm) {
             } else {
                 setSignupFormError(signupConfirmPassword, "Please make sure your passwords match.");
             }
+        }
+
+        if (isEmailValid) {
+            setInputSuccess(signupEmailAddress, "signup-error");
+        } else {
+            setSignupFormError(signupEmailAddress, "Please provide a valid email.");
+        }
+
+        if (isLastNameValid) {
+            setInputSuccess(signupLastName, "signup-error");
+        } else {
+            setSignupFormError(signupLastName, "Please provide a valid last name.");
+        }
+
+        if (isFirstNameValid) {
+            setInputSuccess(signupFirstName, "signup-error");
+        } else {
+            setSignupFormError(signupFirstName, "Please provide a valid first name.");
         }
 
         if (isFirstNameValid && isLastNameValid && isEmailValid && isPasswordValid &&
@@ -290,7 +319,7 @@ function validatePetForm(petForm) {
             const petGender = formPetGender.value.trim();
             const petBreed = formPetBreed.value.trim();
             const petType = formPetType.value.trim();
-            const petZipCode =  formPetZipCode.value.trim();
+            const petZipCode = formPetZipCode.value.trim();
             const petAdoptionStatus = formPetAdoptionStatus.value.trim();
             const petDescription = formPetDescription.value.trim();
 
@@ -303,40 +332,10 @@ function validatePetForm(petForm) {
             const isPetAdoptionStatusValid = validateAdoptionStatus(petAdoptionStatus);
             const isPetDescriptionValid = validateDescription(petDescription);
 
-            if (isPetNameValid) {
-                setInputSuccess(formPetName, "pet-form-error");
+            if (isPetDescriptionValid) {
+                setInputSuccess(formPetDescription, "pet-form-error");
             } else {
-                setPetFormError(formPetName, "Please provide a valid name.");
-            }
-
-            if (isPetAgeValid) {
-                setInputSuccess(formPetAge, "pet-form-error");
-            } else {
-                setPetFormError(formPetAge, "Please provide a valid age.");
-            }
-
-            if (isPetGenderValid) {
-                setInputSuccess(formPetGender, "pet-form-error");
-            } else {
-                setPetFormError(formPetGender, "Please provide a valid gender.");
-            }
-            
-            if (isPetTypeValid) {
-                setInputSuccess(formPetType, "pet-form-error");
-            } else {
-                setPetFormError(formPetType, "Please provide a valid pet type.");
-            }
-
-            if (isPetBreedValid) {
-                setInputSuccess(formPetBreed, "pet-form-error");
-            } else {
-                setPetFormError(formPetBreed, "Please provide a valid breed.");
-            }
-
-            if (isPetZipCodeValid) {
-                setInputSuccess(formPetZipCode, "pet-form-error");
-            } else {
-                setPetFormError(formPetZipCode, "Please provide a valid zip code.");
+                setPetFormError(formPetDescription, "Please provide a valid description.");
             }
 
             if (isPetAdoptionStatusValid) {
@@ -345,10 +344,40 @@ function validatePetForm(petForm) {
                 setPetFormError(formPetAdoptionStatus, "Please provide a valid adoption status.");
             }
 
-            if (isPetDescriptionValid) {
-                setInputSuccess(formPetDescription, "pet-form-error");
+            if (isPetZipCodeValid) {
+                setInputSuccess(formPetZipCode, "pet-form-error");
             } else {
-                setPetFormError(formPetDescription, "Please provide a valid description.");
+                setPetFormError(formPetZipCode, "Please provide a valid zip code.");
+            }
+
+            if (isPetBreedValid) {
+                setInputSuccess(formPetBreed, "pet-form-error");
+            } else {
+                setPetFormError(formPetBreed, "Please provide a valid breed.");
+            }
+
+            if (isPetTypeValid) {
+                setInputSuccess(formPetType, "pet-form-error");
+            } else {
+                setPetFormError(formPetType, "Please provide a valid pet type.");
+            }
+
+            if (isPetGenderValid) {
+                setInputSuccess(formPetGender, "pet-form-error");
+            } else {
+                setPetFormError(formPetGender, "Please provide a valid gender.");
+            }
+
+            if (isPetAgeValid) {
+                setInputSuccess(formPetAge, "pet-form-error");
+            } else {
+                setPetFormError(formPetAge, "Please provide a valid age.");
+            }
+
+            if (isPetNameValid) {
+                setInputSuccess(formPetName, "pet-form-error");
+            } else {
+                setPetFormError(formPetName, "Please provide a valid name.");
             }
 
             if (isPetNameValid && isPetAgeValid && isPetGenderValid && isPetTypeValid && isPetBreedValid &&
