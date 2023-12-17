@@ -125,9 +125,9 @@ const exportedMethods = {
 		const description = helpers.checkString(updatedData.descriptionInput, "description");
 		const typeOfAnimal = helpers.checkString(updatedData.typeInput, "typeOfAnimal");
 		const zip = helpers.checkZip(updatedData.zipInput);
-		// TODO: picture file validation
 		const adoptionStatus = helpers.checkAdoptedStatus(updatedData.adoptionStatusInput);
-		updatedData.picture = '\\' + updatedData.picture;
+    updatedData.picture = updatedData.picture.replaceAll("\\", "/")
+		updatedData.picture = "/" + updatedData.picture
 
 		const petsCollection = await pets();
 
