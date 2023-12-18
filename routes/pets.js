@@ -56,9 +56,7 @@ router
 		const newPetData = req.body;
 		//make sure there is something present in the req.body
 		if (!newPetData || Object.keys(newPetData).length === 0) {
-			return res
-				.status(400)
-				.json({ error: "There are no fields in the request body" });
+			return res.status(400).json({ error: "There are no fields in the request body" });
 		}
 		// Change here for validating input params
 		try {
@@ -87,10 +85,9 @@ router
 			newPetData.adoptionStatusInput = helpers.checkAdoptedStatus(
 				xss(newPetData.adoptionStatusInput)
 			);
-      newPetData.picture = helpers.checkPicture(req.file)
-		
-   
-		// here we are creating new pet
+			newPetData.picture = helpers.checkPicture(req.file)
+
+			// here we are creating new pet
 			const {
 				nameInput,
 				ageInput,
@@ -117,9 +114,7 @@ router
 			res.redirect("/pets");
 		} catch (error) {
 			console.log(error);
-			res
-				.status(500)
-				.render("pets/new-pet", { error: error });
+			res.status(500).render("pets/new-pet", { error: error });
 		}
 	});
 
@@ -224,12 +219,12 @@ router
 			newPetData.adoptionStatusInput = helpers.checkAdoptedStatus(
 				xss(newPetData.adoptionStatusInput)
 			);
-      newPetData.picture = helpers.checkPicture(req.file)
+			newPetData.picture = helpers.checkPicture(req.file)
 
 		} catch (error) {
 			console.log(error);
 			//return res.status(400).json({ error: error });
-      return res.status(500).render("pets/update-pet", { error: error, user: req.session.user });
+			return res.status(500).render("pets/update-pet", { error: error, user: req.session.user });
 		}
 		try {
 			const updatedPet = await petData.updatePet(req.params.petId, newPetData);
