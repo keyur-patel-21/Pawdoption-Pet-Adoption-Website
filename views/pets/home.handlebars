@@ -9,7 +9,7 @@
             <span class="material-icons-outlined">search</span>
 
             <label for="searchPetType"></label>
-            <input type="text" name="searchPetType" id="searchPetType" placeholder="Find a pet">
+            <input type="text" name="searchPetType" id="searchPetType" placeholder="Find a pet (e.g. Dog, Cat)">
 
             <label for="searchPetZip"></label>
             <input type="text" name="searchPetZip" id="searchPetZip" placeholder="ZIP Code">
@@ -40,10 +40,10 @@
                         {{else}}
                         <img src="/public/img/user/no_image.png" alt="{{pet.name}}" style="width: 110px; height: 110px; border-radius: 5px;">
                         {{/if}}
-                        <p>Name: {{pet.name}}</p>
-                        <p>Age: {{pet.age}}</p>
-                        <p>Gender: {{pet.gender}}</p>
-                        <p>Breed: {{pet.breed}}</p>
+                        <p class="capitalized">Name: {{pet.name}}</p>
+                        <p class="capitalized">Age: {{pet.age}}</p>
+                        <p class="capitalized">Gender: {{pet.gender}}</p>
+                        <p class="capitalized">Breed: {{pet.breed}}</p>
                     </div>
                 </a>
             </li>

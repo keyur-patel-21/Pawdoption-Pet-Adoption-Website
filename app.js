@@ -11,12 +11,12 @@ const __dirname = dirname(__filename);
 const staticDir = express.static(__dirname + "/public");
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
-  if (req.body && req.body._method) {
-    req.method = req.body._method;
-    delete req.body._method;
-  }
+	if (req.body && req.body._method) {
+		req.method = req.body._method;
+		delete req.body._method;
+	}
 
-  next();
+	next();
 };
 
 app.use("/public", staticDir);
@@ -28,17 +28,33 @@ app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 app.use(
-  session({
-    name: "AuthState",
-    secret: "some secret string!",
-    resave: false,
-    saveUninitialized: false,
-  })
+	session({
+		name: "AuthState",
+		secret: "some secret string!",
+		resave: false,
+		saveUninitialized: false,
+	})
 );
+
+app.get("/login", (req, res, next) => {
+	if (req.session.user) {
+		return res.redirect("/profile");
+	}
+
+	next();
+});
+
+app.get("/register", (req, res, next) => {
+	if (req.session.user) {
+		return res.redirect("/profile");
+	}
+
+	next();
+});
 
 configRoutes(app);
 
 app.listen(3000, () => {
-  console.log("We've now got a server!");
-  console.log("Your routes will be running on http://localhost:3000");
+	console.log("We've now got a server!");
+	console.log("Your routes will be running on http://localhost:3000");
 });

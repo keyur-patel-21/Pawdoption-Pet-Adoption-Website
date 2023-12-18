@@ -29,41 +29,45 @@
         <table>
             <thead>
                 <tr>
-                    <th colspan="2">{{pet.name}}</th>
+                    <th colspan="2" class="capitalized">{{pet.name}}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>Name</td>
-                    <td>{{pet.name}}</td>
+                    <td class="capitalized">{{pet.name}}</td>
                 </tr>
                 <tr>
                     <td>Age</td>
-                    <td>{{pet.age}}</td>
+                    <td class="capitalized">{{pet.age}}</td>
                 </tr>
                 <tr>
                     <td>Gender</td>
-                    <td>{{pet.gender}}</td>
+                    <td class="capitalized">{{pet.gender}}</td>
                 </tr>
                 <tr>
                     <td>Type of Animal</td>
-                    <td>{{pet.typeOfAnimal}}</td>
+                    <td class="capitalized">{{pet.typeOfAnimal}}</td>
                 </tr>
                 <tr>
                     <td>Breed</td>
-                    <td>{{pet.breed}}</td>
+                    <td class="capitalized">{{pet.breed}}</td>
                 </tr>
                 <tr>
                     <td>Zip Code</td>
-                    <td>{{pet.zip}}</td>
+                    <td class="capitalized">{{pet.zip}}</td>
                 </tr>
                 <tr>
                     <td>Adoption Status</td>
-                    <td>{{pet.adoptionStatus}}</td>
+                    {{#if pet.adoptionStatus}}
+                    <td> Adopted</td>
+                    {{else}}
+                    <td>Not Adopted</td>
+                    {{/if}}
                 </tr>
                 <tr>
                     <td>Description</td>
-                    <td>{{pet.description}}</td>
+                    <td class="capitalized">{{pet.description}}</td>
                 </tr>
             </tbody>
         </table>
@@ -75,7 +79,7 @@
             {{#each pet.comments}}
             <div class="comment-box">
                 <img src="/public/img/user/user.png" alt="User profile." style="width: 40px;">
-                <p class="user-name">{{userName}}</p> 
+                <p class="user-name">{{userName}}</p>
                 <p class="user-comment">{{commentContent}}</p>
             </div>
             {{/each}}

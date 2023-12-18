@@ -4,202 +4,213 @@ import helpers from "../helpers.js";
 import userFn from "./users.js";
 
 const exportedMethods = {
-  async createPet(
-    creatorId,
-    name,
-    age,
-    gender,
-    breed,
-    description,
-    typeOfAnimal,
-    zip,
-    picture,
-    adoptionStatus
-  ) {
-    creatorId = helpers.checkId(creatorId, "creator id");
-    name = helpers.checkString(name, "pet name");
-    age = helpers.checkStringisNumber(age);
-    gender = helpers.checkString(gender, "gender"); 
-    breed = helpers.checkString(breed, "breed");
-    description = helpers.checkString(description, "description");
-    typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal");
-    zip = helpers.checkZip(zip);
-    // TODO: picture file validation
-    adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
-    //picture = '\\' + picture;
+	async createPet(
+		creatorId,
+		name,
+		age,
+		gender,
+		breed,
+		description,
+		typeOfAnimal,
+		zip,
+		picture,
+		adoptionStatus
+	) {
+		creatorId = helpers.checkId(creatorId, "creator id");
+		name = helpers.checkString(name, "pet name");
+		age = helpers.checkStringisNumber(age);
+		gender = helpers.checkString(gender, "gender");
+		breed = helpers.checkString(breed, "breed");
+		description = helpers.checkString(description, "description");
+		typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal");
+		zip = helpers.checkZip(zip);
+		adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
+		picture = helpers.checkPicture(picture)
+		picture = picture.replaceAll("\\", "/");
+		picture = "/" + picture
 
-    const petCollection = await pets();
+		if (adoptionStatus === "true") {
+			adoptionStatus = true;
+		} else {
+			adoptionStatus = false;
+		}
 
-    let newPet = {
-      _id: new ObjectId(),
-      creatorId: new ObjectId(creatorId),
-      name: name,
-      age: age,
-      gender: gender,
-      breed: breed,
-      description: description,
-      typeOfAnimal: typeOfAnimal,
-      zip: zip,
-      picture: picture,
-      adoptionStatus: adoptionStatus,
-      lastUpdated: new Date().toLocaleDateString(),
-      comments: [],
-    };
+		const petCollection = await pets();
 
-    let insertInfo = await petCollection.insertOne(newPet);
-    if (!insertInfo.acknowledged || !insertInfo.insertedId)
-      throw "Error: could not add pet to database";
+		let newPet = {
+			_id: new ObjectId(),
+			creatorId: new ObjectId(creatorId),
+			name: name,
+			age: age,
+			gender: gender,
+			breed: breed,
+			description: description,
+			typeOfAnimal: typeOfAnimal,
+			zip: zip,
+			picture: picture,
+			adoptionStatus: adoptionStatus,
+			lastUpdated: new Date().toLocaleDateString(),
+			comments: [],
+		};
 
-    return newPet;
-  },
+		let insertInfo = await petCollection.insertOne(newPet);
+		if (!insertInfo.acknowledged || !insertInfo.insertedId)
+			throw "Error: could not add pet to database";
 
-  async getAllPets() {
-    const petsCollection = await pets();
-    let petList = await petsCollection.find({}).toArray();
-    if (!petList) throw "Error: Could not get all pets";
+		return newPet;
+	},
 
-    return petList;
-  },
+	async getAllPets() {
+		const petsCollection = await pets();
+		let petList = await petsCollection.find({}).toArray();
+		if (!petList) throw "Error: Could not get all pets";
 
-  async getPetById(id) {
-    id = helpers.checkId(id, "pet id");
-    const petsCollection = await pets();
-    const user = await petsCollection.findOne({ _id: new ObjectId(id) });
-    if (!user) throw "Error: no pet with that id exist";
+		return petList;
+	},
 
-    return user;
-  },
+	async getPetById(id) {
+		id = helpers.checkId(id, "pet id");
+		const petsCollection = await pets();
+		const user = await petsCollection.findOne({ _id: new ObjectId(id) });
+		if (!user) throw "Error: no pet with that id exist";
 
-  async getPetByCreator(id) {
-    id = helpers.checkId(id, "creator id");
-    const petsCollection = await pets();
-    const pet = await petsCollection.findOne({ creatorId: new ObjectId(id) });
-    if (!pet) throw "Error: no pet with that id exist";
+		return user;
+	},
 
-    return pet;
-  },
+	async getPetByCreator(id) {
+		id = helpers.checkId(id, "creator id");
+		const petsCollection = await pets();
+		const pet = await petsCollection.findOne({ creatorId: new ObjectId(id) });
+		if (!pet) throw "Error: no pet with that id exist";
 
-  async createComment(petId, userId, comment) {
-    petId = helpers.checkId(petId, "pet id");
-    userId = helpers.checkId(userId, "user id");
-    comment = helpers.checkString(comment, "comment");
+		return pet;
+	},
 
-    let userName = await userFn.getUserById(userId)
+	async createComment(petId, userId, comment) {
+		petId = helpers.checkId(petId, "pet id");
+		userId = helpers.checkId(userId, "user id");
+		comment = helpers.checkString(comment, "comment");
 
-    let newComment = {
-      _id: new ObjectId(),
-      userId: userId,
-      userName: userName.firstName + " " + userName.lastName,
-      commentContent: comment,
-    };
+		let userName = await userFn.getUserById(userId)
 
-    const petsCollection = await pets();
+		let newComment = {
+			_id: new ObjectId(),
+			userId: userId,
+			userName: userName.firstName + " " + userName.lastName,
+			commentContent: comment,
+		};
 
-    const updatedInfo = await petsCollection.updateOne(
-      { _id: new ObjectId(petId) },
-      { $push: { comments: newComment } }
-    );
+		const petsCollection = await pets();
 
-    if (!updatedInfo) {
-      throw "Error: could not create comment successfully";
-    }
+		const updatedInfo = await petsCollection.updateOne(
+			{ _id: new ObjectId(petId) },
+			{ $push: { comments: newComment } }
+		);
 
-    return { commentId: newComment._id };
-  },
+		if (!updatedInfo) {
+			throw "Error: could not create comment successfully";
+		}
 
-  async updatePet(
-    id,
-    updatedData
-  ) {
-    const name = helpers.checkString(updatedData.nameInput, "pet name");
-    const age = helpers.checkStringisNumber(updatedData.ageInput);
-    const gender = helpers.checkString(updatedData.genderInput, "gender");
-    const breed = helpers.checkString(updatedData.breedInput, "breed");
-    const description = helpers.checkString(updatedData.descriptionInput, "description");
-    const typeOfAnimal = helpers.checkString(updatedData.typeInput, "typeOfAnimal");
-    const zip = helpers.checkZip(updatedData.zipInput);
-    // TODO: picture file validation
-    const adoptionStatus = helpers.checkAdoptedStatus(updatedData.adoptionStatusInput);
-    updatedData.picture = '\\' + updatedData.picture ;
+		return { commentId: newComment._id };
+	},
 
-    const petsCollection = await pets();
+	async updatePet(
+		id,
+		updatedData
+	) {
+		const name = helpers.checkString(updatedData.nameInput, "pet name");
+		const age = helpers.checkStringisNumber(updatedData.ageInput);
+		const gender = helpers.checkString(updatedData.genderInput, "gender");
+		const breed = helpers.checkString(updatedData.breedInput, "breed");
+		const description = helpers.checkString(updatedData.descriptionInput, "description");
+		const typeOfAnimal = helpers.checkString(updatedData.typeInput, "typeOfAnimal");
+		const zip = helpers.checkZip(updatedData.zipInput);
+		let adoptionStatus = helpers.checkAdoptedStatus(updatedData.adoptionStatusInput);
+		if (adoptionStatus === "true") {
+			adoptionStatus = true;
+		} else {
+			adoptionStatus = false;
+		}
+		updatedData.picture = updatedData.picture.replaceAll("\\", "/")
+		updatedData.picture = "/" + updatedData.picture
+		const petsCollection = await pets();
 
-    let setPet = {
-      name: name,
-      age: age,
-      gender: gender,
-      breed: breed,
-      description: description,
-      typeOfAnimal: typeOfAnimal,
-      zip: zip,
-      picture: updatedData.picture,
-      adoptionStatus: adoptionStatus,
-      lastUpdated: new Date().toLocaleDateString(),
-    };
+		let setPet = {
+			name: name,
+			age: age,
+			gender: gender,
+			breed: breed,
+			description: description,
+			typeOfAnimal: typeOfAnimal,
+			zip: zip,
+			picture: updatedData.picture,
+			adoptionStatus: adoptionStatus,
+			lastUpdated: new Date().toLocaleDateString(),
+		};
 
-    const updatedInfo = await petsCollection.updateOne(
-      { _id: new ObjectId(id) },
-      { $set: setPet }
-    );
+		const updatedInfo = await petsCollection.updateOne(
+			{ _id: new ObjectId(id) },
+			{ $set: setPet }
+		);
 
-    if (!updatedInfo) {
-      throw "Error: could not update pet successfully";
-    }
+		if (!updatedInfo) {
+			throw "Error: could not update pet successfully";
+		}
 
-    // return getPetById(id);
-  },
+		// return getPetById(id);
+	},
 
-  // method to delete pet need to make changes
-  async removePet(petId, userInfo) {
-    try{
-      petId = helpers.checkId(petId, "pet id");
-      const petCollection = await pets();
-      
-      const deletionInfo = await petCollection.deleteOne({
-        _id: new ObjectId(petId),
-      });
+	// method to delete pet need to make changes
+	async removePet(petId, userInfo) {
+		try {
+			petId = helpers.checkId(petId, "pet id");
+			const petCollection = await pets();
 
-      if (!deletionInfo) {
-        throw `Could not delete pet with id of ${petId}`;
-      }
-    }catch(error){
-      console.log(error.message)
-    }
-  },
+			const deletionInfo = await petCollection.deleteOne({
+				_id: new ObjectId(petId),
+			});
 
-  async removeComment(commentId) {
-    commentId = helpers.checkId(commentId, "comment id");
-    const petsCollection = await pets();
+			if (!deletionInfo) {
+				throw `Could not delete pet with id of ${petId}`;
+			}
+		} catch (error) {
+			console.log(error.message)
+		}
+	},
 
-    const deletionInfo = await petsCollection.findOneAndUpdate(
-      { "comments._id": commentId },
-      { $pull: { comments: { _id: commentId } } },
-      { returnDocument: "after" }
-    );
+	async removeComment(commentId) {
+		commentId = helpers.checkId(commentId, "comment id");
+		const petsCollection = await pets();
 
-    if (!deletionInfo) {
-      throw `Error: Could not delete comment with id of ${commentId}`;
-    }
+		const deletionInfo = await petsCollection.findOneAndUpdate(
+			{ "comments._id": commentId },
+			{ $pull: { comments: { _id: commentId } } },
+			{ returnDocument: "after" }
+		);
 
-    return deletionInfo;
-  },
+		if (!deletionInfo) {
+			throw `Error: Could not delete comment with id of ${commentId}`;
+		}
 
-  async getPetsBySearch(zip, typeOfAnimal) {
-    zip = helpers.checkZip(zip);
-    typeOfAnimal = typeOfAnimal.toLowerCase();
-    const petsCollection = await pets();
+		return deletionInfo;
+	},
+
+	async getPetsBySearch(zip, typeOfAnimal) {
+		zip = helpers.checkZip(zip);
+		typeOfAnimal = typeOfAnimal.toLowerCase();
+		const petsCollection = await pets();
 		let petList = [];
 
-    if (zip && typeOfAnimal.length === 0) {
-      petList = await petsCollection.find({ zip: zip }).toArray();
-    } else {
-      petList = await petsCollection.find({ typeOfAnimal: typeOfAnimal, zip: zip }).toArray();
-    }
+		if (zip && typeOfAnimal.length === 0) {
+			petList = await petsCollection.find({ zip: zip }).toArray();
+		} else {
+			petList = await petsCollection.find({ typeOfAnimal: typeOfAnimal, zip: zip }).toArray();
+		}
 
-    if(!petList) throw "Error: no pets with that type and zip exist";
+		if (!petList) throw "Error: no pets with that type and zip exist";
 
-    return petList;
-  }
+		return petList;
+	}
 };
 
 export default exportedMethods;

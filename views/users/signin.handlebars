@@ -17,7 +17,7 @@
                     <p></p>
                 </div>
                 {{#if error}}
-                <div class="signin-input">
+                <div class="signin-input" id="srvError">
                     <p class="error">{{error}}</p>
                 </div>
                 {{/if}}
@@ -28,10 +28,6 @@
                     <p>New to Pawdoption&#63; <a href="/register">Join Now</a></p>
                 </div>
             </form>
-            <p class="error-message"></p>
-            {{#if error}}
-                <p class="error">{{error}}</p>
-            {{/if}}
         </div>
     </div>
 </main>

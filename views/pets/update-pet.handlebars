@@ -3,7 +3,7 @@
 <main class="update--pet">
     <div class="card-layout">
         <div class="update-pet-container">
-            <h1>Update {{pet.name}} Information</h1>
+            <h1>Update {{pet.name}}'s Information</h1>
             <form action="/pets/{{pet._id}}" method="post" id="updatePetForm" enctype="multipart/form-data" autocomplete="off">
                 <div class="update-pet-input">
                     <label for="nameInput">Name</label>
@@ -35,6 +35,7 @@
                         <option value="fish">Fish</option>
                         <option value="reptile">Reptile</option>
                     </select>
+                    <p></p>
                 </div>
                 <div class="update-pet-input">
                     <label for="breedInput">Breed</label>
@@ -63,19 +64,18 @@
                 </div>
                 <div class="update-pet-input">
                     <label for="image">Choose a picture</label>
-                    <input type="file" name="image" id="image">
+                    <input type="file" name="image" id="image" required>
                     <p></p>
                 </div>
                 {{#if error}}
-                <p class="error">{{error}}</p>
+                <div class="update-pet-input" id="srvError">
+                    <p class="error">{{error}}</p>
+                </div>
                 {{/if}}
                 <div class="update-pet-submit">
                     <button type="submit" class="btn-update-pet">Update Pet</button>
                 </div>
             </form>
-            {{#if error}}
-                <p class="error">{{error}}</p>
-            {{/if}}
         </div>
     </div>
 </main>
