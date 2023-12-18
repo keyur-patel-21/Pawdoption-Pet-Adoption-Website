@@ -25,8 +25,8 @@ const exportedMethods = {
 		typeOfAnimal = helpers.checkString(typeOfAnimal, "typeOfAnimal");
 		zip = helpers.checkZip(zip);
 		adoptionStatus = helpers.checkAdoptedStatus(adoptionStatus);
-
-		picture = picture.replaceAll("\\", "/")
+		picture = helpers.checkPicture(picture)
+		picture = picture.replaceAll("\\", "/");
 		picture = "/" + picture
 
 		if (adoptionStatus === "true") {

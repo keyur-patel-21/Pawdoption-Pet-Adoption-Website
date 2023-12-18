@@ -88,17 +88,9 @@ router
 				xss(newPetData.adoptionStatusInput)
 			);
       newPetData.picture = helpers.checkPicture(req.file)
-		} catch (error) {
-			console.log(error);
-			// res
-			// 	.status(400)
-			// 	.render("pets/new-pet", { error: error });
-      res.status(500).render("pets/update-pet", { error: error, user: req.session.user });
-
-		}
+		
    
 		// here we are creating new pet
-		try {
 			const {
 				nameInput,
 				ageInput,
