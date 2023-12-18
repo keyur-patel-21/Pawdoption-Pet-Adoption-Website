@@ -66,7 +66,7 @@ let exportedMethods = {
 
   checkPicture(file){
     if (!file) throw ("Please provide a picture")
-    const extList = ['image/png', 'image/jpg', 'image.jpeg']
+    const extList = ['image/png', 'image/jpg', 'image/jpeg']
     if (!extList.includes(file.mimetype))
       throw ("Invalid file type")
     else {

@@ -90,9 +90,11 @@ router
       newPetData.picture = helpers.checkPicture(req.file)
 		} catch (error) {
 			console.log(error);
-			res
-				.status(400)
-				.render("pets/new-pet", { error: error });
+			// res
+			// 	.status(400)
+			// 	.render("pets/new-pet", { error: error });
+      res.status(500).render("pets/update-pet", { error: error, user: req.session.user });
+
 		}
    
 		// here we are creating new pet
@@ -234,7 +236,8 @@ router
 
 		} catch (error) {
 			console.log(error);
-			return res.status(400).json({ error: error });
+			//return res.status(400).json({ error: error });
+      return res.status(500).render("pets/update-pet", { error: error, user: req.session.user });
 		}
 		try {
 			const updatedPet = await petData.updatePet(req.params.petId, newPetData);
