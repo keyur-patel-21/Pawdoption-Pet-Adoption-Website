@@ -61,9 +61,7 @@ router
 				res.status(500).send("Internal Server Error");
 			}
 		} catch (error) {
-			res
-				.status(400)
-				.render("users/signup", { error: error, layout: "account" });
+			res.status(400).render("users/signup", { error: error, layout: "account" });
 		}
 	});
 
@@ -110,18 +108,14 @@ router
 			}
 		} catch (error) {
 			console.log(error);
-			res
-				.status(400)
-				.render("users/signin", { error: error, layout: "account" });
+			res.status(400).render("users/signin", { error: error, layout: "account" });
 		}
 	});
 
 router.route("/logout").get(async (req, res) => {
 	if (req.session.user) {
 		req.session.destroy();
-		res
-			.status(200)
-			.render("users/signin", { title: "Sign In", layout: "account" });
+		res.status(200).render("users/signin", { title: "Sign In", layout: "account" });
 	} else {
 		res.redirect("/login");
 	}
@@ -149,13 +143,13 @@ router.route("/removeFromFavourites/:petId").get(async (req, res) => {
 	const petId = helpers.checkId(req.params.petId, "pet id");
 	const userId = helpers.checkId(req.session.user.id, "user id");
 
-  try {
-    await userData.removeFavoritePet(petId, userId);
-    return res.redirect("/pets/" + req.params.petId);
-  } catch (error) {
-    console.log(error);
-    return res.redirect("/pets/" + req.params.petId);
-  }
+	try {
+		await userData.removeFavoritePet(petId, userId);
+		return res.redirect("/pets/" + req.params.petId);
+	} catch (error) {
+		console.log(error);
+		return res.redirect("/pets/" + req.params.petId);
+	}
 });
 
 router.route("/about").get(async (req, res) => {
